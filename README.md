@@ -6,7 +6,7 @@ Instant Paid is a scalable platform designed for enterprises to manage accountin
 
 
 ## 🎨 Design :
--> <h3>https://www.figma.com/design/KRWtfhMioOGzQsHoC4gjjo/Financea-team?node-id=0-1&p=f&t=REzM1NoUf3EBXlor-0</h3> 
+<h3>https://www.figma.com/design/KRWtfhMioOGzQsHoC4gjjo/Financea-team?node-id=0-1&p=f&t=REzM1NoUf3EBXlor-0</h3> 
 <hr/>
 
 ## ⚙️ Installation & Setup  
