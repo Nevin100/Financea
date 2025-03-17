@@ -1,4 +1,4 @@
-import Sidebar from "../Components/Sidebar.tsx";
+import Sidebar from "@/Components/Sidebar";
 import { FaFileInvoice } from "react-icons/fa";
 import { IoMdWallet } from "react-icons/io";
 

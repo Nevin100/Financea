@@ -1,13 +1,15 @@
+"use client"
+
 import { useState } from "react";
 import { FaFileInvoiceDollar, FaMoneyCheckAlt, FaChartBar, FaFileAlt, FaCog } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import  Link  from "next/link";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   const PageArray = [
-    { name: "Dashboard", icon: <FaChartBar />, path: "/dashboard" },
+    { name: "Dashboard", icon: <FaChartBar />, path: "/" },
     { name: "Invoices", icon: <FaFileInvoiceDollar />, path: "/invoices" },
     { name: "Payments", icon: <FaMoneyCheckAlt />, path: "/payments" },
     { name: "Expenses", icon: <FaFileAlt />, path: "/expenses" },
@@ -28,7 +30,7 @@ const Sidebar = () => {
           {PageArray.map((item) => (
             <li key={item.name} className="flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 transition">
               {item.icon}
-              {isOpen && <Link to={item.path} className="text-gray-700 font-medium">{item.name}</Link>}
+              {isOpen && <Link href={item.path} className="text-gray-700 font-medium">{item.name}</Link>}
             </li>
           ))}
         </ul>
