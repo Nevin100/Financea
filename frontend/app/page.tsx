@@ -2,6 +2,7 @@ import Sidebar from "@/Components/Sidebar";
 import FinancialAnalytics from "@/Components/Dashboard/FinancialAnalytics.tsx";
 import FinancialMetrics from "@/Components/Dashboard/FinancialMetrics";
 import PaymentRequests from "@/Components/Dashboard/PayementRequests";
+import RecentExpenses from "@/Components/Dashboard/RecentExpenses";
 import { FaFileInvoice } from "react-icons/fa";
 import { IoMdWallet } from "react-icons/io";
 
@@ -36,9 +37,10 @@ const Dashboard = () => {
           <FinancialMetrics />
         </div>
 
-        {/* Payment Requests Below Charts */}
-        <div className="mt-4 mx-3">
+        {/* Payment Requests & Recent Expenses */}
+        <div className="mt-10 grid grid-cols-2 gap-6">
           <PaymentRequests />
+          <RecentExpenses />
         </div>
       </div>
     </div>
