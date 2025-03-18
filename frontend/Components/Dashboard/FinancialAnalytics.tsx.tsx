@@ -2,6 +2,7 @@
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+
 const data = [
   { month: "January", revenue: 60000, expense: -15000 },
   { month: "February", revenue: 35000, expense: -12000 },
@@ -30,11 +31,12 @@ const FinancialAnalytics = () => {
             <YAxis />
             <Tooltip formatter={(value: number) => `$${Math.abs(value)}`} />
             <Legend />
-            <Bar dataKey="revenue" fill="#7C3AED" radius={[20, 10, 0, 0]} name="Revenue" />
-            <Bar dataKey="expense" fill="#A78BFA" radius={[20, 10, 0, 0]} name="Expense" />
+            <Bar dataKey="revenue" fill="#7C3AED" radius={[0, 0, 0, 0]} name="Revenue" />
+            <Bar dataKey="expense" fill="#A78BFA" radius={[0, 0, 0, 0]} name="Expense" />
           </BarChart>
         </ResponsiveContainer>
       </div>
+      
     </div>
   );
 };
