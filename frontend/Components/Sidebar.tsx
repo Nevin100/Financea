@@ -19,8 +19,8 @@ const Sidebar = () => {
 
   return (
     <div className={`h-screen ${isOpen ? "w-64" : "w-16"} bg-white border-r border-gray-200 transition-all duration-300`}>
-      <div className="flex items-center justify-between p-4">
-        {isOpen && <h2 className="text-lg pl-2 pt-2 font-bold text-gray-700">Instant Paid</h2>}
+      <div className="flex items-center justify-between p-6">
+        {isOpen && <h2 className="text-lg pl-2 pt-4 font-bold text-gray-700">Instant Paid</h2>}
         <button onClick={() => setIsOpen(!isOpen)} className="text-gray-700">
           <FiMenu size={24} />
         </button>
@@ -28,9 +28,9 @@ const Sidebar = () => {
       <nav className="mt-4">
         <ul>
           {PageArray.map((item) => (
-            <li key={item.name} className="flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 transition">
+            <li key={item.name} className="flex items-center space-x-3 px-4 py-3 m-2 hover:bg-gray-100 transition">
               {item.icon}
-              {isOpen && <Link href={item.path} className="text-gray-700 font-medium">{item.name}</Link>}
+              {isOpen && <Link href={item.path} className="text-gray-700 font-medium text-lg ml-2">{item.name}</Link>}
             </li>
           ))}
         </ul>
