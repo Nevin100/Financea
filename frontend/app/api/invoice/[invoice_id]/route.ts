@@ -12,7 +12,8 @@ export async function GET(
 
     
 
-
+    console.log(process.env.SECRET_KEY);
+    
 
 
 
