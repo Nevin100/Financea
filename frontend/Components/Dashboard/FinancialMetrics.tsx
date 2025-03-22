@@ -6,24 +6,8 @@ const FinancialMetrics = () => {
   const [view, setView] = useState("Monthly");
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md w-full h-[440px] flex flex-col">
-      {/* View Toggle */}
-      <div className="flex justify-between items-center mb-4">
-        <p className="text-black text-2xl font-normal">View in</p>
-        <div className="flex space-x-2 bg-white p-2 rounded-lg">
-          {["Monthly", "Quarterly", "Yearly"].map((option) => (
-            <button
-              key={option}
-              className={`px-4 py-2 text-md font-medium rounded-md ${
-                view === option ? "bg-violet-900 text-white" : "text-gray-700"
-              }`}
-              onClick={() => setView(option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className="bg-white  rounded-[16px] shadow-md w-full h-[440px] flex flex-col">
+     
 
       {/* Metrics */}
       <div className="flex flex-col flex-grow justify-center space-y-8 pr-3">
