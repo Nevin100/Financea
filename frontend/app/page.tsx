@@ -1,10 +1,11 @@
 import Sidebar from "@/Components/Sidebar";
-import FinancialAnalytics from "@/Components/Dashboard/FinancialAnalytics.tsx";
+import FinancialAnalytics from "@/Components/Dashboard/FinancialAnalytics";
 import FinancialMetrics from "@/Components/Dashboard/FinancialMetrics";
 import PaymentRequests from "@/Components/Dashboard/PayementRequests";
 import RecentExpenses from "@/Components/Dashboard/RecentExpenses";
 import { FaFileInvoice } from "react-icons/fa";
 import { IoMdWallet } from "react-icons/io";
+import FinancialAnalytics2 from "@/Components/Dashboard/FinancialAnalytics2";
 
 const Dashboard = () => {
   return (
@@ -33,7 +34,7 @@ const Dashboard = () => {
 
         {/* Analytics & Metrics */}
         <div className="mt-10 grid grid-cols-2 gap-6">
-          <FinancialAnalytics />
+          <FinancialAnalytics2 />
           <FinancialMetrics />
         </div>
 

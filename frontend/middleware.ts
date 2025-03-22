@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "./app/lib/session";
+import { decrypt,SessionPayload } from "./app/lib/session";
+
 
 const protectedRoutes = ["/"];
 const publicRoutes = ["/login"];
@@ -13,7 +14,7 @@ export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(path);
 
     const cookie = (await cookies()).get("session")?.value;
-    const session = await decrypt(cookie);
+    const session : SessionPayload | any = await decrypt(cookie); // watch the type
 
     console.log("Session:", session); // Debugging session content
 

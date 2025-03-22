@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 const secretKey = process.env.SESSION_SECRET_KEY;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-type SessionPayload = {
+export type SessionPayload = {
     userId: string;
     expiresAt: number; // Store as a timestamp (milliseconds)
 };
