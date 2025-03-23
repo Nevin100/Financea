@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import FinMetricCard from "./FinMetricCard";
+import { Archivo } from 'next/font/google';
+
+// Import Archivo font from Google Fonts
+const archivo = Archivo({
+    subsets: ['latin'],
+});
+
 
 const FinancialMetrics2 = () => {
     const [view, setView] = useState("Monthly");
@@ -40,12 +47,12 @@ const FinancialMetrics2 = () => {
             <Divider />
 
 
-            <FinMetricCard
-                title="Total Profit"
+            <FinMetricCardExtra
+
+                title="Outstanding Invoices"
                 amount={500}
-                incDecPercentage={27}
-                isIncreased={true}
-                text="from last month"
+                text="Across 3 invoices"
+
             />
         </div>
     );
@@ -54,11 +61,45 @@ const FinancialMetrics2 = () => {
 export default FinancialMetrics2;
 
 
-
+// Divider Component
 export const Divider = () => {
     return (
         <div className="border-t border-gray-300 my-2"></div>
     )
+}
+
+
+
+type FinMetricCardExtraProps = {
+    title: string;
+    amount: number;
+    text: string;
+}
+
+
+
+export const FinMetricCardExtra = ({ title, amount, text }: FinMetricCardExtraProps) => {
+    return (
+        <div
+            className={`${archivo.className} h-[107px] flex justify-between  rounded-lg`}
+        >
+            {/* Left Section - Title and Amount */}
+            <div className="flex flex-col justify-between items-start">
+                {/* Title */}
+                <p className="text-[17px] opacity-60 font-[400]">{title}</p>
+
+                {/* Amount */}
+                <p className="text-[40px] font-[700]">${amount}</p>
+            </div>
+
+            {/* Right Section - Percentage Change and Additional Text */}
+            <div className="flex flex-col justify-center">
+
+
+                {/* Additional Descriptive Text */}
+                <p className="opacity-60 font-[400] text-right">{text}</p>
+            </div>
+        </div>)
 }
 
 
