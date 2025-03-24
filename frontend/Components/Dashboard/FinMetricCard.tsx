@@ -30,7 +30,7 @@ const FinMetricCard = ({ title, amount, incDecPercentage, isIncreased, text }: P
             </div>
 
             {/* Right Section - Percentage Change and Additional Text */}
-            <div className="flex flex-col justify-between items-end">
+            <div className="flex flex-col justify-center items-end">
                 {/* Percentage Change Box */}
                 <div
                     className={`w-[71px] h-[30px] flex justify-center items-center gap-1 rounded-md px-2 

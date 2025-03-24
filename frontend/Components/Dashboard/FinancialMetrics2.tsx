@@ -14,7 +14,7 @@ const FinancialMetrics2 = () => {
     const [view, setView] = useState("Monthly");
 
     return (
-        <div className="bg-white px-[31px] py-[26px] rounded-[16px] shadow-md w-full h-[440px] flex flex-col">
+        <div className="bg-white px-[31px] py-[26px] rounded-[16px] border border-[#e8e8e8]   w-full h-[440px] flex flex-col">
             <FinMetricCard
                 title="Total Revenue"
                 amount={1200}

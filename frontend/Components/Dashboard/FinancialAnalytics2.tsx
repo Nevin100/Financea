@@ -1,7 +1,14 @@
 "use client"
 
 import React, { PureComponent } from 'react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { Archivo } from 'next/font/google';
+
+// Import Archivo font from Google Fonts
+const archivo = Archivo({
+    subsets: ['latin'],
+});
+
 
 type chartData = {
     month: string;
@@ -12,7 +19,7 @@ type chartData = {
 const data: chartData[] = [
     { month: 'Jan', revenue: 4000, expense: 2400 },
     { month: 'Feb', revenue: 3000, expense: 1398 },
-    { month: 'March', revenue: 2000, expense: 9800 },
+    { month: 'March', revenue: 5000, expense: 2000 },
     { month: 'April', revenue: 2780, expense: 3908 },
     { month: 'May', revenue: 1890, expense: 4800 },
     { month: 'June', revenue: 2390, expense: 3800 },
@@ -22,11 +29,11 @@ const data: chartData[] = [
 export default class Example extends PureComponent {
     render() {
         return (
-            <div className="bg-white p-6 m-4 mt-[-0.15rem] rounded-[16px] shadow-md md:h-[440px] flex flex-col justify-between">
-               
+            <div className="bg-white py-6 px-[15px]  mt-[-0.15rem] rounded-[16px] border border-[#e8e8e8]  md:h-[440px] flex flex-col justify-between">
+
 
                 {/* Chart Section */}
-                <div className="flex-grow flex items-center">
+                <div className={`${archivo.className} flex-grow flex items-center text-[14px]`}>
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart
                             width={500}
@@ -35,21 +42,50 @@ export default class Example extends PureComponent {
                             margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
                         >
                             <defs>
-                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                                {/* Gradient for Revenue */}
+                                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#0052CC" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#0052CC" stopOpacity={0} />
                                 </linearGradient>
-                                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+
+                                {/* Gradient for Expense */}
+                                <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#172B4D" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#172B4D" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
 
-                            <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                            <YAxis axisLine={false} tickLine={false} />
+                            <XAxis
+                                dataKey="month"
+                                axisLine={false}
+                                tickLine={false}
+                                padding={{ left: 30 }}
+
+                            />
+                            <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                tickCount={8}
+                            // padding={{ bottom: 20 }}
+                            />
+
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                vertical={false}
+                                stroke='#e8e8e8'
+                            />
+
+
                             <Tooltip />
-                            <Area type="monotone" dataKey="revenue" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-                            <Area type="monotone" dataKey="expense" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+
+
+                            {/* Revenue Area */}
+                            <Area type="monotone" dataKey="revenue" stroke="#0052CC" fillOpacity={1} fill="url(#colorRevenue)" />
+
+                            {/* Expense Area */}
+                            <Area type="monotone" dataKey="expense" stroke="#172B4D" fillOpacity={1} fill="url(#colorExpense)" />
+
+
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
