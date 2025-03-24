@@ -40,7 +40,7 @@ const PaymentRequests = () => {
           className="border p-2 rounded-md w-1/3 text-gray-700"
         />
         <div className="flex space-x-2">
-          <button className="bg-gray-200 px-4 py-2 rounded-lg text-black">Take Actions ▼</button>
+        
           <select
             className="border px-4 py-2 rounded-lg text-black"
             value={selectedStatus}
