@@ -28,52 +28,21 @@ const invoices = [
   { 
     name: "Razib Rahman", 
     email: "razib.rahman@gmail.com", 
-    invoiceNo: "#000001", 
-    description: "Branded Logo design", 
+    invoiceNo: "#000002", 
+    description: "Graphic Design", 
     status: "Paid", 
-    amount: "$120", 
-    date: "14.03.2025", 
-    dueDate: "14.04.2025" 
-  },
-  { 
+    amount: "$220", 
+    date: "15.03.2025", 
+    dueDate: "15.04.2025" 
+  },{ 
     name: "Razib Rahman", 
     email: "razib.rahman@gmail.com", 
-    invoiceNo: "#000001", 
-    description: "Branded Logo design", 
+    invoiceNo: "#000002", 
+    description: "Graphic Design", 
     status: "Paid", 
-    amount: "$120", 
-    date: "14.03.2025", 
-    dueDate: "14.04.2025" 
-  },
-  { 
-    name: "Razib Rahman", 
-    email: "razib.rahman@gmail.com", 
-    invoiceNo: "#000001", 
-    description: "Branded Logo design", 
-    status: "Paid", 
-    amount: "$120", 
-    date: "14.03.2025", 
-    dueDate: "14.04.2025" 
-  },
-  { 
-    name: "Razib Rahman", 
-    email: "razib.rahman@gmail.com", 
-    invoiceNo: "#000001", 
-    description: "Branded Logo design", 
-    status: "Paid", 
-    amount: "$120", 
-    date: "14.03.2025", 
-    dueDate: "14.04.2025" 
-  },
-  { 
-    name: "Razib Rahman", 
-    email: "razib.rahman@gmail.com", 
-    invoiceNo: "#000001", 
-    description: "Branded Logo design", 
-    status: "Paid", 
-    amount: "$120", 
-    date: "14.03.2025", 
-    dueDate: "14.04.2025" 
+    amount: "$220", 
+    date: "15.03.2025", 
+    dueDate: "15.04.2025" 
   }
 ];
 
@@ -81,15 +50,15 @@ const InvoiceContent = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md mt-6 font-['Archivo']">
+    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md mt-6 font-['Archivo']">
       
       {/* Buttons Section */}
-      <div className="flex justify-end mb-4 gap-3 sm:gap-4">
+      <div className="flex flex-wrap justify-end gap-3 sm:gap-4 mb-4">
         <button className="bg-[#6F38C9] text-white px-4 py-2 rounded-lg text-md font-semibold">
           + Create Invoice
         </button>
         <button className="bg-black text-white px-4 py-2 rounded-lg text-md font-semibold">
-           Add Expense
+          Add Expense
         </button>
       </div>
 
@@ -133,6 +102,7 @@ const InvoiceContent = () => {
 
       {/* Table / Card View */}
       <div className="w-full overflow-x-auto">
+        {/* Desktop Table */}
         <table className="w-full border-collapse hidden sm:table">
           <thead>
             <tr className="border-b text-gray-500 font-semibold text-md">
@@ -167,10 +137,10 @@ const InvoiceContent = () => {
           </tbody>
         </table>
 
-        {/* Responsive Card Layout for Mobile */}
-        <div className="sm:hidden flex flex-col gap-4">
+        {/* Mobile Card Layout */}
+        <div className="block sm:hidden">
           {invoices.map((invoice, index) => (
-            <div key={index} className="border p-4 rounded-lg shadow-md">
+            <div key={index} className="border p-4 rounded-lg shadow-md mb-3">
               <div className="flex justify-between">
                 <div>
                   <p className="font-semibold">{invoice.name}</p>
@@ -194,4 +164,3 @@ const InvoiceContent = () => {
 };
 
 export default InvoiceContent;
-
