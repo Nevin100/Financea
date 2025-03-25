@@ -85,11 +85,11 @@ const InvoiceContent = () => {
       
       {/* Buttons Section */}
       <div className="flex justify-end mb-4 gap-3 sm:gap-4">
-        <button className="bg-[#6F38C9] text-white px-5 py-3 rounded-lg text-md font-semibold">
+        <button className="bg-[#6F38C9] text-white px-4 py-2 rounded-lg text-md font-semibold">
           + Create Invoice
         </button>
-        <button className="bg-black text-white px-5 py-3 rounded-lg text-md font-semibold">
-          + Add Expense
+        <button className="bg-black text-white px-4 py-2 rounded-lg text-md font-semibold">
+           Add Expense
         </button>
       </div>
 
