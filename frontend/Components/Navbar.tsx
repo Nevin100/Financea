@@ -30,3 +30,12 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
 
 export default Navbar
 
+{/* <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+            <span className="text-gray-700 font-semibold">R</span>
+          </div>
+          <div className="text-gray-800">
+            <h3 className="text-sm font-medium">Riya Paul</h3>
+            <p className="text-xs text-gray-500">riya.paul@gmail.com</p>
+          </div>
+        </div> */}
