@@ -29,7 +29,7 @@ const data: chartData[] = [
 export default class Example extends PureComponent {
     render() {
         return (
-            <div className="bg-white py-6 px-[15px]  mt-[-0.15rem] rounded-[16px] border border-[#e8e8e8]  md:h-[440px] flex flex-col justify-between">
+            <div className="bg-white py-6 px-[15px]  mt-[-0.15rem] rounded-[16px] border border-[#e8e8e8] h-[410px] md:h-[440px] flex flex-col justify-between">
 
 
                 {/* Chart Section */}
