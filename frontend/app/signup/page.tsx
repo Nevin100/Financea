@@ -5,6 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image"
+import "../globals.css";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +32,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex justify-center shadow-white items-center md:mt-[3rem]">
+    <div className="flex justify-center shadow-white items-center md:mt-[3rem] font-['Archivo']">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative"> 
         <button className="absolute top-5 right-4">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

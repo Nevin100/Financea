@@ -1,9 +1,10 @@
 import React from 'react'
 import LoginForm from './LoginForm'
+import "../globals.css";
 
 const Login = () => {
   return (
-    <div className=' flex justify-center items-center'>
+    <div className="font-['Archivo'] flex justify-center items-center">
         <LoginForm/>
     </div>
   )
