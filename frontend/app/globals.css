@@ -7,6 +7,19 @@ body{
   font-family: 'Archivo', sans-serif;
 }
 
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg) translateY(-16px);
+  }
+  100% {
+    transform: rotate(360deg) translateY(-16px);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 1.5s linear infinite;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
