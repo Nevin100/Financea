@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { FaSearch, FaDownload } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
@@ -55,7 +56,9 @@ const InvoiceContent = () => {
       {/* Buttons Section */}
       <div className="flex flex-wrap justify-end gap-3 sm:gap-4 mb-4">
         <button className="bg-[#6F38C9] text-white px-4 py-2 rounded-lg text-md font-semibold">
+          <Link href={"/invoices/create-invoice"}>
           + Create Invoice
+          </Link>
         </button>
         <button className="bg-black text-white px-4 py-2 rounded-lg text-md font-semibold">
           Add Expense
