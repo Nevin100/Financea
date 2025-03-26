@@ -1,4 +1,3 @@
-import Layout from "@/Components/Dashboard/Layout";
 import PaymentRequests from "@/Components/Dashboard/PayementRequests";
 import RecentExpenses from "@/Components/Dashboard/RecentExpenses";
 import FinancialAnalytics2 from "@/Components/Dashboard/FinancialAnalytics2";
@@ -21,7 +20,7 @@ const frquencyValues = {
 
 const Dashboard = () => {
   return (
-    <Layout>
+    <div>
       {/* ✅ Financial Analytics Header */}
       <div className={`${archivo.className} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4`}>
         <h1 className="text-[24px] sm:text-[28px] text-gray-800">Financial Analytics</h1>
@@ -74,7 +73,7 @@ const Dashboard = () => {
           <ExpensesChart />
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 
