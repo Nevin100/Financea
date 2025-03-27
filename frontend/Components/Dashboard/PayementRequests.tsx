@@ -29,22 +29,22 @@ const PaymentRequests = () => {
       {/* Table Header */}
       <div className="flex justify-between pb-2 border-b text-gray-500 text-sm font-semibold">
         <span>Key Detail</span>
-        <span>Date</span>
+        <span className="ml-[9rem] w-24">Date</span>
         <span>Status</span>
       </div>
 
       {/* Payment List */}
       <div className="w-full">
         {payments.map((payment, index) => (
-          <div key={index} className="flex justify-between items-center border-b py-3 last:border-none">
+          <div key={index} className="flex justify-between items-center border-b py-3 last:border-none md:gap-0 gap-3">
             {/* Amount & Email */}
             <div>
-              <p className="text-xl font-bold">{payment.amount}</p>
+              <p className="text-sm font-bold">{payment.amount}</p>
               <p className="text-gray-500 text-sm">{payment.email}</p>
             </div>
 
             {/* Due Date */}
-            <p className="text-gray-600 text-sm">{payment.dueDate}</p>
+            <p className="text-gray-600 text-sm text-center w-24">{payment.dueDate}</p>
 
             {/* Status Badge */}
             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${statusColors[payment.status]}`}>
