@@ -1,5 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import SkeletonLoader from "@/Components/SkeltonLoader"; 
+
 const payments = [
   { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
   { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
@@ -16,8 +19,14 @@ const statusColors: Record<string, string> = {
 };
 
 const PaymentRequests = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 2000); // Simulate API delay (2 sec)
+  }, []);
+
   return (
-    <div className="bg-white p-5 rounded-xl shadow-md mt-6">
+    <div className="bg-white p-5 rounded-xl shadow-md mt-6 md:h-[34.3rem]">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-black">Payment Requests</h2>
@@ -29,24 +38,19 @@ const PaymentRequests = () => {
       {/* Table Header */}
       <div className="flex justify-between pb-2 border-b text-gray-500 text-sm font-semibold">
         <span>Key Detail</span>
-        <span className="ml-[9rem] w-24">Date</span>
+        <span className="w-24 ml-[9rem]">Date</span>
         <span>Status</span>
       </div>
 
       {/* Payment List */}
       <div className="w-full">
-        {payments.map((payment, index) => (
-          <div key={index} className="flex justify-between items-center border-b py-3 last:border-none md:gap-0 gap-3">
-            {/* Amount & Email */}
+        {loading ? <SkeletonLoader rows={6} /> : payments.map((payment, index) => (
+          <div key={index} className="flex justify-between items-center border-b py-4 last:border-none md:gap-0 gap-3">
             <div>
               <p className="text-sm font-bold">{payment.amount}</p>
               <p className="text-gray-500 text-sm">{payment.email}</p>
             </div>
-
-            {/* Due Date */}
             <p className="text-gray-600 text-sm text-center w-24">{payment.dueDate}</p>
-
-            {/* Status Badge */}
             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${statusColors[payment.status]}`}>
               {payment.status}
             </span>
