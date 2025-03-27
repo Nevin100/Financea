@@ -118,7 +118,7 @@ const InvoiceCreatorPage = () => {
       <div className="w-full lg:w-1/3 p-6 hidden lg:block">
         <h2 className="text-lg font-semibold text-center lg:text-left">Preview</h2>
         <div className="bg-white p-4 rounded-lg shadow-md mt-4 h-[300px] lg:h-[500px] flex items-center justify-center">
-          Invoice Preview Here
+          Invoice Preview Here :
         </div>
       </div>
     </div>
