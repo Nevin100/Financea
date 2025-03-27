@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${archivo.variable} antialiased`}>
-        <ClientLayout>{children}</ClientLayout> {/* ✅ Wrap inside ClientLayout */}
+        <ClientLayout>{children}</ClientLayout> 
       </body>
     </html>
   );
