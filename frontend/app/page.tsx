@@ -54,23 +54,22 @@ const Dashboard = () => {
         <h2 className="md:text-3xl text-2xl text-gray-800 font-medium">Your Overview</h2>
       </div>
 
-      {/* ✅ Payment Requests & Recent Expenses (2x1 Grid) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="flex flex-col w-full">
+      {/* ✅ Payment Requests, Recent Expenses, New Customers & Expenses Chart */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        <div className="flex flex-col w-full lg:col-span-1">
           <PaymentRequests />
         </div>
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full lg:col-span-1">
           <RecentExpenses />
         </div>
-      </div>
-
-      {/* ✅ New Customers & Expenses Chart (Side by Side) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="flex flex-col w-full">
-          <NewCustomer />
-        </div>
-        <div className="flex flex-col w-full">
-          <ExpensesChart />
+        {/* Flex-col setup for the Dashboard */}
+        <div className="flex flex-col w-full gap-4 md:mt-6">
+          <div className="flex flex-col w-full lg:col-span-1">
+            <NewCustomer />
+          </div>
+          <div className="flex flex-col w-full lg:col-span-1">
+            <ExpensesChart />
+          </div>
         </div>
       </div>
     </div>
