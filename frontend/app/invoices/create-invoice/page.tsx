@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -9,11 +10,9 @@ import { Checkbox } from "@/Components/ui/checkbox";
 import SkeletonLoader from "@/Components/SkeltonLoader";
 import { Invoice } from "@/lib/types";
 
-
-
 const InvoiceCreatorPage = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   const [invoice, setInvoice] = useState<Invoice>({
     invoiceNumber: "00001",
