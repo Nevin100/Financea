@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Textarea } from "@/Components/ui/textarea";
-import { Checkbox } from "@/Components/ui/checkbox"; 
+import { Checkbox } from "@/Components/ui/checkbox";
 
 const InvoiceCreatorPage = () => {
   const router = useRouter();
@@ -19,8 +19,8 @@ const InvoiceCreatorPage = () => {
       email: "info@studioden.com",
       phone: "+91 6666888999",
     },
-    isRecurring: false, 
-    recurringPeriod: "Monthly", 
+    isRecurring: false,
+    recurringPeriod: "Monthly",
     items: [
       { name: "Logo design", qty: 20, rate: 30, total: 600 },
       { name: "Brand Identity", qty: 10, rate: 50, total: 500 },
@@ -50,11 +50,11 @@ const InvoiceCreatorPage = () => {
           onClick={() => router.push("/invoices")}
           className="absolute top-4 left-4 text-gray-600 hover:text-red-500 transition"
         >
-          ✖ 
+          ✖
         </button>
 
         <h2 className="text-2xl md:text-3xl font-semibold text-center md:mb-8 pb-1">Create Invoice</h2>
-        <hr/>
+        <hr />
         <div className="mt-6 flex flex-col lg:flex-row md:gap-16">
           <div className="w-full lg:w-1/3">
             <label>Invoice Number:</label>
@@ -91,7 +91,7 @@ const InvoiceCreatorPage = () => {
         <div className="mt-4 flex items-center gap-2">
           <Checkbox
             checked={invoice.isRecurring}
-            onCheckedChange={(checked) => setInvoice({ ...invoice, isRecurring: checked })}
+            onCheckedChange={(checked) => setInvoice({ ...invoice, isRecurring: Boolean(checked) })}
           />
           <label className="text-[#121212] text-md">Make this a recurring invoice</label>
         </div>

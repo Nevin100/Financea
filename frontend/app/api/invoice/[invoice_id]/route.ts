@@ -10,10 +10,11 @@ export async function GET(
 
     const invoice_id = (await params).invoice_id   //search in the database for 
 
-    
+
 
     console.log(process.env.SECRET_KEY);
-    
+    console.log(invoice_id);
+
 
 
 
