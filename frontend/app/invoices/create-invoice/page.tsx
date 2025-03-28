@@ -5,11 +5,17 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Textarea } from "@/Components/ui/textarea";
-import { Checkbox } from "@/Components/ui/checkbox"; 
+import { Checkbox } from "@/Components/ui/checkbox";
+import SkeletonLoader from "@/Components/SkeltonLoader";
+import { Invoice } from "@/lib/types";
+
+
 
 const InvoiceCreatorPage = () => {
   const router = useRouter();
-  const [invoice, setInvoice] = useState({
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
+  const [invoice, setInvoice] = useState<Invoice>({
     invoiceNumber: "00001",
     issueDate: "2025-04-12",
     dueDate: "",
@@ -89,11 +95,15 @@ const InvoiceCreatorPage = () => {
 
         {/* ✅ Recurring Invoice Checkbox */}
         <div className="mt-4 flex items-center gap-2">
-          <Checkbox
-            checked={invoice.isRecurring}
-            onCheckedChange={(checked) => setInvoice({ ...invoice, isRecurring: checked })}
-          />
-          <label className="text-[#121212] text-md">Make this a recurring invoice</label>
+          {isLoading ? <SkeletonLoader rows={1} className="w-40" /> : (
+            <>
+              <Checkbox
+                checked={invoice.isRecurring}
+                onCheckedChange={(checked) => setInvoice({ ...invoice, isRecurring: Boolean(checked) })}
+              />
+              <label className="text-[#121212] text-md">Make this a recurring invoice</label>
+            </>
+          )}
         </div>
 
         {/* ✅ Recurring Period Dropdown (Only if checkbox is checked) */}
