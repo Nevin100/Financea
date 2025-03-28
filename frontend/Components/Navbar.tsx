@@ -3,6 +3,7 @@
 import { FaBell } from "react-icons/fa"
 import { IoAddCircle } from "react-icons/io5"
 import { FiMenu } from "react-icons/fi"
+import Link from "next/link"
 
 const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   return (
@@ -21,8 +22,9 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           <FaBell className="text-gray-600 text-lg cursor-pointer" />
           <span className="absolute top-[-2px] right-[-3px] w-2.5 h-2.5 bg-red-500 rounded-full"></span>
         </div>
-
-        <IoAddCircle className="text-[#5E84EC] cursor-pointer" size={26} />
+        <Link href={"/invoices/create-invoice"}>
+          <IoAddCircle className="text-[#6F38C9] cursor-pointer" size={36} />
+        </Link>
       </div>
     </div>
   )
