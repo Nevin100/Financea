@@ -1,5 +1,5 @@
 "use client"
-import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts"
+import { RadialBarChart, RadialBar, ResponsiveContainer, Tooltip } from "recharts"
 
 const data = [
   { name: "Travel", value: 1200, fill: "#F9D923" },
@@ -20,6 +20,7 @@ const ExpensesChart = () => {
         <div className="w-1/2 gap-4 h-40">
           <ResponsiveContainer width="100%" height="100%">
             <RadialBarChart innerRadius="50%" outerRadius="100%" data={data} startAngle={180} endAngle={0}>
+              <Tooltip/>
               <RadialBar minAngle={15} background clockWise dataKey="value" />
             </RadialBarChart>
           </ResponsiveContainer>
