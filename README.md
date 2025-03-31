@@ -31,7 +31,7 @@ npm run dev
 
 ---
 
-## 📂 Folder Structure  
+## 📂 Folder Structure 😎😎
 ```
 frontend/
 │── app/
@@ -53,4 +53,4 @@ frontend/
 │── next.config.js            
 │── package.json              
 ```
- 😎
+
