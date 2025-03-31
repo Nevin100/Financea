@@ -8,7 +8,7 @@
 ---
 
 ## 🎨 Design  
-🔗 **Figma Link:** [Financea Team Design](https://www.figma.com/design/KRWtfhMioOGzQsHoC4gjjo/Financea-team?node-id=0-1)  
+🔗 **Figma Link:** : https://www.figma.com/design/KRWtfhMioOGzQsHoC4gjjo/Financea-team?node-id=0-1
 
 ---
 
