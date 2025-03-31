@@ -47,8 +47,7 @@ frontend/
 │   │   ├── authSlice.ts      # Redux Slice for Authentication
 │── utils/
 │   ├── validations.ts        # Zod Validation Schemas
-│── middlewares/
-│   ├── middlewares.ts        # Middleware for authentication
+│── middlewares.ts            # Middleware for authentication
 │── .env.local                # MongoDB & JWT Secret
 │── next.config.js            
 │── package.json              
