@@ -1,11 +1,11 @@
----
+
 
 # 🚀 Financea Internship Project  
 
 ## 📌 Overview  
-**Financea** is a scalable platform designed for enterprises to efficiently manage **accounting and expense tracking**.  
+**Financea** is a scalable platform designed for enterprises to efficiently manage **accounting and expense tracking**
 
----
+
 
 ## 🎨 Design  
 🔗 **Figma Link:** : https://www.figma.com/design/KRWtfhMioOGzQsHoC4gjjo/Financea-team?node-id=0-1
