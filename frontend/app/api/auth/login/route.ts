@@ -10,6 +10,11 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    
+    // Empty body Fields :
+    if (!body) {
+      return NextResponse.json({ error: "Invalid Fields" }, { status: 400 });
+    }
 
     // Validate input using Zod
     const parsedData = loginSchema.safeParse(body);
