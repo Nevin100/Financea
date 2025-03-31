@@ -39,12 +39,14 @@ export async function POST(req: Request) {
 
     await newUser.save();
 
+    //Token Generation : 
     const token = jwt.sign(
       { userId: newUser._id, email: newUser.email },
       JWT_SECRET,
       { expiresIn: "1d" } 
     );
     
+    //Response : 
     return NextResponse.json({
       message: "User registered successfully",
       token,

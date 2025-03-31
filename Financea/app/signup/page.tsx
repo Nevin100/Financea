@@ -1,39 +1,68 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import Image from "next/image"
+import Image from "next/image";
 import "../globals.css";
+import { useDispatch } from "react-redux";
+import { login } from "@/lib/redux/Features/authSlice"; 
 
-export default function LoginPage() {
+export default function SignupPage() {
+  const dispatch = useDispatch(); 
+
   const [showPassword, setShowPassword] = useState(false);
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setEmailError("");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.includes("@")) {
       setEmailError("Invalid Email");
       return;
     }
-    console.log("Login with:", { email, password });
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: fullName, email: email, password: password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Signup failed");
+
+      // ✅ Token is stored only in Redux, NOT in cookies
+      dispatch(login(data.token));
+
+      // ✅ Redirect after successful signup
+      window.location.href = "/";
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex justify-center shadow-white items-center md:mt-[3rem] font-['Archivo']">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative"> 
+    <div className="flex justify-center items-center md:mt-[3rem] font-['Archivo']">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <button className="absolute top-5 right-4">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4L4 12" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -41,12 +70,9 @@ export default function LoginPage() {
           </svg>
         </button>
 
-        
         <div className="flex justify-center mb-6 py-2">
           <Image src="/FinanceaLogo.png" alt="Financea Logo" width={170} height={60} />
         </div>
-          
-        
 
         <h2 className="text-2xl font-semibold mb-1">Sign up</h2>
         <p className="text-lg text-gray-600 mb-4">
@@ -56,6 +82,8 @@ export default function LoginPage() {
           </Link>
         </p>
 
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-5">
             <label htmlFor="full-name" className="block text-xl mb-1">
@@ -64,8 +92,11 @@ export default function LoginPage() {
             <input
               type="text"
               id="full-name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               className="w-full p-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#5C2FA8]"
               placeholder="John Doe"
+              required
             />
           </div>
 
@@ -82,6 +113,7 @@ export default function LoginPage() {
                 emailError ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="example@gmail.com"
+              required
             />
             {emailError && <p className="text-red-500 text-xs mt-1">{emailError}</p>}
           </div>
@@ -98,6 +130,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#5C2FA8] pr-10"
                 placeholder="••••••••"
+                required
               />
               <button
                 type="button"
@@ -116,8 +149,9 @@ export default function LoginPage() {
           <button
             type="submit"
             className="w-full bg-[#5C2FA8] text-xl font-semibold text-white py-4 rounded-md hover:bg-purple-700 transition-colors"
+            disabled={loading}
           >
-            Sign In
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
       </div>

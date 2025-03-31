@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "@/lib/models/User.model";
 import { loginSchema } from "@/utils/validations";
-import connectDB from "@/lib/db"
+import connectDB from "@/lib/db";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
