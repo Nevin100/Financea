@@ -11,7 +11,7 @@ Instant Paid is a scalable platform designed for enterprises to manage accountin
 <hr/>
 
 ## ⚙️ Installation & Setup  
-```sh
+sh
 # 📥 Clone the repository  
 git clone https://github.com/your-repo/financea.git  
 cd financea  
@@ -25,5 +25,26 @@ cp .env.example .env
 
 # ▶️ Start the development server  
 npm run dev  
+
+## Folder Structure /: 
+frontend/
+│── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   │   ├── signup/
+│   │   │   │   ├── route.ts      # Signup API
+│   │   │   ├── login/
+│   │   │   │   ├── route.ts      # Login API
+│── lib/
+│   ├── redux/
+│   │   ├── store.ts          # Redux Store Setup
+│   │   ├── authSlice.ts      # Redux Slice for Authentication
+│── utils/
+│   ├── validations.ts        # Zod Validation Schemas
+│── .env.local                # MongoDB & JWT Secret
+│── Middlewares/
+    │──middlewares.ts         # Middleware for authentication
+│── next.config.js            
+│── package.json              
 
 
