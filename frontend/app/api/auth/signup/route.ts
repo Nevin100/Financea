@@ -2,12 +2,22 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import User from "@/lib/models/User.model";
 import { signupSchema } from "@/utils/validations";
+import jwt from "jsonwebtoken";
+import connectDB from "@/lib/db";
+
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 //SignUp API : 
 export async function POST(req: Request) {
   try {
+    await connectDB();
     const body = await req.json();
 
+     // Empty body Fields :
+    if (!body) {
+      return NextResponse.json({ error: "Invalid Fields" }, { status: 400 });
+    }
+    
     // Validate input using Zod
     const parsedData = signupSchema.safeParse(body);
     if (!parsedData.success) {
@@ -29,7 +39,21 @@ export async function POST(req: Request) {
 
     await newUser.save();
 
-    return NextResponse.json({ message: "User registered successfully" }, { status: 201 });
+    const token = jwt.sign(
+      { userId: newUser._id, email: newUser.email },
+      JWT_SECRET,
+      { expiresIn: "1d" } 
+    );
+    
+    return NextResponse.json({
+      message: "User registered successfully",
+      token,
+      user: {
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+      }
+    }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Internal Server issue" + error }, { status: 500 });
   }

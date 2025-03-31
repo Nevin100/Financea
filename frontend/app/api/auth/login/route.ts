@@ -3,14 +3,16 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "@/lib/models/User.model";
 import { loginSchema } from "@/utils/validations";
+import connectDB from "@/lib/db"
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 //Login API :
 export async function POST(req: Request) {
   try {
+    await connectDB();
     const body = await req.json();
-    
+
     // Empty body Fields :
     if (!body) {
       return NextResponse.json({ error: "Invalid Fields" }, { status: 400 });
@@ -42,6 +44,7 @@ export async function POST(req: Request) {
       token,
       user: { username: user.username, email: user.email },
     });
+    
   } catch (error) {
     return NextResponse.json({ error: "Internal Server Error" + error }, { status: 500 });
   }
