@@ -21,7 +21,7 @@ const ExpensesChart = () => {
           <ResponsiveContainer width="100%" height="100%">
             <RadialBarChart innerRadius="50%" outerRadius="100%" data={data} startAngle={180} endAngle={0}>
               <Tooltip/>
-              <RadialBar minAngle={15} background clockWise dataKey="value" />
+              <RadialBar background dataKey="value" />
             </RadialBarChart>
           </ResponsiveContainer>
         </div>

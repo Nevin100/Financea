@@ -44,7 +44,7 @@ const InvoiceCreatorPage = () => {
   return (
     <div className="flex flex-col lg:flex-row h-screen p-6 bg-gray-100">
       {/* Left: Invoice Form */}
-      <div className="w-full lg:w-2/3 bg-white p-6 rounded-lg shadow-md h-auto lg:h-[74rem] relative md:gap-4">
+      <div className="w-full lg:w-2/3 bg-white p-6 rounded-lg shadow-md h-auto lg:h-[82rem] relative md:gap-4">
         {/* Close Button */}
         <button
           onClick={() => router.push("/invoices")}
