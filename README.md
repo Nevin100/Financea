@@ -50,6 +50,7 @@ frontend/
 │── middlewares.ts            # Middleware for authentication
 │── .env.local                # MongoDB & JWT Secret
 │── next.config.js            
-│── package.json              
+│── package.json
+│── packagelock.json              
 ```
 
