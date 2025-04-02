@@ -7,6 +7,7 @@ import "./globals.css";
 import ClientLayout from "./client-layout"; 
 import AuthGuard from "@/Components/AuthGuard";
 import { useEffect } from "react";
+import Head from "next/head";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -19,17 +20,23 @@ export default function RootLayout({
   useEffect(() => {
     document.title = "Instant Paid"
   }, []);
-  
+
   return (
     <Provider store={store}>
-
-    <html lang="en">
-      <body className={`${archivo.variable} antialiased`}>
+      <html lang="en">
+        <Head>
+          <meta charSet="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+          <link rel="icon" type="image/png" href="/favicon.png" />
+          <link rel="shortcut icon" href="/favicon.ico"/>
+        </Head>
+        <body className={`${archivo.variable} antialiased`}>
           <ClientLayout>
-          <AuthGuard>{children}</AuthGuard>
+            <AuthGuard>{children}</AuthGuard>
           </ClientLayout> 
-      </body>
-    </html>
+        </body>
+      </html>
     </Provider>
   );
 }
