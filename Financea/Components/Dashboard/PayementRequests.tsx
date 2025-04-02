@@ -1,8 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import SkeletonLoader from "@/Components/SkeltonLoader"; 
-
 const payments = [
   { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
   { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
@@ -19,11 +14,6 @@ const statusColors: Record<string, string> = {
 };
 
 const PaymentRequests = () => {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 2000); // Simulate API delay (2 sec)
-  }, []);
 
   return (
     <div className="bg-white p-5 rounded-xl shadow-md mt-6 md:h-[34.3rem]">
@@ -44,18 +34,22 @@ const PaymentRequests = () => {
 
       {/* Payment List */}
       <div className="w-full">
-        {loading ? <SkeletonLoader rows={6} /> : payments.map((payment, index) => (
-          <div key={index} className="flex justify-between items-center border-b py-4 last:border-none md:gap-0 gap-3">
-            <div>
-              <p className="text-sm font-bold">{payment.amount}</p>
-              <p className="text-gray-500 text-sm">{payment.email}</p>
+        {
+          payments.map((payment, index) => (
+            <div key={index} className="flex justify-between items-center border-b py-4 last:border-none md:gap-0 gap-3">
+              <div>
+                <p className="text-sm font-bold">{payment.amount}</p>
+                <p className="text-gray-500 text-sm">{payment.email}</p>
+              </div>
+              <p className="text-gray-600 text-sm text-center w-24">{payment.dueDate}</p>
+              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${statusColors[payment.status]}`}>
+                {payment.status}
+              </span>
             </div>
-            <p className="text-gray-600 text-sm text-center w-24">{payment.dueDate}</p>
-            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${statusColors[payment.status]}`}>
-              {payment.status}
-            </span>
-          </div>
-        ))}
+          ))
+
+
+        }
       </div>
     </div>
   );
