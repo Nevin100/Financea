@@ -3,7 +3,7 @@ import { Skeleton } from '../ui/skeleton'
 
 const PaymentRequestsLoading = () => {
     return (
-        <Skeleton className="bg-gray-300 p-5 rounded-lg shadow-md border border-gray-400 h-[300px] md:h-[500px]" />
+        <Skeleton className="bg-white p-5 rounded-xl shadow-md mt-6 md:h-[34.3rem] border-gray-200 h-[300px] " />
 
     )
 }

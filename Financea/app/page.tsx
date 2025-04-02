@@ -53,10 +53,10 @@ const Dashboard = () => {
       {/* ✅ Analytics & Metrics Section */}
       <div className="mt-[22px] grid grid-cols-1 lg:grid-cols-3 gap-[14px]">
         <div className="col-span-1 lg:col-span-2">
-          {isLoading ? <SkeletonLoader rows={3} /> : <FinancialAnalytics />}
+          <FinancialAnalytics />
         </div>
         <div>
-          {isLoading ? <SkeletonLoader rows={1} /> : <FinancialMetrics />}
+          <FinancialMetrics />
         </div>
       </div>
 
@@ -68,18 +68,18 @@ const Dashboard = () => {
       {/* ✅ Payment Requests, Recent Expenses, New Customers & Expenses Chart */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
         <div className="flex flex-col w-full lg:col-span-1">
-          {isLoading ? <SkeletonLoader rows={2} /> : <PaymentRequests />}
+          <PaymentRequests />
         </div>
         <div className="flex flex-col w-full lg:col-span-1">
-          {isLoading ? <SkeletonLoader rows={2} /> : <RecentExpenses />}
+          <RecentExpenses />
         </div>
         {/* Flex-col setup for the Dashboard */}
         <div className="flex flex-col w-full gap-4 md:mt-6">
           <div className="flex flex-col w-full lg:col-span-1">
-            {isLoading ? <SkeletonLoader rows={1} /> : <NewCustomer />}
+            <NewCustomer />
           </div>
           <div className="flex flex-col w-full lg:col-span-1">
-            {isLoading ? <SkeletonLoader rows={1} /> : <ExpensesChart />}
+            <ExpensesChart />
           </div>
         </div>
       </div>
