@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import PaymentRequests from "@/Components/Dashboard/PayementRequests";
 import RecentExpenses from "@/Components/Dashboard/RecentExpenses";
-import FinancialAnalytics2 from "@/Components/Dashboard/FinancialAnalytics2";
+import FinancialAnalytics2 from "@/Components/Dashboard/FinancialAnalytics";
 import NewCustomer from "@/Components/Dashboard/NewCustomer";
 import ExpensesChart from "@/Components/Dashboard/ExpensesChart";
-import FinancialMetrics2 from "@/Components/Dashboard/FinancialMetrics2";
+import FinancialMetrics2 from "@/Components/Dashboard/FinancialMetrics";
 import SkeletonLoader from "@/Components/SkeltonLoader";
 
 import { Select, SelectTrigger, SelectValue, SelectItem, SelectGroup, SelectContent, SelectLabel } from "@/Components/ui/select";
@@ -27,7 +27,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => setIsLoading(false), 2000); 
+    setTimeout(() => setIsLoading(false), 2000);
   }, []);
 
   return (
