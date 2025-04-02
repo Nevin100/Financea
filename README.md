@@ -33,7 +33,7 @@ npm run dev
 
 ## 📂 Folder Structure 😎😎
 ```
-frontend/
+Financea/
 │── app/
 │   ├── api/
 │   │   ├── auth/
@@ -41,6 +41,8 @@ frontend/
 │   │   │   │   ├── route.ts      # Signup API
 │   │   │   ├── login/
 │   │   │   │   ├── route.ts      # Login API
+│   │   │   ├── logout/
+│   │   │   │   ├── route.ts      # Logout API
 │── lib/
 │   ├── redux/
 │   │   ├── store.ts          # Redux Store Setup
