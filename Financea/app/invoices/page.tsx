@@ -55,6 +55,8 @@ const InvoicePage = () => {
       {/* Buttons Section */}
       <div className="flex flex-wrap justify-end gap-3 sm:gap-4 mb-4">
         <button className="bg-[#6F38C9] text-white px-4 py-2 rounded-lg text-md font-semibold">
+          
+          {/* Heading  */}
           <Link href={"/invoices/create-invoice"}>+ Create Invoice</Link>
         </button>
         <button className="bg-black text-white px-4 py-2 rounded-lg text-md font-semibold">Add Expense</button>
@@ -67,6 +69,7 @@ const InvoicePage = () => {
           <FaSearch className="absolute left-3 top-3 text-gray-400" />
         </div>
 
+        {/* Titles  */}
         <div className="flex flex-wrap items-center gap-2">
           <button className="border px-4 py-2 rounded-lg text-black flex items-center">Take Actions <IoIosArrowDown className="ml-2" /></button>
           <button className="border px-4 py-2 rounded-lg text-black flex items-center"><FaDownload className="mr-2" /> Export</button>

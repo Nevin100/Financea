@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
+//Loader :
 const Loading = ({ delay = 3000 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -15,6 +16,7 @@ const Loading = ({ delay = 3000 }) => {
 
   if (!loading) return null; // Loader remove after delay
 
+  //Main Function :
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="relative w-16 h-16 flex justify-center items-center">
