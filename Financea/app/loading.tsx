@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { Select, SelectTrigger, SelectValue, SelectItem, SelectGroup, SelectContent, SelectLabel } from "@/Components/ui/select";
 import { Archivo } from "next/font/google";
 import { Skeleton } from "@/Components/ui/skeleton";
@@ -17,11 +14,7 @@ const frequencyValues = {
 };
 
 const Loading = () => {
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 2000);
-  }, []);
 
   return (
     <div className="p-4 md:p-6">

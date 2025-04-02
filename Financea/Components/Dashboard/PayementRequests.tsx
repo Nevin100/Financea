@@ -1,11 +1,7 @@
-const payments = [
-  { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
-  { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
-  { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
-  { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
-  { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
-  { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
-];
+"use client";
+
+import { useState, useEffect } from "react";
+import PaymentRequestsLoading from "../loading_ui/PaymentRequestsLoading";
 
 const statusColors: Record<string, string> = {
   Paid: "bg-green-100 text-green-600",
@@ -14,6 +10,31 @@ const statusColors: Record<string, string> = {
 };
 
 const PaymentRequests = () => {
+  const [payments, setPayments] = useState<{ email: string; status: string; amount: string; dueDate: string; }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const response = await fetch("/api/payment_requests"); // Replace with actual API URL
+        if (!response.ok) {
+          throw new Error("Failed to fetch payments");
+        }
+        const data = await response.json();
+        setPayments(data);
+      } catch (error) {
+        setError((error as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPayments();
+  }, []);
+
+  // if (loading) return <PaymentRequestsLoading />;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <div className="bg-white p-5 rounded-xl shadow-md mt-6 md:h-[34.3rem]">
@@ -34,7 +55,7 @@ const PaymentRequests = () => {
 
       {/* Payment List */}
       <div className="w-full">
-        {
+        {payments.length > 0 ? (
           payments.map((payment, index) => (
             <div key={index} className="flex justify-between items-center border-b py-4 last:border-none md:gap-0 gap-3">
               <div>
@@ -42,14 +63,14 @@ const PaymentRequests = () => {
                 <p className="text-gray-500 text-sm">{payment.email}</p>
               </div>
               <p className="text-gray-600 text-sm text-center w-24">{payment.dueDate}</p>
-              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${statusColors[payment.status]}`}>
+              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${statusColors[payment.status] || "bg-gray-100 text-gray-600"}`}>
                 {payment.status}
               </span>
             </div>
           ))
-
-
-        }
+        ) : (
+          <p className="text-center text-gray-500">No payments found.</p>
+        )}
       </div>
     </div>
   );

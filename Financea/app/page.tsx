@@ -1,6 +1,7 @@
-"use client";
+// "use client";
 
-import { useState, useEffect, Suspense } from "react";
+// import { useState, useEffect, Suspense } from "react";
+import React, { Suspense } from "react";
 import PaymentRequests from "@/Components/Dashboard/PayementRequests";
 import RecentExpenses from "@/Components/Dashboard/RecentExpenses";
 import FinancialAnalytics from "@/Components/Dashboard/FinancialAnalytics";
@@ -28,12 +29,8 @@ const frquencyValues = {
   Yearly: "Yearly",
 };
 
-const Dashboard = () => {
-  // const [isLoading, setIsLoading] = useState(true);
+const Dashboard = async () => {
 
-  // useEffect(() => {
-  //   setTimeout(() => setIsLoading(false), 2000);
-  // }, []);
 
   return (
     <div>
