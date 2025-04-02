@@ -4,8 +4,9 @@ import { Provider } from "react-redux";
 import { store } from "@/lib/redux/store";
 import { Archivo } from "next/font/google";
 import "./globals.css";
-import ClientLayout from "./client-layout"; // ✅ Import client component
+import ClientLayout from "./client-layout"; 
 import AuthGuard from "@/Components/AuthGuard";
+import { useEffect } from "react";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -15,6 +16,10 @@ const archivo = Archivo({
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  useEffect(() => {
+    document.title = "Instant Paid"
+  }, []);
+  
   return (
     <Provider store={store}>
 
