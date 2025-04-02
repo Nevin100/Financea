@@ -30,7 +30,7 @@ const NewCustomer = () => {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data}>
               <XAxis dataKey="name" hide />
-              <Tooltip/>
+              <Tooltip />
               <Line type="monotone" dataKey="value" stroke="#4f46e5" strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
