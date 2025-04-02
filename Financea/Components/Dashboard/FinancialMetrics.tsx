@@ -11,7 +11,7 @@ const archivo = Archivo({
 });
 
 
-const FinancialMetrics2 = () => {
+const FinancialMetrics = () => {
     const [view, setView] = useState("Monthly");
 
     return (
@@ -59,7 +59,7 @@ const FinancialMetrics2 = () => {
     );
 };
 
-export default FinancialMetrics2;
+export default FinancialMetrics;
 
 
 // Divider Component

@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import PaymentRequests from "@/Components/Dashboard/PayementRequests";
 import RecentExpenses from "@/Components/Dashboard/RecentExpenses";
-import FinancialAnalytics2 from "@/Components/Dashboard/FinancialAnalytics";
+import FinancialAnalytics from "@/Components/Dashboard/FinancialAnalytics";
 import NewCustomer from "@/Components/Dashboard/NewCustomer";
 import ExpensesChart from "@/Components/Dashboard/ExpensesChart";
-import FinancialMetrics2 from "@/Components/Dashboard/FinancialMetrics";
+import FinancialMetrics from "@/Components/Dashboard/FinancialMetrics";
 import SkeletonLoader from "@/Components/SkeltonLoader";
 
 import { Select, SelectTrigger, SelectValue, SelectItem, SelectGroup, SelectContent, SelectLabel } from "@/Components/ui/select";
@@ -53,10 +53,10 @@ const Dashboard = () => {
       {/* ✅ Analytics & Metrics Section */}
       <div className="mt-[22px] grid grid-cols-1 lg:grid-cols-3 gap-[14px]">
         <div className="col-span-1 lg:col-span-2">
-          {isLoading ? <SkeletonLoader rows={3} /> : <FinancialAnalytics2 />}
+          {isLoading ? <SkeletonLoader rows={3} /> : <FinancialAnalytics />}
         </div>
         <div>
-          {isLoading ? <SkeletonLoader rows={1} /> : <FinancialMetrics2 />}
+          {isLoading ? <SkeletonLoader rows={1} /> : <FinancialMetrics />}
         </div>
       </div>
 
