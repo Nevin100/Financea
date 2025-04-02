@@ -4,10 +4,18 @@
 import React, { Suspense } from "react";
 import PaymentRequests from "@/Components/Dashboard/PayementRequests";
 import RecentExpenses from "@/Components/Dashboard/RecentExpenses";
+<<<<<<< HEAD
 import FinancialAnalytics from "@/Components/Dashboard/FinancialAnalytics";
 import NewCustomer from "@/Components/Dashboard/NewCustomer";
 import ExpensesChart from "@/Components/Dashboard/ExpensesChart";
 import FinancialMetrics from "@/Components/Dashboard/FinancialMetrics";
+=======
+import FinancialAnalytics2 from "@/Components/Dashboard/FinancialAnalytics2";
+import NewCustomer from "@/Components/Dashboard/NewCustomer";
+import ExpensesChart from "@/Components/Dashboard/ExpensesChart";
+import FinancialMetrics2 from "@/Components/Dashboard/FinancialMetrics2";
+import SkeletonLoader from "@/Components/SkeltonLoader";
+>>>>>>> parent of d58c09b (working on loading)
 
 import { Select, SelectTrigger, SelectValue, SelectItem, SelectGroup, SelectContent, SelectLabel } from "@/Components/ui/select";
 import { Archivo } from "next/font/google";
@@ -31,6 +39,12 @@ const frquencyValues = {
 
 const Dashboard = async () => {
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    setTimeout(() => setIsLoading(false), 2000); 
+  }, []);
+>>>>>>> parent of d58c09b (working on loading)
 
   return (
     <div>
