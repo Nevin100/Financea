@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,8 +8,6 @@ import FinancialAnalytics from "@/Components/Dashboard/FinancialAnalytics";
 import NewCustomer from "@/Components/Dashboard/NewCustomer";
 import ExpensesChart from "@/Components/Dashboard/ExpensesChart";
 import FinancialMetrics from "@/Components/Dashboard/FinancialMetrics";
-import SkeletonLoader from "@/Components/SkeltonLoader";
-
 import { Select, SelectTrigger, SelectValue, SelectItem, SelectGroup, SelectContent, SelectLabel } from "@/Components/ui/select";
 import { Archivo } from "next/font/google";
 

@@ -2,25 +2,27 @@
 
 import React, { useState, useEffect } from "react";
 
-//Loader :
 const Loading = ({ delay = 3000 }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    return localStorage.getItem("hasLoaded") ? false : true;
+  });
 
   useEffect(() => {
+    if (!loading) return;
+
     const timer = setTimeout(() => {
       setLoading(false);
+      localStorage.setItem("hasLoaded", "true");
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [delay, loading]);
 
-  if (!loading) return null; // Loader remove after delay
+  if (!loading) return null;
 
-  //Main Function :
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="relative w-16 h-16 flex justify-center items-center">
-        {/* Spinning Ring */}
         <div className="absolute w-full h-full border-4 border-gray-300 border-t-[#6F38C9] rounded-full animate-spin"></div>
       </div>
     </div>
