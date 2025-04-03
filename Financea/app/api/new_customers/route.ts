@@ -20,7 +20,7 @@ const data = [
 export async function GET() {
 
 
-    await delay(2000);
+    // await delay(2000);
     console.log("Fetching data (5000 delay)...");
 
     return NextResponse.json(data);

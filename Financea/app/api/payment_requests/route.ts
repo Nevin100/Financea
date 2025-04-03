@@ -17,7 +17,7 @@ const payments = [
 export async function GET() {
 
 
-    await delay(5000);
+    // await delay(5000);
     console.log("Fetching payment requests (5000 delay)...");
 
     return NextResponse.json(payments);

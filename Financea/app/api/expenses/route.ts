@@ -18,7 +18,7 @@ const expenses = [
 export async function GET() {
 
 
-    await delay(5000);
+    // await delay(5000);
     console.log("Fetching expenses (5000 delay)...");
 
     return NextResponse.json(expenses);
