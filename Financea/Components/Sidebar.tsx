@@ -1,7 +1,7 @@
 "use client" // App Router ke liye zaroori hai
 import Link from "next/link"
 import { usePathname } from "next/navigation" // App Router mein useRouter() nahi chalega
-import { FaFileInvoiceDollar, FaMoneyCheckAlt, FaChartBar, FaFileAlt, FaCog } from "react-icons/fa"
+import { FaFileInvoiceDollar, FaMoneyCheckAlt, FaChartBar, FaFileAlt, FaCog, FaUsers  } from "react-icons/fa"
 
 const Sidebar = () => {
   const pathname = usePathname() // Active route check karega
@@ -11,8 +11,9 @@ const Sidebar = () => {
     { name: "Invoices", icon: <FaFileInvoiceDollar />, path: "/invoices" },
     { name: "Payments", icon: <FaMoneyCheckAlt />, path: "/payments" },
     { name: "Expenses", icon: <FaFileAlt />, path: "/expenses" },
+    { name: "Clients", icon: <FaUsers/>, path:"/clients" },
     { name: "Reports", icon: <FaFileAlt />, path: "/reports" },
-    { name: "Settings", icon: <FaCog />, path: "/settings" },
+    { name: "Settings", icon: <FaCog />, path: "/settings" }
   ]
 
   return (
