@@ -1,8 +1,7 @@
+import { delay } from "@/app/helpers/delay";
 import { NextResponse } from "next/server";
 
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 
 
 const expenses = [
@@ -19,7 +18,6 @@ export async function GET() {
 
 
     // await delay(5000);
-    console.log("Fetching expenses (5000 delay)...");
 
     return NextResponse.json(expenses);
 
