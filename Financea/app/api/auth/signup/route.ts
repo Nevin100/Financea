@@ -13,11 +13,11 @@ export async function POST(req: Request) {
     await connectDB();
     const body = await req.json();
 
-     // Empty body Fields :
+    // Empty body Fields :
     if (!body) {
       return NextResponse.json({ error: "Invalid Fields" }, { status: 400 });
     }
-    
+
     // Validate input using Zod
     const parsedData = signupSchema.safeParse(body);
     if (!parsedData.success) {
@@ -43,9 +43,9 @@ export async function POST(req: Request) {
     const token = jwt.sign(
       { userId: newUser._id, email: newUser.email },
       JWT_SECRET,
-      { expiresIn: "1d" } 
+      { expiresIn: "1d" }
     );
-    
+
     //Response : 
     return NextResponse.json({
       message: "User registered successfully",
