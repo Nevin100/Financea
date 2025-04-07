@@ -9,3 +9,5 @@ const NewCustomerLoading = () => {
 }
 
 export default NewCustomerLoading
+
+//done
