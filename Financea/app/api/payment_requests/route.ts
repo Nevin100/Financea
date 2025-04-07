@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
-
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
+import { delay } from "@/app/helpers/delay";
 
 const payments = [
     { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },
@@ -17,8 +13,7 @@ const payments = [
 export async function GET() {
 
 
-    await delay(5000);
-    console.log("Fetching payment requests (5000 delay)...");
+    // await delay(5000);
 
     return NextResponse.json(payments);
 

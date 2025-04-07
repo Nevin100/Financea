@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
+import { delay } from "@/app/helpers/delay";
 
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 const data = [
     { name: "Jul 1", value: 400 },
@@ -20,8 +18,7 @@ const data = [
 export async function GET() {
 
 
-    await delay(2000);
-    console.log("Fetching data (5000 delay)...");
+    // await delay(2000);
 
     return NextResponse.json(data);
 
