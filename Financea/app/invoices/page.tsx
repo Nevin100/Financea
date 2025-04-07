@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Link from "next/link";
@@ -32,6 +33,13 @@ const InvoicePage = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [metrics, setMetrics] = useState({
+    totalInvoices: 32,
+    totalPayment: 1200,
+    outstandingInvoices: 2,
+    outstandingPayment: 120,
+  });
 
   useEffect(() => {
     const cachedInvoices = localStorage.getItem("invoices");
@@ -112,6 +120,28 @@ const InvoicePage = () => {
 
   return (
     <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md mt-6 font-['Archivo']">
+      {/* Top Metrics */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 font-['Archivo']">
+        <div className="bg-white border rounded-lg p-4">
+          <p className="text-xl text-gray-500">Total Invoices</p>
+          <h3 className="text-3xl font-bold">{metrics.totalInvoices}</h3>
+          <p className="text-md text-green-600 mt-1">↑ 23% from last month</p>
+        </div>
+        <div className="bg-white border rounded-lg p-4">
+          <p className="text-xl text-gray-500">Total Payment</p>
+          <h3 className="text-3xl font-bold">${metrics.totalPayment}</h3>
+          <p className="text-md text-green-600 mt-1">↑ 23% from last month</p>
+        </div>
+        <div className="bg-white border rounded-lg p-4">
+          <p className="text-xl text-gray-500">Outstanding Invoices</p>
+          <h3 className="text-3xl font-bold">{metrics.outstandingInvoices}</h3>
+        </div>
+        <div className="bg-white border rounded-lg p-4">
+          <p className="text-xl text-gray-500">Outstanding Payment</p>
+          <h3 className="text-3xl font-bold">${metrics.outstandingPayment}</h3>
+        </div>
+      </div>
+
       {/* Buttons Section */}
       <div className="flex flex-wrap justify-end gap-3 sm:gap-4 mb-4">
         <Link href={"/invoices/create-invoice"}>

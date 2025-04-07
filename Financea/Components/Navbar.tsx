@@ -1,21 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { FaBell } from "react-icons/fa"
 import { FiMenu } from "react-icons/fi"
 import { LuLogOut } from "react-icons/lu"
 import { useDispatch } from "react-redux"
-import { logout } from "@/lib/redux/Features/authSlice"; 
+import { logout } from "@/lib/redux/Features/authSlice"
 import { useRouter } from "next/navigation"
+import { Button } from "@/Components/ui/button"
+import { useState } from "react"
+import { ImSpinner2 } from "react-icons/im" // Spinner icon
 
-//Navbar component :
+// Navbar component :
 const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const dispatch = useDispatch()
   const router = useRouter()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
-  //Handle Logout :
-  const handleLogout = () => {
-    dispatch(logout())
-    router.push("/login") 
+  // Handle Logout :
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsLoggingOut(true)
+
+    setTimeout(() => {
+      dispatch(logout())
+      router.push("/login")
+    }, 500) // delay to show spin animation
   }
 
   return (
@@ -34,9 +43,19 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           <FaBell className="text-gray-600 text-lg cursor-pointer" />
           <span className="absolute top-[-2px] right-[-3px] w-2.5 h-2.5 bg-red-500 rounded-full"></span>
         </div>
-        <button onClick={handleLogout}>
-          <LuLogOut size={20} className="cursor-pointer" />
-        </button>
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700"
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+        >
+          <LuLogOut className="w-4 h-4 transition-all duration-300" />
+          {isLoggingOut ? (
+            <ImSpinner2 className="w-4 h-4 animate-spin text-purple-600" />
+          ) : (
+            "Logout"
+          )}
+        </Button>
       </div>
     </div>
   )
