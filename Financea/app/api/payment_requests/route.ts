@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { delay } from "@/app/helpers/delay";
 
 const payments = [
     { email: "razib.rahman@gmail.com", status: "Paid", amount: "$120", dueDate: "14.03.2025" },

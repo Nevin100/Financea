@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { delay } from "@/app/helpers/delay";
 
 
 const data = [
