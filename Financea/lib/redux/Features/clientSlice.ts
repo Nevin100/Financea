@@ -1,16 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ClientState {
-  clientName: string
-  companyName: string
-  email: string
-  mobile: string
-  address: string
-  postal: string
-  state: string
-  country: string
-  serviceCharge: string
-  website: string
+  clientName: string;
+  companyName: string;
+  email: string;
+  mobile: string;
+  address: string;
+  postal: string;
+  state: string;
+  country: string;
+  serviceCharge: number;  // 🛠️ Changed to number
+  website: string;
 }
 
 const initialState: ClientState = {
@@ -22,23 +22,23 @@ const initialState: ClientState = {
   postal: "",
   state: "",
   country: "USA",
-  serviceCharge: "",
+  serviceCharge: 0,   // 🛠️ Default number
   website: "",
-}
+};
 
 const clientSlice = createSlice({
   name: "client",
   initialState,
   reducers: {
-    setClientField: (
-      state,
-      action: PayloadAction<{ field: keyof ClientState; value: string }>
+    setClientField: <K extends keyof ClientState>(
+      state: ClientState,
+      action: PayloadAction<{ field: K; value: ClientState[K] }>
     ) => {
-      state[action.payload.field] = action.payload.value
+      state[action.payload.field] = action.payload.value;
     },
     resetClient: () => initialState,
   },
-})
+});
 
-export const { setClientField, resetClient } = clientSlice.actions
-export default clientSlice.reducer
+export const { setClientField, resetClient } = clientSlice.actions;
+export default clientSlice.reducer;

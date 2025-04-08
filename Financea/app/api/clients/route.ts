@@ -1,25 +1,50 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import { Client } from "@/lib/models/Clients.model";
 import { clientSchema } from "@/utils/validations";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
+
+  const JWT_SECRET = process.env.JWT_SECRET as string;
   await connectDB();
-  const body = await req.json();
 
-  const validation = clientSchema.safeParse(body);
-  if (!validation.success) {
-    return NextResponse.json(
-      { error: "Validation failed", issues: validation.error.flatten().fieldErrors },
-      { status: 400 }
-    );
+  // Get token from headers
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  try {
-    const newClient = new Client(validation.data);
-    await newClient.save();
-    return NextResponse.json({ message: "Client saved successfully!" }, { status: 201 });
 
+  const token = authHeader.split(" ")[1];
+
+  try {
+    // Verify token and extract user info
+    const decoded: any = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.userId; 
+
+    const body = await req.json();
+
+    // Validate input
+    const validation = clientSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: "Validation failed", issues: validation.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
+
+    // Create new client with user ref
+    const newClient = new Client({
+      ...validation.data,
+      user: userId,
+    });
+
+    await newClient.save();
+
+    return NextResponse.json({ message: "Client saved successfully!" }, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    console.error("Error in saving client:", error);
+    return NextResponse.json({ error: "Server error or invalid token" }, { status: 500 });
   }
 }

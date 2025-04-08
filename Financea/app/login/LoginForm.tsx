@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { login } from "@/lib/redux/Features/authSlice";
+import { ImSpinner2 } from "react-icons/im";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,7 +60,9 @@ export default function LoginPage() {
       }
 
       dispatch(login(data.token));
+
       window.location.href = "/";
+      
     } catch (error) {
       setEmailError("Invalid email or password" + error);
     } finally {
@@ -160,7 +163,11 @@ export default function LoginPage() {
             className="w-full bg-[#5C2FA8] text-xl font-semibold text-white py-4 rounded-md hover:bg-purple-700 transition-colors"
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Log In"}
+            {loading ? (
+              <div className="flex justify-center items-center">  
+                <ImSpinner2 className="w-6 h-6 animate-spin text-center text-gray-50" />
+              </div>
+            ) : "Log In"}
           </button>
         </form>
       </div>

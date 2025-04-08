@@ -25,6 +25,34 @@ export const clientSchema = z.object({
   postal: z.string().min(4, "Postal code is required"),
   state: z.string().min(2, "State/Province is required"),
   country: z.enum(["USA", "India", "UK"]),
-  serviceCharge: z.string().min(1, "Service charge is required"),
+  serviceCharge: z.number().min(1, "Service charge is required"),
   website: z.string().url("Invalid URL"),
+});
+
+//expenses Schema Validation :  
+export const expenseSchema = z.object({
+  amount: z
+    .number({ invalid_type_error: "Amount must be a number" })
+    .positive("Amount must be greater than zero"),
+  
+  currency: z.enum(["INR", "USD", "EUR"], {
+    errorMap: () => ({ message: "Currency must be INR, USD or EUR" })
+  }),
+  
+  date: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Invalid date format",
+    }),
+
+  category: z
+    .string()
+    .min(1, "Category is required")
+    .refine((val) => ["Travel", "Food", "Office"].includes(val), {
+      message: "Category must be Travel, Food, or Office",
+    }),
+
+  description: z.string().optional(),
+
+  receiptUrl: z.string().optional(),
 });

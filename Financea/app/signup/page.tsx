@@ -9,6 +9,7 @@ import Image from "next/image";
 import "../globals.css";
 import { useDispatch } from "react-redux";
 import { login } from "@/lib/redux/Features/authSlice"; 
+import Swal from "sweetalert2"
 
 export default function SignupPage() {
   const dispatch = useDispatch(); 
@@ -52,6 +53,10 @@ export default function SignupPage() {
       dispatch(login(data.token));
 
       // ✅ Redirect after successful signup
+       Swal.fire({
+          title: "LogIn Successfully!",
+          icon: "success",
+      })
       window.location.href = "/";
     } catch (err: any) {
       setError(err.message);
