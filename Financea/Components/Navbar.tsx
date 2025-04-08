@@ -55,7 +55,7 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-md z-50">
               <Link
-                href="/clients"
+                href="/clients/create-client"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Create Client
