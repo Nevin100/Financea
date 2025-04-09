@@ -9,7 +9,7 @@ interface ClientState {
   postal: string;
   state: string;
   country: string;
-  serviceCharge: number;  // 🛠️ Changed to number
+  serviceCharge: number;  
   website: string;
 }
 
@@ -22,7 +22,7 @@ const initialState: ClientState = {
   postal: "",
   state: "",
   country: "USA",
-  serviceCharge: 0,   // 🛠️ Default number
+  serviceCharge: 0, 
   website: "",
 };
 

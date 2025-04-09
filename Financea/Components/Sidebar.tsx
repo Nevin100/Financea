@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-'use client'
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -10,7 +9,7 @@ import {
   FaChartBar,
   FaFileAlt,
   FaCog,
-  FaUsers
+  FaUsers,
 } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { logout } from "@/lib/redux/Features/authSlice";
@@ -29,8 +28,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = () => {
-    dispatch(logout());
-    router.push("/login"); // navigate to login page
+    setIsLoggingOut(true); // Show spinner
+
+    // Optional UX delay for spinner animation
+    setTimeout(() => {
+      dispatch(logout());
+      router.push("/login");
+    }, 1500);
   };
 
   const menuItems = [
@@ -40,7 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
     { name: "Expenses", icon: <FaFileAlt />, path: "/expenses" },
     { name: "Clients", icon: <FaUsers />, path: "/clients" },
     { name: "Reports", icon: <FaFileAlt />, path: "/reports" },
-    { name: "Settings", icon: <FaCog />, path: "/settings" }
+    { name: "Settings", icon: <FaCog />, path: "/settings" },
   ];
 
   return (
@@ -53,7 +57,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
               key={index}
               href={item.path}
               onClick={() => {
-                // Close sidebar on mobile
                 if (onLinkClick && window.innerWidth < 768) {
                   onLinkClick();
                 }
@@ -71,15 +74,17 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
       {/* Logout Button */}
       <Button
         variant="outline"
-        className="absolute bottom-[9rem] left-[3rem] flex items-center gap-2 px-6 py-5 text-lg font-medium text-gray-700"
+        className="absolute bottom-[6rem] left-[3rem] flex items-center gap-2 px-6 py-5 text-lg font-medium text-gray-700 cursor-pointer"
         onClick={handleLogout}
         disabled={isLoggingOut}
       >
-        <LuLogOut className="w-4 h-4 transition-all duration-300" />
         {isLoggingOut ? (
           <ImSpinner2 className="w-4 h-4 animate-spin text-purple-600" />
         ) : (
-          "Logout"
+          <>
+            <LuLogOut className="w-4 h-4 transition-all duration-300" />
+            Logout
+          </>
         )}
       </Button>
     </div>

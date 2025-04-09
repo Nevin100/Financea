@@ -150,8 +150,8 @@ export default function NewClientForm() {
             label="Service Charge"
             type="number"
             value={client.serviceCharge}
-            onChange={(e: { target: { value: number | string } }) =>
-              handleChange("serviceCharge", e.target.value)
+            onChange={(e: { target: { value: string } }) =>
+              handleChange("serviceCharge", Number(e.target.value))
             }
           />
 

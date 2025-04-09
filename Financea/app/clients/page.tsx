@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { FaDownload } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import { Button } from "@/Components/ui/button";
 
 const ClientPage = () => {
   const [clients, setClients] = useState<any[]>([]);
@@ -30,9 +31,9 @@ const ClientPage = () => {
       {/* Top Buttons */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div className="flex flex-wrap gap-2">
-          <button className="border px-4 py-2 rounded-md text-black flex items-center text-sm">
+          <Button className="border px-5 py-2 rounded-md text-white flex items-center text-sm ">
             <FaDownload className="mr-2" /> Export
-          </button>
+          </Button>
           <button className="border px-4 py-2 rounded-md flex items-center text-sm">
             Take Actions <IoIosArrowDown className="ml-1" />
           </button>
@@ -41,7 +42,7 @@ const ClientPage = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      {/* <div className="flex flex-wrap gap-2 mb-4">
         {["All Invoices", "Draft", "Overdue", "Paid", "Open"].map((tab) => (
           <button
             key={tab}
@@ -50,7 +51,7 @@ const ClientPage = () => {
             {tab}
           </button>
         ))}
-      </div>
+      </div> */}
 
       {/* Desktop Table */}
       <div className="hidden md:block border rounded-lg">

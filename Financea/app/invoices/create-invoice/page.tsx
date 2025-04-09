@@ -48,12 +48,12 @@ const InvoiceCreatorPage = () => {
         {/* Close Button */}
         <button
           onClick={() => router.push("/invoices")}
-          className="absolute top-4 left-4 text-gray-600 hover:text-red-500 transition"
+          className="absolute top-4 left-4 text-gray-600 hover:text-red-500 transition "
         >
           ✖
         </button>
 
-        <h2 className="text-2xl md:text-3xl font-semibold text-center md:mb-8 pb-1">Create Invoice</h2>
+        <h2 className="text-xl md:text-2xl font-semibold text-center md:mb-8 pb-1">Create Invoice</h2>
         <hr />
         <div className="mt-6 flex flex-col lg:flex-row md:gap-16">
           <div className="w-full lg:w-1/3">
