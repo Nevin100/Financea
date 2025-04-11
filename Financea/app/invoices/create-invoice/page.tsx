@@ -124,14 +124,12 @@ const InvoiceCreatorPage = () => {
         alert("User not authenticated!");
         return;
       }
-  
+
       const payload = {
+        clientId: selectedClientId,
         invoiceNumber: invoice.invoiceNumber,
         issueDate: new Date(invoice.issueDate),
         dueDate: new Date(invoice.dueDate),
-        clientId: selectedClientId,
-        isRecurring: invoice.isRecurring,
-        recurringPeriod: invoice.recurringPeriod,
         items: invoice.items.map((item) => ({
           name: item.name,
           qty: Number(item.qty),
@@ -140,16 +138,21 @@ const InvoiceCreatorPage = () => {
         })),
         discount: Number(invoice.discount),
         tax: Number(invoice.tax),
+        isRecurring: invoice.isRecurring,
+        recurringPeriod: invoice.recurringPeriod,
       };
+
+
+
       console.log("Payload to be sent:", payload);
-  
+
       await createInvoice({ data: payload, token }).unwrap();
-      
+
       Swal.fire({
         title: "Invoice Created Successfully!",
         icon: "success",
       });
-  
+
       router.push("/invoices");
     } catch (err: any) {
       console.error("Invoice creation error:", err);
@@ -160,7 +163,7 @@ const InvoiceCreatorPage = () => {
       });
     }
   };
-  
+
 
   const subtotal = invoice.items.reduce((acc, item) => acc + item.total, 0);
   const discountAmount = (subtotal * invoice.discount) / 100;
@@ -223,7 +226,7 @@ const InvoiceCreatorPage = () => {
               value={invoice.dueDate}
               onChange={(e) => setInvoice({ ...invoice, dueDate: e.target.value })}
               className="mt-1"
-             
+
             />
           </div>
         </div>
@@ -264,51 +267,51 @@ const InvoiceCreatorPage = () => {
 
         {/* Items */}
         <div className="mt-6">
-  <h3 className="font-semibold text-lg">Invoice Items</h3>
+          <h3 className="font-semibold text-lg">Invoice Items</h3>
 
-  {/* Table headers */}
-  <div className="hidden lg:flex font-semibold text-gray-600 mt-4 px-1">
-    <div className="w-1/3 md:ml-[6rem]">Item</div>
-    <div className="w-1/6">Qty</div>
-    <div className="w-1/6">Rate</div>
-    <div className="w-1/6">Total</div>
-  </div>
+          {/* Table headers */}
+          <div className="hidden lg:flex font-semibold text-gray-600 mt-4 px-1">
+            <div className="w-1/3 md:ml-[6rem]">Item</div>
+            <div className="w-1/6">Qty</div>
+            <div className="w-1/6">Rate</div>
+            <div className="w-1/6">Total</div>
+          </div>
 
-  {invoice.items.map((item, index) => (
-    <div key={index} className="flex flex-col lg:flex-row gap-4 mt-2">
-      <Input
-        value={item.name}
-        onChange={(e) => handleItemChange(index, "name", e.target.value)}
-        placeholder="Item name"
-        className="lg:w-1/3"
-      />
-      <Input
-        type="number"
-        value={item.qty}
-        onChange={(e) => handleItemChange(index, "qty", Number(e.target.value))}
-        placeholder="Qty"
-        className="lg:w-1/6"
-      />
-      <Input
-        type="number"
-        value={item.rate}
-        onChange={(e) => handleItemChange(index, "rate", Number(e.target.value))}
-        placeholder="Rate"
-        className="lg:w-1/6"
-      />
-      <Input
-        type="number"
-        value={item.total}
-        readOnly
-        className="lg:w-1/6"
-      />
-    </div>
-  ))}
+          {invoice.items.map((item, index) => (
+            <div key={index} className="flex flex-col lg:flex-row gap-4 mt-2">
+              <Input
+                value={item.name}
+                onChange={(e) => handleItemChange(index, "name", e.target.value)}
+                placeholder="Item name"
+                className="lg:w-1/3"
+              />
+              <Input
+                type="number"
+                value={item.qty}
+                onChange={(e) => handleItemChange(index, "qty", Number(e.target.value))}
+                placeholder="Qty"
+                className="lg:w-1/6"
+              />
+              <Input
+                type="number"
+                value={item.rate}
+                onChange={(e) => handleItemChange(index, "rate", Number(e.target.value))}
+                placeholder="Rate"
+                className="lg:w-1/6"
+              />
+              <Input
+                type="number"
+                value={item.total}
+                readOnly
+                className="lg:w-1/6"
+              />
+            </div>
+          ))}
 
-  <Button onClick={addItem} className="mt-4 bg-[#6F38C9] text-white">
-    + Add Item
-  </Button>
-</div>
+          <Button onClick={addItem} className="mt-4 bg-[#6F38C9] text-white">
+            + Add Item
+          </Button>
+        </div>
 
         {/* Summary */}
         <div className="mt-8 border-t pt-4 flex flex-col lg:flex-row justify-between items-start">
