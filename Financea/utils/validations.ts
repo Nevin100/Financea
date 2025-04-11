@@ -56,3 +56,25 @@ export const expenseSchema = z.object({
 
   receiptUrl: z.string().optional(),
 });
+
+//Invoice Validation :
+export const invoiceSchema = z.object({
+  clientId: z.string(),
+  invoiceNumber: z.string().min(1),
+  issueDate: z.coerce.date(),
+  dueDate: z.coerce.date(),
+  items: z.array(
+    z.object({
+      name: z.string().min(1),
+      qty: z.number().positive(),
+      rate: z.number().nonnegative(),
+      total: z.number().nonnegative(),
+    })
+  ),
+  discount: z.number().nonnegative(),
+  tax: z.number().nonnegative(),
+  isRecurring: z.boolean().optional().default(false),
+  recurringPeriod: z.enum(["Monthly", "Yearly"]).optional().default("Monthly"),
+});
+
+export type InvoiceInput = z.infer<typeof invoiceSchema>;

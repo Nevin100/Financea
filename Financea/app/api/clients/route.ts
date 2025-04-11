@@ -6,11 +6,9 @@ import { clientSchema } from "@/utils/validations";
 import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
-
   const JWT_SECRET = process.env.JWT_SECRET as string;
   await connectDB();
 
-  // Get token from headers
   const authHeader = req.headers.get("authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -19,22 +17,22 @@ export async function POST(req: Request) {
   const token = authHeader.split(" ")[1];
 
   try {
-    // Verify token and extract user info
     const decoded: any = jwt.verify(token, JWT_SECRET);
-    const userId = decoded.userId; 
+    const userId = decoded.userId;
 
     const body = await req.json();
 
-    // Validate input
     const validation = clientSchema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
-        { error: "Validation failed", issues: validation.error.flatten().fieldErrors },
+        {
+          error: "Validation failed",
+          issues: validation.error.flatten().fieldErrors,
+        },
         { status: 400 }
       );
     }
 
-    // Create new client with user ref
     const newClient = new Client({
       ...validation.data,
       user: userId,
@@ -42,9 +40,44 @@ export async function POST(req: Request) {
 
     await newClient.save();
 
-    return NextResponse.json({ message: "Client saved successfully!" }, { status: 201 });
+    return NextResponse.json(
+      { message: "Client saved successfully!" },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error in saving client:", error);
-    return NextResponse.json({ error: "Server error or invalid token" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Server error or invalid token" },
+      { status: 500 }
+    );
+  }
+}
+
+// GET method to fetch all clients for a user
+export async function GET(req: Request) {
+  const JWT_SECRET = process.env.JWT_SECRET as string;
+  await connectDB();
+
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded: any = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.userId;
+
+    // Fetch all clients belonging to the logged-in user
+    const clients = await Client.find({ user: userId });
+
+    return NextResponse.json(clients, { status: 200 });
+  } catch (error) {
+    console.error("Error in fetching clients:", error);
+    return NextResponse.json(
+      { error: "Server error or invalid token" },
+      { status: 500 }
+    );
   }
 }
