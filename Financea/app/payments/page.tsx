@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { RzpPaymentLinkResponse } from '@/lib/types'; // Assuming the correct type
 import { Button } from '@/Components/ui/button';
+import { rzp_link_gen_route } from '@/lib/api-endpoints';
 
 export default function PaymentPage() {
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ export default function PaymentPage() {
 
     try {
       // 1. Create an order on your backend API using axios
-      const response = await axios.post('/api/rzp', {
+      const response = await axios.post(rzp_link_gen_route, {
         amount: 50000,
         currency: 'INR',
       });

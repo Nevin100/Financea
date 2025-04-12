@@ -1,4 +1,3 @@
-// app/api/create-order/route.ts
 
 import Razorpay from "razorpay";
 import { NextRequest, NextResponse } from "next/server";
