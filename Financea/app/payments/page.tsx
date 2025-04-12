@@ -2,19 +2,12 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import { RzpOrderResponse } from '@/lib/types';
-// import Razorpay from 'razorpay';
+import { RzpPaymentLinkResponse } from '@/lib/types'; // Assuming the correct type
 import { Button } from '@/Components/ui/button';
-import Script from 'next/script';
-
-declare global {
-  interface Window {
-    Razorpay: any; // Make Razorpay available globally
-  }
-}
 
 export default function PaymentPage() {
   const [loading, setLoading] = useState(false);
+  const [paymentLink, setPaymentLink] = useState<string | null>(null); // State to hold the payment link
 
   // Handle payment button click
   const handlePayment = async () => {
@@ -27,36 +20,14 @@ export default function PaymentPage() {
         currency: 'INR',
       });
 
-      const order: RzpOrderResponse = response.data;  // Get order details from backend
-
-
+      const order: RzpPaymentLinkResponse = response.data;  // Get order details from backend
 
       if (order.id) {
+        // If the payment link is created, show the short URL
+        setPaymentLink(order.short_url); // Set the payment link state
 
-        // 2. Open Razorpay Checkout modal
-
-        const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,  // Your Razorpay public key
-          amount: order.amount,         // Total amount (in paise)
-          currency: order.currency,     // Currency
-          order_id: order.id,           // Razorpay order ID
-          handler: function (response: any) {  // Explicitly typing `response` as `any`
-            alert('Payment Successful!');
-            console.log(response);  // You can log or send the response to your backend here
-          },
-          prefill: {
-            name: 'Customer Name',
-            email: 'customer@example.com',
-            contact: '9876543210',
-          },
-          theme: {
-            color: '#F37254',  // Customize button color
-          },
-        };
-
-        // Ensure Razorpay is available on the window
-        const rzp1 = new (window as any).Razorpay(options);
-        rzp1.open();
+        // Optionally, you can show this payment link somewhere in your UI:
+        alert(`Payment link created: ${order.short_url}`);
       } else {
         alert('Failed to create order.');
       }
@@ -70,11 +41,20 @@ export default function PaymentPage() {
 
   return (
     <div>
-      <Script type="text/javascript" src="https://checkout.razorpay.com/v1/checkout.js"></Script>
       <h1>Pay ₹500</h1>
-      <Button className='cursor-pointer' onClick={handlePayment} disabled={loading}>
-        {loading ? 'Processing...' : 'Pay Now'}
+      <Button className="cursor-pointer" onClick={handlePayment} disabled={loading}>
+        {loading ? 'Processing...' : 'Create Payment Link'}
       </Button>
+
+      {/* Display payment link if available */}
+      {paymentLink && (
+        <div>
+          <h2>Payment Link:</h2>
+          <a href={paymentLink} target="_blank" rel="noopener noreferrer">
+            Click here to pay
+          </a>
+        </div>
+      )}
     </div>
   );
 }

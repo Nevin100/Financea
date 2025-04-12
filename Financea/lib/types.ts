@@ -25,20 +25,41 @@ export type Invoice = {
 };
 
 
-export interface RzpOrderResponse {
+export interface RzpPaymentLinkResponse {
+    accept_partial: boolean;
     amount: number;
-    amount_due: number;
     amount_paid: number;
-    attempts: number;
+    cancelled_at: number;
     created_at: number;
-    currency: "INR";  // You can extend this if you plan to support other currencies
-    entity: "order";
+    currency: string;
+    customer: {
+        contact: string;
+        email: string;
+        name: string;
+    };
+    description: string;
+    expire_by: number;
+    expired_at: number;
+    first_min_partial_amount: number;
     id: string;
     notes: {
         message: string;
     };
-    offer_id: string | null;
-    receipt: string;
-    status: "created" | string;  // "created" is shown here, but you can extend with other possible statuses
+    notify: {
+        email: boolean;
+        sms: boolean;
+        whatsapp: boolean;
+    };
+    payments: any; // You can replace `any` with a more specific type if needed
+    reference_id: string;
+    reminder_enable: boolean;
+    reminders: any[]; // Replace `any` if you know the reminder structure
+    short_url: string;
+    status: string;
+    updated_at: number;
+    upi_link: boolean;
+    user_id: string;
+    whatsapp_link: boolean;
+    // "created" is shown here, but you can extend with other possible statuses
 }
 
