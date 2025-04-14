@@ -1,9 +1,11 @@
+// redux/invoiceApi.ts
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const invoiceApi = createApi({
   reducerPath: 'invoiceApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '', // Next.js will auto-resolve /api routes
+    baseUrl: '',
     prepareHeaders: (headers) => {
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
       if (token) {
@@ -20,7 +22,16 @@ export const invoiceApi = createApi({
         body: invoiceData,
       }),
     }),
+    getInvoices: builder.query({
+      query: () => ({
+        url: '/api/invoices',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useCreateInvoiceMutation } = invoiceApi;
+export const {
+  useCreateInvoiceMutation,
+  useGetInvoicesQuery,
+} = invoiceApi;

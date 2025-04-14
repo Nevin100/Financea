@@ -1,21 +1,30 @@
 "use client";
 
-import { useState } from "react";
-import { usePathname } from "next/navigation"; 
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Sidebar from "@/Components/Sidebar";
 import Navbar from "@/Components/Navbar";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const pathname = usePathname(); 
+  const pathname = usePathname();
 
-  // ✅ Conditions to hide sidebar
   const isAuthPage = pathname === "/login" || pathname === "/signup";
-  const isFullWidthPage = pathname === "/invoices/create-invoice"; 
+  const isFullWidthPage = pathname === "/invoices/create-invoice";
+
+  // 🧠 Auto-close sidebar on mobile after 2.5 sec
+  useEffect(() => {
+    if (isSidebarOpen && typeof window !== "undefined" && window.innerWidth < 768) {
+      const timeout = setTimeout(() => {
+        setIsSidebarOpen(false);
+      }, 2500);
+
+      return () => clearTimeout(timeout); // cleanup if unmounted early
+    }
+  }, [isSidebarOpen]);
 
   return (
     <div className="flex h-screen">
-      {/* Hide Sidebar for Auth and Full Width Pages */}
       {!isAuthPage && !isFullWidthPage && (
         <>
           {/* Desktop Sidebar */}
@@ -44,13 +53,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       {/* Main Content */}
       <div className="bg-gray-100 flex-1 flex flex-col">
-        {/* Show Navbar for all pages except Auth Pages */}
         {!isAuthPage && <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />}
 
         <div
           className={`flex-1 overflow-y-auto p-4 ${
             isFullWidthPage ? "w-full max-w-none" : "md:mt-2"
-          }`} // ✅ Full width for create-invoice page
+          }`}
           onClick={() => isSidebarOpen && setIsSidebarOpen(false)}
         >
           {children}

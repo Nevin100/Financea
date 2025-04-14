@@ -32,6 +32,17 @@ const invoiceSchema = new mongoose.Schema({
       total: Number,
     },
   ],
+  description: {
+    type: String,
+    required: true, 
+    default: '',
+  },
+  termsAndConditions: {
+    type: String,
+    required: true,
+    default: 'Please pay within 15 days from the date of invoice. Overdue interest of 14% will be charged on delayed payments.'
+
+  },
   discount: {
     type: Number,
     required:true

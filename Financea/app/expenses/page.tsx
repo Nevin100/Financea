@@ -1,60 +1,54 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
+import axios from "axios";
 
-const data = [
-  {
-    amount: "$120",
-    category: "Travel",
-    date: "14.03.2025, 9:30 am",
-    description: "Branded Logo design",
-    status: "Paid",
-  },
-  {
-    amount: "$120",
-    category: "Food",
-    date: "14.03.2025, 8:30 am",
-    description: "Branded Logo design",
-    status: "Paid",
-  },
-  {
-    amount: "$120",
-    category: "Food",
-    date: "14.03.2025, 8:30 am",
-    description: "Branded Logo design",
-    status: "Paid",
-  },
-  {
-    amount: "$120",
-    category: "Food",
-    date: "14.03.2025, 8:30 am",
-    description: "Branded Logo design",
-    status: "Paid",
-  },
-  {
-    amount: "$120",
-    category: "Food",
-    date: "14.03.2025, 8:30 am",
-    description: "Branded Logo design",
-    status: "Paid",
-  },
-  {
-    amount: "$120",
-    category: "Food",
-    date: "14.03.2025, 8:30 am",
-    description: "Branded Logo design",
-    status: "Paid",
-  },
-  {
-    amount: "$120",
-    category: "Food",
-    date: "14.03.2025, 8:30 am",
-    description: "Branded Logo design",
-    status: "Paid",
-  },
-];
+interface ExpenseType {
+  amount: string;
+  category: string;
+  date: string;
+  description: string;
+  status?: string;
+  icon: string;
+}
 
 const Expense = () => {
+  const [expenses, setExpenses] = useState<ExpenseType[]>([]);
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("/api/expenses", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setExpenses(res.data);
+      } catch (error) {
+        console.error("Failed to fetch expenses:", error);
+      }
+    };
+
+    fetchExpenses();
+  }, []);
+
+  const filteredExpenses = expenses.filter((expense) => {
+    const q = query.toLowerCase();
+    return (
+      expense.amount.toLowerCase().includes(q) ||
+      expense.category.toLowerCase().includes(q) ||
+      expense.date.toLowerCase().includes(q) ||
+      expense.description?.toLowerCase().includes(q) ||
+      expense.status?.toLowerCase().includes(q) ||
+      expense.icon.toLowerCase().includes(q)
+    );
+  });
+
   return (
     <div className="w-full p-4 space-y-4">
       {/* Analytics Cards */}
@@ -97,20 +91,20 @@ const Expense = () => {
         </Card>
       </div>
 
-      {/* Search Input */}
-      <div className="w-full mt-4">
+      {/* Search Input & Filters */}
+      <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-2 mt-4">
         <input
           type="text"
           placeholder="Search expenses..."
-          className="w-full md:w-1/3 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+          className="w-full md:w-1/3 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-400 bg-white"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
-      </div>
-
-      {/* Filter Buttons using ShadCN */}
-      <div className="flex flex-wrap gap-2 md:mt-2">
-        <Button className="bg-white text-blue-400 text-lg border-3 ">All Expenses</Button>
-        <Button className="bg-white text-blue-400 text-lg border-3 ">Draft</Button>
-        <Button className="bg-white text-blue-400 text-lg border-3 ">Approved</Button>
+        <div className="flex flex-wrap gap-2">
+          <Button className="bg-white text-purple-400 text-lg border-3">All Expenses</Button>
+          <Button className="bg-white text-purple-400 text-lg border-3">Draft</Button>
+          <Button className="bg-white text-purple-400 text-lg border-3">Approved</Button>
+        </div>
       </div>
 
       {/* Table for Desktop */}
@@ -118,23 +112,21 @@ const Expense = () => {
         <table className="w-full table-auto text-left border-1 mt-4 bg-white rounded-xl overflow-hidden">
           <thead className="bg-gray-100/30 text-gray-600">
             <tr>
-              <th className="p-2">Amount</th>
-              <th className="p-2">Status</th>
-              <th className="p-2">Category</th>
-              <th className="p-2">Date</th>
-              <th className="p-2">Description</th>
-              <th className="p-2">Recent</th>
+              <th className="p-2 py-3">Amount</th>
+              <th className="p-2 py-3">Status</th>
+              <th className="p-2 py-3">Category</th>
+              <th className="p-4 py-3">Date</th>
+              <th className="p-2 py-3">Recent</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((item, idx) => (
+            {filteredExpenses.map((item, idx) => (
               <tr key={idx} className="border-t">
-                <td className="p-4 font-medium">{item.amount}</td>
-                <td className="p-4 text-green-500">{item.status}</td>
-                <td className="p-4">{item.category}</td>
-                <td className="p-4">{item.date}</td>
-                <td className="p-4">{item.description}</td>
-                <td className="p-4">📄</td>
+                <td className="p-6 font-medium">{item.amount}</td>
+                <td className="p-6 text-green-500">{item.status || "Paid"}</td>
+                <td className="p-6">{item.category}</td>
+                <td className="p-6">{item.date}</td>
+                <td className="p-6">{item.icon}</td>
               </tr>
             ))}
           </tbody>
@@ -143,14 +135,14 @@ const Expense = () => {
 
       {/* Mobile Card List */}
       <div className="md:hidden space-y-2">
-        {data.map((item, idx) => (
+        {filteredExpenses.map((item, idx) => (
           <div key={idx} className="bg-white border p-3 rounded-xl shadow-sm">
             <div className="flex justify-between">
               <div className="flex items-center gap-2">
                 <input type="checkbox" className="accent-black" />
                 <p className="font-semibold">{item.amount}</p>
               </div>
-              <span className="text-sm text-green-500 font-medium">{item.status}</span>
+              <span className="text-sm text-green-500 font-medium">{item.status || "Paid"}</span>
             </div>
             <div className="text-sm text-gray-500 mt-1">{item.category}</div>
             <div className="text-sm text-gray-500">{item.date}</div>

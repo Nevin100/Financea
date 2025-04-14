@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   FaFileInvoiceDollar,
   FaMoneyCheckAlt,
@@ -11,11 +10,7 @@ import {
   FaCog,
   FaUsers,
 } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { logout } from "@/lib/redux/Features/authSlice";
-import { Button } from "@/Components/ui/button";
-import { LuLogOut } from "react-icons/lu";
-import { ImSpinner2 } from "react-icons/im";
+import { GoClockFill } from "react-icons/go";
 
 interface SidebarProps {
   onLinkClick?: () => void;
@@ -23,25 +18,13 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
   const pathname = usePathname();
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  const handleLogout = () => {
-    setIsLoggingOut(true); // Show spinner
-
-    // Optional UX delay for spinner animation
-    setTimeout(() => {
-      dispatch(logout());
-      router.push("/login");
-    }, 1500);
-  };
 
   const menuItems = [
     { name: "Dashboard", icon: <FaChartBar />, path: "/" },
     { name: "Invoices", icon: <FaFileInvoiceDollar />, path: "/invoices" },
     { name: "Payments", icon: <FaMoneyCheckAlt />, path: "/payments" },
     { name: "Expenses", icon: <FaFileAlt />, path: "/expenses" },
+    { name: "Time Tracking", icon: <GoClockFill /> , path:"/time-tracking"}, 
     { name: "Clients", icon: <FaUsers />, path: "/clients" },
     { name: "Reports", icon: <FaFileAlt />, path: "/reports" },
     { name: "Settings", icon: <FaCog />, path: "/settings" },
@@ -70,23 +53,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
           ))}
         </nav>
       </div>
-
-      {/* Logout Button */}
-      <Button
-        variant="outline"
-        className="absolute bottom-[6rem] left-[3rem] flex items-center gap-2 px-6 py-5 text-lg font-medium text-gray-700 cursor-pointer"
-        onClick={handleLogout}
-        disabled={isLoggingOut}
-      >
-        {isLoggingOut ? (
-          <ImSpinner2 className="w-4 h-4 animate-spin text-purple-600" />
-        ) : (
-          <>
-            <LuLogOut className="w-4 h-4 transition-all duration-300" />
-            Logout
-          </>
-        )}
-      </Button>
     </div>
   );
 };

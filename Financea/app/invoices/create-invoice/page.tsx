@@ -55,6 +55,8 @@ const InvoiceCreatorPage = () => {
     recurringPeriod: "Monthly",
     items: [{ name: "", qty: 1, rate: 0, total: 0 }],
     discount: 0,
+    description: "",  
+    termsAndConditions: "Please pay within 15 days from the date of invoice, overdue interest @ 14% will be charged on delayed payments.",
     tax: 0,
   });
 
@@ -140,6 +142,8 @@ const InvoiceCreatorPage = () => {
         tax: Number(invoice.tax),
         isRecurring: invoice.isRecurring,
         recurringPeriod: invoice.recurringPeriod,
+        description: invoice.description,  
+        termsAndConditions: invoice.termsAndConditions, 
       };
 
 
@@ -316,14 +320,20 @@ const InvoiceCreatorPage = () => {
         {/* Summary */}
         <div className="mt-8 border-t pt-4 flex flex-col lg:flex-row justify-between items-start">
           <div className="w-full lg:w-1/2">
-            <label className="font-semibold">Add Note</label>
-            <Textarea placeholder="Add a note..." className="mt-1 w-full" />
-            <label className="font-semibold mt-4 block">Terms & Conditions</label>
-            <Textarea
-              className="mt-1 w-full"
-              value="Please pay within 15 days from the date of invoice, overdue interest @ 14% will be charged on delayed payments."
-              readOnly
-            />
+          <label>Description</label>
+          <Textarea
+            value={invoice.description}
+            onChange={(e) => setInvoice({ ...invoice, description: e.target.value })}
+            placeholder="Add a description of the invoice"
+            className="mt-2"
+          />
+            <label>Terms & Conditions</label>
+          <Textarea
+            value={invoice.termsAndConditions}
+            onChange={(e) => setInvoice({ ...invoice, termsAndConditions: e.target.value })}
+            placeholder="Add the terms and conditions of the invoice"
+            className="mt-2"
+          />
           </div>
           <div className="w-full lg:w-1/3 text-right mt-4 lg:mt-0">
             <p className="text-gray-600 mt-3 ml-2">

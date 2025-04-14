@@ -75,18 +75,21 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
               <Link
                 href="/clients/create-client"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={() => setDropdownOpen(false)}
               >
                 Create Client
               </Link>
               <Link
                 href="/expenses/create-expense"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={() => setDropdownOpen(false)}
               >
                 Create Expense
               </Link>
               <Link
                 href="/invoices/create-invoice"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={() => setDropdownOpen(false)}
               >
                 Create Invoice
               </Link>

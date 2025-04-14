@@ -71,6 +71,8 @@ export const invoiceSchema = z.object({
       total: z.number().nonnegative(),
     })
   ),
+  description: z.string().min(1),
+  termsAndConditions: z.string().min(1),
   discount: z.number().nonnegative(),
   tax: z.number().nonnegative(),
   isRecurring: z.boolean().optional().default(false),
