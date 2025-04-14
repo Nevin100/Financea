@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(razorpayRes.data, { status: 200 });
 
     } catch (error: any) {
-        console.error("Error creating Razorpay Payment Link:", error.response?.data || error.message);
+        console.error("Error CREATING Razorpay Payment Link:", error.response?.data || error.message);
         return NextResponse.json(
             { error: "Failed to create payment link", details: error.response?.data || error.message },
             { status: 500 }
