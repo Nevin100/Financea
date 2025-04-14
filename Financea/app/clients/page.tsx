@@ -6,6 +6,7 @@ import { FaDownload } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { Button } from "@/Components/ui/button";
 import axios from "axios";
+import { exportToExcel } from "@/lib/exportToExcel";
 
 const ClientPage = () => {
   const [clients, setClients] = useState<any[]>([]);
@@ -67,13 +68,15 @@ const ClientPage = () => {
         />
 
         <div className="flex flex-wrap justify-end gap-2">
-          <Button className="border px-5 py-2 rounded-md text-white flex items-center text-sm">
+          <Button
+            onClick={() => exportToExcel(clients, selectedClients)}
+            className="border px-5 py-2 rounded-md text-white flex items-center text-sm cursor-pointer">
             <FaDownload className="mr-2" /> Export
           </Button>
-          <button className="border px-4 py-2 rounded-md flex items-center text-sm">
+          <button className="border px-4 py-2 rounded-md flex items-center text-sm cursor-pointer">
             Take Actions <IoIosArrowDown className="ml-1" />
           </button>
-          <button className="border px-4 py-2 rounded-md text-sm">Last 15 days</button>
+          <button className="border px-4 py-2 rounded-md text-sm cursor-pointer">Last 15 days</button>
         </div>
       </div>
 
@@ -84,6 +87,7 @@ const ClientPage = () => {
             <tr>
               <th className="p-3">
                 <input
+                  className="cursor-pointer"
                   type="checkbox"
                   checked={
                     filteredClients.length > 0 &&
@@ -105,6 +109,7 @@ const ClientPage = () => {
               <tr key={client._id} className="border-t hover:bg-gray-50">
                 <td className="p-3">
                   <input
+                    className="cursor-pointer"
                     type="checkbox"
                     checked={selectedClients.includes(client._id)}
                     onChange={() => toggleSelectClient(client._id)}
