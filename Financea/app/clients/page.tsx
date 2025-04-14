@@ -10,6 +10,7 @@ import axios from "axios";
 const ClientPage = () => {
   const [clients, setClients] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedClients, setSelectedClients] = useState<string[]>([]); // IDs
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -39,11 +40,24 @@ const ClientPage = () => {
     );
   });
 
+  const toggleSelectAll = () => {
+    if (selectedClients.length === filteredClients.length) {
+      setSelectedClients([]);
+    } else {
+      setSelectedClients(filteredClients.map((c) => c._id)); // assuming MongoDB ID
+    }
+  };
+
+  const toggleSelectClient = (id: string) => {
+    setSelectedClients((prev) =>
+      prev.includes(id) ? prev.filter((cid) => cid !== id) : [...prev, id]
+    );
+  };
+
   return (
     <div className="font-['Archivo'] p-4 sm:p-6 bg-white">
       {/* Top Actions Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-        {/* Search Bar */}
         <input
           type="text"
           placeholder="Search clients..."
@@ -52,7 +66,6 @@ const ClientPage = () => {
           className="w-full sm:w-1/3 border px-4 py-2 rounded-md text-sm"
         />
 
-        {/* Buttons */}
         <div className="flex flex-wrap justify-end gap-2">
           <Button className="border px-5 py-2 rounded-md text-white flex items-center text-sm">
             <FaDownload className="mr-2" /> Export
@@ -69,6 +82,16 @@ const ClientPage = () => {
         <table className="w-full text-sm text-left">
           <thead className="bg-white border-b text-gray-600 font-medium">
             <tr>
+              <th className="p-3">
+                <input
+                  type="checkbox"
+                  checked={
+                    filteredClients.length > 0 &&
+                    selectedClients.length === filteredClients.length
+                  }
+                  onChange={toggleSelectAll}
+                />
+              </th>
               <th className="p-3">Charge</th>
               <th className="p-3">Status</th>
               <th className="p-3">Customer Info</th>
@@ -78,8 +101,15 @@ const ClientPage = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredClients.map((client, i) => (
-              <tr key={i} className="border-t hover:bg-gray-50">
+            {filteredClients.map((client) => (
+              <tr key={client._id} className="border-t hover:bg-gray-50">
+                <td className="p-3">
+                  <input
+                    type="checkbox"
+                    checked={selectedClients.includes(client._id)}
+                    onChange={() => toggleSelectClient(client._id)}
+                  />
+                </td>
                 <td className="p-3 font-bold text-black">${client.serviceCharge}</td>
                 <td className="p-3">
                   <span className="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">

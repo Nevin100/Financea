@@ -11,12 +11,23 @@ type Invoice = {
   dueDate: string;
 };
 
-const InvoiceTable = ({ invoices }: { invoices: Invoice[] }) => {
+interface InvoiceTableProps {
+  invoices: Invoice[];
+  selectedInvoices: string[];
+  handleCheckboxChange: (invoiceNo: string) => void;
+}
+
+const InvoiceTable: React.FC<InvoiceTableProps> = ({
+  invoices,
+  selectedInvoices,
+  handleCheckboxChange,
+}) => {
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full border-collapse hidden sm:table">
         <thead>
           <tr className="border-b text-gray-500 font-semibold text-md">
+            <th className="text-left py-2 px-4"></th>
             <th className="text-left py-2 px-4">Key Detail</th>
             <th className="text-left py-2 px-4">Invoice No.</th>
             <th className="text-left py-2 px-4">Item Description</th>
@@ -29,6 +40,14 @@ const InvoiceTable = ({ invoices }: { invoices: Invoice[] }) => {
         <tbody>
           {invoices.map((invoice, index) => (
             <tr key={index} className="border-b">
+              <td className="py-3 px-4">
+                <input
+                  type="checkbox"
+                  checked={selectedInvoices.includes(invoice.invoiceNo)}
+                  onChange={() => handleCheckboxChange(invoice.invoiceNo)}
+                  className="w-4 h-4"
+                />
+              </td>
               <td className="py-3 px-4">
                 <p className="font-semibold">{invoice.name}</p>
                 <p className="text-gray-500 text-sm">{invoice.email}</p>

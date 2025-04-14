@@ -118,6 +118,29 @@ const InvoicePage = () => {
     }, 1000); // Faster loading
   }, []);
 
+  // 🛠 Add these states and handlers in your InvoicePage component
+const [selectedInvoices, setSelectedInvoices] = useState<string[]>([]);
+const [selectAll, setSelectAll] = useState(false);
+
+const handleSelectAll = () => {
+  setSelectAll(!selectAll);
+  if (!selectAll) {
+    const allInvoiceIds = invoices.map((inv) => inv.invoiceNo);
+    setSelectedInvoices(allInvoiceIds);
+  } else {
+    setSelectedInvoices([]);
+  }
+};
+
+const handleCheckboxChange = (invoiceNo: string) => {
+  if (selectedInvoices.includes(invoiceNo)) {
+    setSelectedInvoices(selectedInvoices.filter((id) => id !== invoiceNo));
+  } else {
+    setSelectedInvoices([...selectedInvoices, invoiceNo]);
+  }
+};
+
+
   return (
     <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md mt-6 font-['Archivo']">
       {/* Top Metrics */}
@@ -142,18 +165,6 @@ const InvoicePage = () => {
         </div>
       </div>
 
-      {/* Buttons Section */}
-      <div className="flex flex-wrap justify-end gap-3 sm:gap-4 mb-4">
-        <Link href={"/invoices/create-invoice"}>
-          <button className="bg-[#6F38C9] text-white px-4 py-2 rounded-lg text-md font-semibold cursor-pointer">
-            + Create Invoice
-          </button>
-        </Link>
-        <button className="bg-black text-white px-4 py-2 rounded-lg text-md font-semibold">
-          Add Expense
-        </button>
-      </div>
-
       {/* Filters and Search */}
       <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4">
         <div className="relative w-full sm:w-1/3">
@@ -173,9 +184,15 @@ const InvoicePage = () => {
             <FaDownload className="mr-2" /> Export
           </button>
           <label className="flex items-center space-x-2">
-            <input type="checkbox" className="w-4 h-4" />
+            <input
+              type="checkbox"
+              className="w-4 h-4"
+              checked={selectAll}
+              onChange={handleSelectAll}
+            />
             <span>Select all</span>
           </label>
+
           <select
             className="border px-4 py-2 rounded-lg text-black"
             value={selectedStatus}
@@ -194,7 +211,12 @@ const InvoicePage = () => {
         <Loading />
       ) : (
         <Suspense fallback={<Loading />}>
-          <InvoiceTable invoices={invoices} />
+          <InvoiceTable
+            invoices={invoices}
+            selectedInvoices={selectedInvoices}
+            handleCheckboxChange={handleCheckboxChange}
+          />
+
         </Suspense>
       )}
     </div>

@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Card, CardContent } from "@/Components/ui/card";
+import { useEffect, useState } from "react";
 import { Button } from "@/Components/ui/button";
 import axios from "axios";
 
@@ -14,10 +14,20 @@ interface ExpenseType {
   icon: string;
 }
 
+
 const Expense = () => {
   const [expenses, setExpenses] = useState<ExpenseType[]>([]);
   const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState<number[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
 
+  const [metrics, setMetrics] = useState({
+      totalInvoices: 32,
+      totalPayment: 1200,
+      outstandingInvoices: 2,
+      outstandingPayment: 120,
+  });
+  
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
@@ -49,46 +59,51 @@ const Expense = () => {
     );
   });
 
+  const toggleCheckbox = (idx: number) => {
+    if (selected.includes(idx)) {
+      setSelected(selected.filter((i) => i !== idx));
+    } else {
+      setSelected([...selected, idx]);
+    }
+  };
+
+  const toggleSelectAll = () => {
+    if (selectAll) {
+      setSelected([]);
+      setSelectAll(false);
+    } else {
+      const all = filteredExpenses.map((_, i) => i);
+      setSelected(all);
+      setSelectAll(true);
+    }
+  };
+
+  useEffect(() => {
+    const allSelected = filteredExpenses.length > 0 && selected.length === filteredExpenses.length;
+    setSelectAll(allSelected);
+  }, [selected, filteredExpenses]);
+
   return (
     <div className="w-full p-4 space-y-4">
-      {/* Analytics Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="pt-1">
-            <div className="flex flex-col items-start">
-              <h3 className="text-2xl text-gray-500 pb-1">Total Expenses</h3>
-              <p className="text-4xl font-bold">$1,200</p>
-              <p className="text-xl text-green-500 mt-2">↑ 23% from last month</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-1">
-            <div className="flex flex-col items-start">
-              <h3 className="text-2xl text-gray-500 pb-1">Top Category</h3>
-              <p className="text-4xl font-bold">Rent</p>
-              <p className="text-xl text-green-500 mt-2">↑ 23% from last month</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-1">
-            <div className="flex flex-col items-start">
-              <h3 className="text-2xl text-gray-500 pb-1">Pending Approvals</h3>
-              <p className="text-4xl font-bold">2</p>
-              <p className="text-xl text-gray-400 mt-2">$125 pending</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-1">
-            <div className="flex flex-col items-start">
-              <h3 className="text-2xl text-gray-500 pb-1">This Month</h3>
-              <p className="text-4xl font-bold">$1,20</p>
-              <p className="text-xl text-gray-400 mt-2">$430 last month</p>
-            </div>
-          </CardContent>
-        </Card>
+       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 font-['Archivo']">
+        <div className="bg-white border rounded-lg p-4">
+          <p className="text-xl text-gray-500">Total Invoices</p>
+          <h3 className="text-3xl font-bold">{metrics.totalInvoices}</h3>
+          <p className="text-md text-green-600 mt-1">↑ 23% from last month</p>
+        </div>
+        <div className="bg-white border rounded-lg p-4">
+          <p className="text-xl text-gray-500">Total Payment</p>
+          <h3 className="text-3xl font-bold">${metrics.totalPayment}</h3>
+          <p className="text-md text-green-600 mt-1">↑ 23% from last month</p>
+        </div>
+        <div className="bg-white border rounded-lg p-4">
+          <p className="text-xl text-gray-500">Outstanding Invoices</p>
+          <h3 className="text-3xl font-bold">{metrics.outstandingInvoices}</h3>
+        </div>
+        <div className="bg-white border rounded-lg p-4">
+          <p className="text-xl text-gray-500">Outstanding Payment</p>
+          <h3 className="text-3xl font-bold">${metrics.outstandingPayment}</h3>
+        </div>
       </div>
 
       {/* Search Input & Filters */}
@@ -110,8 +125,16 @@ const Expense = () => {
       {/* Table for Desktop */}
       <div className="hidden md:block mt-4">
         <table className="w-full table-auto text-left border-1 mt-4 bg-white rounded-xl overflow-hidden">
-          <thead className="bg-gray-100/30 text-gray-600">
+          <thead className="bg-gray-100/30 text-gray-600 ml-6">
             <tr>
+              <th className="p-2 py-3">
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={toggleSelectAll}
+                  className="accent-purple-600"
+                />
+              </th>
               <th className="p-2 py-3">Amount</th>
               <th className="p-2 py-3">Status</th>
               <th className="p-2 py-3">Category</th>
@@ -122,6 +145,14 @@ const Expense = () => {
           <tbody>
             {filteredExpenses.map((item, idx) => (
               <tr key={idx} className="border-t">
+                <td className="p-4">
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(idx)}
+                    onChange={() => toggleCheckbox(idx)}
+                    className="accent-purple-600"
+                  />
+                </td>
                 <td className="p-6 font-medium">{item.amount}</td>
                 <td className="p-6 text-green-500">{item.status || "Paid"}</td>
                 <td className="p-6">{item.category}</td>
@@ -139,7 +170,12 @@ const Expense = () => {
           <div key={idx} className="bg-white border p-3 rounded-xl shadow-sm">
             <div className="flex justify-between">
               <div className="flex items-center gap-2">
-                <input type="checkbox" className="accent-black" />
+                <input
+                  type="checkbox"
+                  className="accent-black"
+                  checked={selected.includes(idx)}
+                  onChange={() => toggleCheckbox(idx)}
+                />
                 <p className="font-semibold">{item.amount}</p>
               </div>
               <span className="text-sm text-green-500 font-medium">{item.status || "Paid"}</span>
