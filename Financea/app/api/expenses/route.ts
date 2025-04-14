@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import connectDB from "@/lib/db";
+import connectDB from "@/lib/database/db_connection";
 import Expense from "@/lib/models/Expenses.model";
 import { expenseSchema } from "@/utils/validations";
 

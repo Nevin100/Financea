@@ -6,7 +6,7 @@ import { FaDownload } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { Button } from "@/Components/ui/button";
 import axios from "axios";
-import { exportToExcel } from "@/lib/exportToExcel";
+import { exportToExcel } from "@/lib/helpers/exportToExcel";
 
 const ClientPage = () => {
   const [clients, setClients] = useState<any[]>([]);

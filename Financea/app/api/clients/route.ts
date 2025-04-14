@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/db";
+import connectDB from "@/lib/database/db_connection";
 import { Client } from "@/lib/models/Clients.model";
 import { clientSchema } from "@/utils/validations";
 import jwt from "jsonwebtoken";

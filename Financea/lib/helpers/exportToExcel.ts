@@ -1,7 +1,20 @@
 import { saveAs } from "file-saver";
 import ExcelJS from "exceljs";
 
-export const exportToExcel = (clients: any[], selectedClients: string[]) => {
+// Define the Client type based on the data structure
+interface Client {
+    _id: string;
+    clientName: string;
+    email: string;
+    mobile: string;
+    companyName: string;
+    serviceCharge: number;
+    status: string; // Or use an enum if the status is fixed
+    createdAt: string | Date;
+    dueDate: string | Date;
+}
+
+export const exportToExcel = (clients: Client[], selectedClients: string[]) => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Clients");
 
@@ -17,11 +30,12 @@ export const exportToExcel = (clients: any[], selectedClients: string[]) => {
         { header: "Due Date", key: "dueDate" },
     ];
 
-    // Add rows
+    // Filter clients based on selected IDs or all clients if no selection
     const dataToExport = selectedClients.length > 0
         ? clients.filter((client) => selectedClients.includes(client._id))
         : clients;
 
+    // Add rows for each client
     dataToExport.forEach((client) => {
         worksheet.addRow({
             clientName: client.clientName,
@@ -29,9 +43,9 @@ export const exportToExcel = (clients: any[], selectedClients: string[]) => {
             mobile: client.mobile,
             companyName: client.companyName,
             serviceCharge: client.serviceCharge,
-            status: "Paid", // Or dynamic status
+            status: client.status, // Dynamic status (e.g., 'Paid', 'Pending', etc.)
             createdAt: new Date(client.createdAt).toLocaleString(),
-            dueDate: new Date(client.createdAt).toLocaleDateString(),
+            dueDate: new Date(client.dueDate).toLocaleDateString(),
         });
     });
 

@@ -1,6 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-
-import Razorpay from "razorpay";
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";  // <-- ADD THIS
 
@@ -16,11 +15,6 @@ if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
     throw new Error("Missing Razorpay environment variables");
 }
 
-// Create Razorpay instance
-const razorpayInstance = new Razorpay({
-    key_id: RAZORPAY_KEY_ID,
-    key_secret: RAZORPAY_KEY_SECRET,
-});
 
 // POST API handler
 export async function POST(req: NextRequest) {

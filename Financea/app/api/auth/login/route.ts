@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "@/lib/models/User.model";
 import { loginSchema } from "@/utils/validations";
-import connectDB from "@/lib/db";
+import connectDB from "@/lib/database/db_connection";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -42,14 +42,14 @@ export async function POST(req: Request) {
       JWT_SECRET,
       { expiresIn: "1d" }
     );
-    
+
 
     return NextResponse.json({
       message: "Login successful",
       token,
       user: { username: user.username, email: user.email },
     });
-    
+
   } catch (error) {
     return NextResponse.json({ error: "Internal Server Error" + error }, { status: 500 });
   }

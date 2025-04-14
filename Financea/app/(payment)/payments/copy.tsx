@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { RzpPaymentLinkResponse } from '@/lib/types'; // Assuming the correct type
 import { Button } from '@/Components/ui/button';
-import { rzp_link_gen_route } from '@/lib/api-endpoints';
+import { rzp_link_gen_route } from '@/lib/helpers/api-endpoints';
 
 export default function PaymentPage() {
   const [loading, setLoading] = useState(false);
