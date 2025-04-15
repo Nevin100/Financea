@@ -2,8 +2,8 @@
 
 import type React from "react"
 import { useState } from "react"
-import Sidebar from "@/Components/Sidebar"
-import Navbar from "@/Components/Navbar"
+import Sidebar from "@/components/Sidebar"
+import Navbar from "@/components/Navbar"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -25,9 +25,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Mobile Sidebar - Slide-in Menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-[250px] bg-white border-r border-gray-200 transform ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform md:hidden z-50 shadow-lg`}
+        className={`fixed top-0 left-0 h-full w-[250px] bg-white border-r border-gray-200 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform md:hidden z-50 shadow-lg`}
       >
         <Sidebar />
       </div>
@@ -40,7 +39,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         {/* Page Content */}
         <div
           className="flex-1 overflow-y-auto p-4 md:mt-2"
-          onClick={() => isSidebarOpen && setIsSidebarOpen(false)} 
+          onClick={() => isSidebarOpen && setIsSidebarOpen(false)}
         >
           {children}
         </div>

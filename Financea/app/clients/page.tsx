@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { FaDownload } from "react-icons/fa";
-import { Button } from "@/Components/ui/button";
+import { Button } from "@/components/ui/button";
 import axios from "axios";
 import Swal from "sweetalert2";
 import * as XLSX from 'xlsx'; // Import the xlsx library
@@ -11,8 +11,8 @@ import * as XLSX from 'xlsx'; // Import the xlsx library
 const ClientPage = () => {
   const [clients, setClients] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedClients, setSelectedClients] = useState<string[]>([]); 
-  const [filteredClients, setFilteredClients] = useState<any[]>([]); 
+  const [selectedClients, setSelectedClients] = useState<string[]>([]);
+  const [filteredClients, setFilteredClients] = useState<any[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -28,7 +28,7 @@ const ClientPage = () => {
           },
         });
         setClients(res.data);
-        setFilteredClients(res.data); 
+        setFilteredClients(res.data);
       } catch (err) {
         console.error("Error fetching clients", err);
       }
@@ -141,7 +141,7 @@ const ClientPage = () => {
       'Mobile': client.mobile,
       'Company Name': client.companyName,
       'Service Charge': client.serviceCharge,
-      'Status': 'Paid', 
+      'Status': 'Paid',
       'Issue Date': new Date(client.createdAt).toLocaleString(),
       'Due Date': new Date(client.createdAt).toLocaleDateString(),
     }));

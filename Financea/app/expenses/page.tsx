@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/Components/ui/button";
+import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { FaDownload } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -24,7 +24,7 @@ const Expense = () => {
   const [selected, setSelected] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); 
+  const [itemsPerPage] = useState(5);
 
   const [metrics, setMetrics] = useState({
     totalInvoices: 32,
@@ -64,8 +64,8 @@ const Expense = () => {
       expense.icon.toLowerCase().includes(q)
     );
   });
-   // Slice the filtered data based on the current page
-   const paginatedExpenses = filteredExpenses.slice(
+  // Slice the filtered data based on the current page
+  const paginatedExpenses = filteredExpenses.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -151,26 +151,26 @@ const Expense = () => {
     try {
       const token = localStorage.getItem("token");
       const expenseIds = selected.map((i) => filteredExpenses[i]._id);
-    
+
       const res = await axios.delete("/api/expenses", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
         data: { expenseIds },
       });
-    
+
       console.log(res.data);
-    
+
       Swal.fire({
         icon: "success",
         title: "Success",
         text: "Expenses deleted successfully",
         confirmButtonText: "OK",
       });
-    
+
       setExpenses((prev) => prev.filter((_, idx) => !selected.includes(idx)));
-      setSelected([]);  
-      
+      setSelected([]);
+
     } catch (error) {
       console.error("Failed to delete expenses:", error);
       Swal.fire({
@@ -180,7 +180,7 @@ const Expense = () => {
         confirmButtonText: "OK",
       });
     }
-    
+
   };
 
   const handleExport = () => {
@@ -188,7 +188,7 @@ const Expense = () => {
       selected.length > 0
         ? selected.map((i) => filteredExpenses[i])
         : filteredExpenses;
-  
+
     const sheetData = exportData.map((exp) => ({
       Amount: exp.amount,
       Status: exp.status || "Paid",
@@ -197,11 +197,11 @@ const Expense = () => {
       Description: exp.description || "",
       Icon: exp.icon,
     }));
-  
+
     const worksheet = XLSX.utils.json_to_sheet(sheetData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
-  
+
     XLSX.writeFile(workbook, "expenses.xlsx");
   };
 
@@ -278,7 +278,7 @@ const Expense = () => {
             </tr>
           </thead>
           <tbody>
-          {paginatedExpenses.map((item, idx) => (
+            {paginatedExpenses.map((item, idx) => (
               <tr key={idx} className="border-t text-md">
                 <td className="p-4 pl-5">
                   <input
@@ -320,7 +320,7 @@ const Expense = () => {
             </div>
             <div className="text-sm text-gray-500 mt-1">{item.category}</div>
             <div className="text-sm text-gray-500">{item.date}</div>
-            <div className="text-sm text-gray-500">{item.description}</div> 
+            <div className="text-sm text-gray-500">{item.description}</div>
           </div>
         ))}
       </div>

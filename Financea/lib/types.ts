@@ -64,3 +64,11 @@ export interface RzpPaymentLinkResponse {
     // "created" is shown here, but you can extend with other possible statuses
 }
 
+
+// types.ts
+export type Item = {
+    desc: string;
+    qty: number;
+    price: number;
+};
+

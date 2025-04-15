@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { store } from "@/lib/redux/store";
 import "./globals.css";
 import ClientLayout from "./client-layout";
-import AuthGuard from "@/Components/AuthGuard";
+import AuthGuard from "@/components/AuthGuard";
 import { useEffect } from "react";
 import Head from "next/head";
 

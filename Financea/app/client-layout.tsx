@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import Sidebar from "@/Components/Sidebar";
-import Navbar from "@/Components/Navbar";
+import Sidebar from "@/components/Sidebar";
+import Navbar from "@/components/Navbar";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -42,9 +42,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
           {/* Mobile Sidebar */}
           <div
-            className={`fixed top-0 left-0 h-full w-[250px] bg-white border-r border-gray-200 transform ${
-              isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } transition-transform md:hidden z-50 shadow-lg`}
+            className={`fixed top-0 left-0 h-full w-[250px] bg-white border-r border-gray-200 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+              } transition-transform md:hidden z-50 shadow-lg`}
           >
             <Sidebar />
           </div>
@@ -56,9 +55,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         {!isAuthPage && <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />}
 
         <div
-          className={`flex-1 overflow-y-auto p-4 ${
-            isFullWidthPage ? "w-full max-w-none" : "md:mt-2"
-          }`}
+          className={`flex-1 overflow-y-auto p-4 ${isFullWidthPage ? "w-full max-w-none" : "md:mt-2"
+            }`}
           onClick={() => isSidebarOpen && setIsSidebarOpen(false)}
         >
           {children}

@@ -3,10 +3,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/Components/ui/button";
-import { Input } from "@/Components/ui/input";
-import { Textarea } from "@/Components/ui/textarea";
-import { Checkbox } from "@/Components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useCreateInvoiceMutation } from "@/lib/redux/Features/invoiceSlice";
 import Swal from "sweetalert2";
 import { Archivo } from "next/font/google";
@@ -41,9 +41,9 @@ const InvoiceCreatorPage = () => {
     },
     isRecurring: false,
     recurringPeriod: "Monthly",
-    items: [{ name: "", qty: 1,perHour: 0, rate: 0, total: 0 }],
+    items: [{ name: "", qty: 1, perHour: 0, rate: 0, total: 0 }],
     discount: 0,
-    description: "",  
+    description: "",
     termsAndConditions: "Please pay within 15 days from the date of invoice, overdue interest @ 14% will be charged on delayed payments.",
     tax: 0,
   });
@@ -137,8 +137,8 @@ const InvoiceCreatorPage = () => {
         tax: Number(invoice.tax),
         isRecurring: invoice.isRecurring,
         recurringPeriod: invoice.recurringPeriod,
-        description: invoice.description,  
-        termsAndConditions: invoice.termsAndConditions, 
+        description: invoice.description,
+        termsAndConditions: invoice.termsAndConditions,
       };
 
 
@@ -292,7 +292,7 @@ const InvoiceCreatorPage = () => {
                 placeholder="Qty"
                 className="lg:w-1/6"
               />
-               <Input
+              <Input
                 type="number"
                 value={item.perHour}
                 onChange={(e) => handleItemChange(index, "perHour", Number(e.target.value))}
@@ -318,26 +318,26 @@ const InvoiceCreatorPage = () => {
           <Button onClick={addItem} className="mt-4 bg-[#6F38C9] text-white">
             + Add Item
           </Button>
-        
+
         </div>
 
         {/* Summary */}
         <div className="mt-8 border-t pt-4 flex flex-col lg:flex-row justify-between items-start">
           <div className="w-full lg:w-1/2">
-          <label>Description</label>
-          <Textarea
-            value={invoice.description}
-            onChange={(e) => setInvoice({ ...invoice, description: e.target.value })}
-            placeholder="Add a description of the invoice"
-            className="mt-2"
-          />
+            <label>Description</label>
+            <Textarea
+              value={invoice.description}
+              onChange={(e) => setInvoice({ ...invoice, description: e.target.value })}
+              placeholder="Add a description of the invoice"
+              className="mt-2"
+            />
             <label>Terms & Conditions</label>
-          <Textarea
-            value={invoice.termsAndConditions}
-            onChange={(e) => setInvoice({ ...invoice, termsAndConditions: e.target.value })}
-            placeholder="Add the terms and conditions of the invoice"
-            className="mt-2"
-          />
+            <Textarea
+              value={invoice.termsAndConditions}
+              onChange={(e) => setInvoice({ ...invoice, termsAndConditions: e.target.value })}
+              placeholder="Add the terms and conditions of the invoice"
+              className="mt-2"
+            />
           </div>
           <div className="w-full lg:w-1/3 text-right mt-4 lg:mt-0">
             <p className="text-gray-600 mt-3 ml-2">

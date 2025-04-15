@@ -2,14 +2,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import PaymentRequests from "@/Components/Dashboard/PayementRequests";
-import RecentExpenses from "@/Components/Dashboard/RecentExpenses";
-import FinancialAnalytics2 from "@/Components/Dashboard/FinancialAnalytics";
-import NewCustomer from "@/Components/Dashboard/NewCustomer";
-import ExpensesChart from "@/Components/Dashboard/ExpensesChart";
-import FinancialMetrics2 from "@/Components/Dashboard/FinancialMetrics";
+import PaymentRequests from "@/components/Dashboard/PayementRequests";
+import RecentExpenses from "@/components/Dashboard/RecentExpenses";
+import FinancialAnalytics2 from "@/components/Dashboard/FinancialAnalytics";
+import NewCustomer from "@/components/Dashboard/NewCustomer";
+import ExpensesChart from "@/components/Dashboard/ExpensesChart";
+import FinancialMetrics2 from "@/components/Dashboard/FinancialMetrics";
 
-import { Select, SelectTrigger, SelectValue, SelectItem, SelectGroup, SelectContent, SelectLabel } from "@/Components/ui/select";
+import { Select, SelectTrigger, SelectValue, SelectItem, SelectGroup, SelectContent, SelectLabel } from "@/components/ui/select";
 import { Archivo } from "next/font/google";
 
 const archivo = Archivo({

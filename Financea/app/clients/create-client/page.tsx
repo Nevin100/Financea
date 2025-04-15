@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import { Input } from "@/Components/ui/input"
-import { Button } from "@/Components/ui/button"
-import { Card, CardContent } from "@/Components/ui/card"
-import { Label } from "@/Components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/lib/redux/store"
 import { setClientField, resetClient } from "@/lib/redux/Features/clientSlice"
@@ -65,14 +65,14 @@ export default function NewClientForm() {
   return (
     <div className="flex justify-center items-center bg-gray-100 p-2 sm:p-4">
       <Card className="md:w-full p-6 bg-white rounded-lg shadow-md relative">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl sm:text-2xl font-semibold text-center sm:text-left">
-          Welcome to the New Client Page
-        </h2>
-        <Link href="/clients">
-          <button className="text-gray-500 hover:text-black text-xl">✕</button>
-        </Link>
-      </div>   
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl sm:text-2xl font-semibold text-center sm:text-left">
+            Welcome to the New Client Page
+          </h2>
+          <Link href="/clients">
+            <button className="text-gray-500 hover:text-black text-xl">✕</button>
+          </Link>
+        </div>
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             id="client-name"

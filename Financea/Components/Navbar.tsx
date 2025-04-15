@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FaBell } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
-import { Button } from "@/Components/ui/button";
+import { Button } from "@/components/ui/button";
 import { FaCirclePlus } from "react-icons/fa6";
 import Link from "next/link";
 
