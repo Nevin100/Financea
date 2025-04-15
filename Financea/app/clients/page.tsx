@@ -6,7 +6,7 @@ import { FaDownload } from "react-icons/fa";
 import { Button } from "@/Components/ui/button";
 import axios from "axios";
 import Swal from "sweetalert2";
-import * as XLSX from 'xlsx'; // Import the xlsx library !! 
+import * as XLSX from 'xlsx'; // Import the xlsx library
 
 const ClientPage = () => {
   const [clients, setClients] = useState<any[]>([]);
@@ -27,8 +27,8 @@ const ClientPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setClients(res);
-        setFilteredClients(res); 
+        setClients(res.data);
+        setFilteredClients(res.data); 
       } catch (err) {
         console.error("Error fetching clients", err);
       }
