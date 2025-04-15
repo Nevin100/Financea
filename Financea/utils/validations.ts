@@ -67,6 +67,7 @@ export const invoiceSchema = z.object({
     z.object({
       name: z.string().min(1),
       qty: z.number().positive(),
+      perHour: z.number().positive(),
       rate: z.number().nonnegative(),
       total: z.number().nonnegative(),
     })

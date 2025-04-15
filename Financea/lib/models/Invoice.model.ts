@@ -27,6 +27,9 @@ const invoiceSchema = new mongoose.Schema({
   items: [
     {
       name: String,
+      perHour: {
+        type: Number, 
+      },
       qty: Number,
       rate: Number,
       total: Number,

@@ -10,7 +10,7 @@ import {
   FaCog,
   FaUsers,
 } from "react-icons/fa";
-import { GoClockFill } from "react-icons/go";
+// import { GoClockFill } from "react-icons/go";
 
 interface SidebarProps {
   onLinkClick?: () => void;
@@ -24,7 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
     { name: "Invoices", icon: <FaFileInvoiceDollar />, path: "/invoices" },
     { name: "Payments", icon: <FaMoneyCheckAlt />, path: "/payments" },
     { name: "Expenses", icon: <FaFileAlt />, path: "/expenses" },
-    { name: "Time Tracking", icon: <GoClockFill /> , path:"/time-tracking"}, 
+    // { name: "Time Tracking", icon: <GoClockFill /> , path:"/time-tracking"}, 
     { name: "Clients", icon: <FaUsers />, path: "/clients" },
     { name: "Reports", icon: <FaFileAlt />, path: "/reports" },
     { name: "Settings", icon: <FaCog />, path: "/settings" },

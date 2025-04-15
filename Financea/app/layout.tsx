@@ -2,17 +2,12 @@
 
 import { Provider } from "react-redux";
 import { store } from "@/lib/redux/store";
-import { Archivo } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./client-layout";
 import AuthGuard from "@/Components/AuthGuard";
 import { useEffect } from "react";
 import Head from "next/head";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-});
 
 export default function RootLayout({
   children,
@@ -31,7 +26,7 @@ export default function RootLayout({
           <link rel="icon" type="image/png" href="/favicon.png" />
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
-        <body className={`${archivo.variable} antialiased`}>
+        <body>
           <ClientLayout>
             <AuthGuard>{children}</AuthGuard>
           </ClientLayout>

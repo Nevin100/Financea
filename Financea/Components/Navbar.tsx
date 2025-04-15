@@ -50,7 +50,7 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           <FiMenu size={24} />
         </button>
         <div>
-          <p className="text-sm font-semibold text-gray-500">Good Morning,</p>
+          <p className="text-sm font-semibold text-gray-500">Hey 😊😊,</p>
           <h2 className="text-lg font-bold text-gray-800">{username}</h2>
         </div>
       </div>

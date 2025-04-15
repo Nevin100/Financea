@@ -17,12 +17,6 @@ interface Client {
   companyName: string;
   email: string;
   mobile: string;
-  address: string;
-  postal: string;
-  state: string;
-  country: string;
-  serviceCharge: number;
-  website: string;
 }
 
 const archivo = Archivo({
@@ -42,18 +36,12 @@ const InvoiceCreatorPage = () => {
     billedTo: {
       clientName: "",
       companyName: "",
-      address: "",
       email: "",
       mobile: "",
-      postal: "",
-      state: "",
-      country: "",
-      serviceCharge: 0,
-      website: "",
     },
     isRecurring: false,
     recurringPeriod: "Monthly",
-    items: [{ name: "", qty: 1, rate: 0, total: 0 }],
+    items: [{ name: "", qty: 1,perHour: 0, rate: 0, total: 0 }],
     discount: 0,
     description: "",  
     termsAndConditions: "Please pay within 15 days from the date of invoice, overdue interest @ 14% will be charged on delayed payments.",
@@ -92,7 +80,12 @@ const InvoiceCreatorPage = () => {
     if (selectedClient) {
       setInvoice((prev) => ({
         ...prev,
-        billedTo: { ...selectedClient },
+        billedTo: {
+          clientName: selectedClient.clientName,
+          companyName: selectedClient.companyName,
+          email: selectedClient.email,
+          mobile: selectedClient.mobile,
+        },
       }));
     }
   };
@@ -106,8 +99,9 @@ const InvoiceCreatorPage = () => {
 
     const qty = field === "qty" ? value : updatedItems[index].qty;
     const rate = field === "rate" ? value : updatedItems[index].rate;
+    const perHour = field === "perHour" ? value : updatedItems[index].perHour;
 
-    updatedItems[index].total = qty * rate;
+    updatedItems[index].total = qty * rate + perHour;
 
     setInvoice({ ...invoice, items: updatedItems });
   };
@@ -115,7 +109,7 @@ const InvoiceCreatorPage = () => {
   const addItem = () => {
     setInvoice({
       ...invoice,
-      items: [...invoice.items, { name: "", qty: 1, rate: 0, total: 0 }],
+      items: [...invoice.items, { name: "", qty: 1, perHour: 0, rate: 0, total: 0 }],
     });
   };
 
@@ -135,6 +129,7 @@ const InvoiceCreatorPage = () => {
         items: invoice.items.map((item) => ({
           name: item.name,
           qty: Number(item.qty),
+          perHour: Number(item.perHour),
           rate: Number(item.rate),
           total: Number(item.total),
         })),
@@ -176,7 +171,7 @@ const InvoiceCreatorPage = () => {
 
   return (
     <div className={`${archivo.className} flex flex-col lg:flex-row h-screen p-6 bg-gray-100`}>
-      <div className="w-full lg:w-2/3 bg-white p-6 rounded-lg shadow-md md:h-[94rem] h-auto relative">
+      <div className="w-full lg:w-2/3 bg-white p-6 rounded-lg shadow-md h-full max-h-[calc(100vh-3rem)] overflow-y-auto relative">
         <button
           onClick={() => router.push("/invoices")}
           className="absolute top-4 left-4 text-gray-600 hover:text-red-500 transition"
@@ -277,6 +272,7 @@ const InvoiceCreatorPage = () => {
           <div className="hidden lg:flex font-semibold text-gray-600 mt-4 px-1">
             <div className="w-1/3 md:ml-[6rem]">Item</div>
             <div className="w-1/6">Qty</div>
+            <div className="w-1/6">perHour</div>
             <div className="w-1/6">Rate</div>
             <div className="w-1/6">Total</div>
           </div>
@@ -294,6 +290,13 @@ const InvoiceCreatorPage = () => {
                 value={item.qty}
                 onChange={(e) => handleItemChange(index, "qty", Number(e.target.value))}
                 placeholder="Qty"
+                className="lg:w-1/6"
+              />
+               <Input
+                type="number"
+                value={item.perHour}
+                onChange={(e) => handleItemChange(index, "perHour", Number(e.target.value))}
+                placeholder="Per Hour"
                 className="lg:w-1/6"
               />
               <Input
@@ -315,6 +318,7 @@ const InvoiceCreatorPage = () => {
           <Button onClick={addItem} className="mt-4 bg-[#6F38C9] text-white">
             + Add Item
           </Button>
+        
         </div>
 
         {/* Summary */}

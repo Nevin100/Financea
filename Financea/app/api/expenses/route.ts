@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import connectDB from "@/lib/db";
@@ -64,10 +65,55 @@ export async function GET(req: NextRequest) {
         hour12: true,
       }),
       icon: "💸", // Default icon
+      description: exp.description ,
     }));
 
     return NextResponse.json(formatted);
   } catch (error) {
     return NextResponse.json({ error: "Server Error: " + error }, { status: 500 });
+  }
+}
+
+// 👇 DELETE handler
+export async function DELETE(req: Request) {
+  await connectDB();
+
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded: any = jwt.verify(token, JWT_SECRET);
+    const userId = decoded.userId;
+
+    const { expenseIds } = await req.json();
+
+    if (!Array.isArray(expenseIds) || expenseIds.length === 0) {
+      return NextResponse.json(
+        { error: "No expense IDs provided" },
+        { status: 400 }
+      );
+    }
+
+    const deleteResult = await Expense.deleteMany({
+      _id: { $in: expenseIds },
+      user: userId,
+    });
+
+    return NextResponse.json(
+      {
+        message: `${deleteResult.deletedCount} expense(s) deleted successfully`,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error in deleting expenses:", error);
+    return NextResponse.json(
+      { error: "Server error or invalid token" + error },
+      { status: 500 }
+    );
   }
 }
