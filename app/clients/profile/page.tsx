@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -8,6 +9,8 @@ import Swal from "sweetalert2";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import ProfileCard from "@/components/ProfileCard"; // Import ProfileCard
 import { useRouter } from "next/navigation";
 
 interface Client {
@@ -22,7 +25,7 @@ interface Client {
 
 const ClientPage = () => {
   const router = useRouter();
-
+  const [client, setClient] = useState<Client | null>(null);
   const [clients, setClients] = useState<Client[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
@@ -33,6 +36,9 @@ const ClientPage = () => {
   const itemsPerPage = 5;
   
   const [metrics, setMetrics] = useState({ totalClients: 0, totalPayment: 0 });
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
 
   //Fetching Clients
   useEffect(() => {
@@ -63,9 +69,25 @@ const ClientPage = () => {
         console.error("Failed to fetch stats", error);
       }
     };
+
+    if (!id) return;
+    const fetchClient = async () => {
+      try {
+        const res = await axios.get(`/api/clients/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setClient(res.data);
+      } catch (err) {
+        console.error("Error fetching client:", err);
+      }
+    };
+
+    fetchClient();
     fetchStats();
     fetchClients();
-  }, []);
+  }, [id]);
 
   const filterLastNDays = (days: number) => {
     setSelectedDays(days);
@@ -250,17 +272,25 @@ const ClientPage = () => {
   //Main block : 
   return (
     <div className="font-['Archivo'] p-4 sm:p-6 bg-white">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 font-['Archivo']">
-        <div className="bg-white border rounded-lg p-4">
-          <p className="text-xl text-gray-500 pb-2">Total Clients</p>
-          <h3 className="text-3xl font-bold">{metrics.totalClients}</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 font-['Archivo']">
+      {client && (
+        <div className="col-span-1 sm:col-span-2 lg:col-span-1">
+          <ProfileCard
+            name={client.clientName}
+            email={client.email}
+            phone={client.mobile}
+          />
         </div>
-        <div className="bg-white border rounded-lg p-4">
-          <p className="text-xl text-gray-500 pb-2">Total Payment</p>
-          <h3 className="text-3xl font-bold">${metrics.totalPayment}</h3>
-        </div>
-        
+        )}
+      <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
+        <p className="text-xl text-gray-500 pb-2">Total Clients</p>
+        <h3 className="text-3xl font-bold">{metrics.totalClients}</h3>
       </div>
+      <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
+        <p className="text-xl text-gray-500 pb-2">Total Payment</p>
+        <h3 className="text-3xl font-bold">${metrics.totalPayment}</h3>
+      </div>
+    </div>
       {/* Search + Buttons */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <input
@@ -316,8 +346,8 @@ const ClientPage = () => {
           </thead>
           <tbody>
             {paginatedClients().map((client) => (
-              <tr key={client._id}   onClick={() => router.push(`/clients/profile?id=${client._id}`)}
-              className="border-t cursor-pointer hover:bg-gray-100">
+              <tr key={client._id}
+              className="border-t cursor-pointer hover:bg-gray-100" onClick={() => router.push(`/clients/profile?id=${client._id}`)}>
                 <td className="p-3">
                   <input type="checkbox" checked={selectedClients.includes(client._id)} onChange={() => toggleSelectClient(client._id)} className="accent-purple-600" />
                 </td>
@@ -364,3 +394,4 @@ const ClientPage = () => {
 };
 
 export default ClientPage;
+

@@ -30,6 +30,9 @@ export async function GET(req: NextRequest) {
     // Group by week (for line chart)
     const clientsPerWeek: Record<string, number> = {};
 
+    //total Charge : 
+    const totalPayment = clients.reduce((sum, client) => sum + client.serviceCharge, 0);
+
     clients.forEach((client) => {
       const createdAt = new Date(client.createdAt);
       const weekStart = new Date(createdAt);
@@ -43,7 +46,7 @@ export async function GET(req: NextRequest) {
       value,
     })).sort((a, b) => new Date(a.name).getTime() - new Date(b.name).getTime());
 
-    return NextResponse.json({ totalClients, chartData });
+    return NextResponse.json({ totalClients, totalPayment ,chartData });
 
   } catch (err) {
     return NextResponse.json({ error: "Internal Server Error: " + err }, { status: 500 });

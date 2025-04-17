@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -37,7 +38,7 @@ const Expense = () => {
     const fetchExpenses = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("/api/expenses", {
+        const res = await axios.get<any[]>("/api/expenses", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
