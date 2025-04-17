@@ -38,7 +38,7 @@ const Expense = () => {
     const fetchExpenses = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get<any[]>("/api/expenses", {
+        const res = await axios.get<any>("/api/expenses", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -169,7 +169,7 @@ const Expense = () => {
         confirmButtonText: "OK",
       });
 
-      setExpenses((prev) => prev.filter((_, idx) => !selected.includes(idx)));
+      setExpenses((prev) => prev.filter((exp) => !expenseIds.includes(exp._id)));
       setSelected([]);
 
     } catch (error) {
