@@ -33,8 +33,6 @@ const ClientPage = () => {
   
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  
-  const [metrics, setMetrics] = useState({ totalClients: 0, totalPayment: 0 });
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -56,19 +54,6 @@ const ClientPage = () => {
       }
     };
 
-    const fetchStats = async () => {
-      try {
-        const res = await axios.get<any[]>("/api/clients/stats", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        setMetrics(res.data);
-      } catch (error) {
-        console.error("Failed to fetch stats", error);
-      }
-    };
-
     if (!id) return;
     const fetchClient = async () => {
       try {
@@ -84,7 +69,6 @@ const ClientPage = () => {
     };
 
     fetchClient();
-    fetchStats();
     fetchClients();
   }, [id]);
 
@@ -172,15 +156,6 @@ const ClientPage = () => {
       setClients(clients.filter((client) => !selectedClients.includes(client._id)));
       setFilteredClients(filteredClients.filter((client) => !selectedClients.includes(client._id)));
       setSelectedClients([]);
-
-      const updatedStats = await axios.get("/api/clients/stats", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-  
-      // Update the metrics with the new stats
-      setMetrics(updatedStats.data);
 
       Swal.fire({
         title: "Deleted!",
@@ -281,13 +256,14 @@ const ClientPage = () => {
           />
         </div>
         )}
+      
       <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
-        <p className="text-xl text-gray-500 pb-2">Total Clients</p>
-        <h3 className="text-3xl font-bold">{metrics.totalClients}</h3>
+        <p className="text-xl text-gray-500 pb-2">Total Service Charge</p>
+        <h3 className="text-3xl font-bold">${client?.serviceCharge}</h3>
       </div>
       <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
-        <p className="text-xl text-gray-500 pb-2">Total Payment</p>
-        <h3 className="text-3xl font-bold">${metrics.totalPayment}</h3>
+        <p className="text-xl text-gray-500 pb-2">Company Name</p>
+        <h3 className="text-3xl font-bold">{client?.companyName}</h3>
       </div>
     </div>
       {/* Search + Buttons */}
