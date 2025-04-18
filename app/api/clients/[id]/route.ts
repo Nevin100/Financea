@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } } // Type for params is already set correctly here
 ) {
   const JWT_SECRET = process.env.JWT_SECRET as string;
   await connectDB();
@@ -21,7 +21,7 @@ export async function GET(
   try {
     const decoded: any = jwt.verify(token, JWT_SECRET);
     const userId = decoded.userId;
-    const clientId = params.id;
+    const clientId = params.id; // Ensure that params is correctly destructured and typed
 
     const client = await Client.findOne({ _id: clientId, user: userId });
 

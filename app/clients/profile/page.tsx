@@ -62,7 +62,7 @@ const ClientPage = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        setClient(res.data);
+        setClient(res.data as Client);
       } catch (err) {
         console.error("Error fetching client:", err);
       }
@@ -150,7 +150,7 @@ const ClientPage = () => {
           Authorization: `Bearer ${token}`,
         },
         data: { clientIds: selectedClients },
-      });
+      } as any);
 
       console.log(res);
       setClients(clients.filter((client) => !selectedClients.includes(client._id)));

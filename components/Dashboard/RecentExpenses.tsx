@@ -23,7 +23,7 @@ const RecentExpenses = () => {
         if (!response.ok) throw new Error("Failed to fetch expenses");
 
         const data = await response.json();
-        setExpenses(data);
+        setExpenses(data.expenses);
       } catch (error) {
         setError((error as Error).message);
       } finally {

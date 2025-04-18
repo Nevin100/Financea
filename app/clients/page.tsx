@@ -53,7 +53,7 @@ const ClientPage = () => {
 
     const fetchStats = async () => {
       try {
-        const res = await axios.get<any[]>("/api/clients/stats", {
+        const res = await axios.get<{ totalClients: number; totalPayment: number }>("/api/clients/stats", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -150,14 +150,14 @@ const ClientPage = () => {
           Authorization: `Bearer ${token}`,
         },
         data: { clientIds: selectedClients },
-      });
+      } as any);
 
       console.log(res);
       setClients(clients.filter((client) => !selectedClients.includes(client._id)));
       setFilteredClients(filteredClients.filter((client) => !selectedClients.includes(client._id)));
       setSelectedClients([]);
 
-      const updatedStats = await axios.get("/api/clients/stats", {
+      const updatedStats = await axios.get<{ totalClients: number; totalPayment: number }>("/api/clients/stats", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
