@@ -259,11 +259,11 @@ const ClientPage = () => {
       
       <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
         <p className="text-xl text-gray-500 pb-2">Total Service Charge</p>
-        <h3 className="text-3xl font-bold">${client?.serviceCharge}</h3>
+        <h3 className="md:text-3xl text-xl font-bold">${client?.serviceCharge}</h3>
       </div>
       <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
         <p className="text-xl text-gray-500 pb-2">Company Name</p>
-        <h3 className="text-3xl font-bold">{client?.companyName}</h3>
+        <h3 className="md:text-3xl text-xl font-bold">{client?.companyName}</h3>
       </div>
     </div>
       {/* Search + Buttons */}
