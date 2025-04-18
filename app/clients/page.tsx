@@ -67,6 +67,7 @@ const ClientPage = () => {
     fetchClients();
   }, []);
 
+  //filter LastN days : 
   const filterLastNDays = (days: number) => {
     setSelectedDays(days);
     const today = new Date();
@@ -81,7 +82,7 @@ const ClientPage = () => {
     setCurrentPage(1);
   };
   
-
+//Search Client : 
   const searchClients = () => {
     const query = searchQuery.toLowerCase();
     return filteredClients.filter((client) => {
@@ -94,6 +95,7 @@ const ClientPage = () => {
     });
   };
 
+  //pagination start : 
   const paginatedClients = () => {
     const allClients = searchClients();
     const start = (currentPage - 1) * itemsPerPage;
@@ -102,6 +104,7 @@ const ClientPage = () => {
 
   const totalPages = Math.ceil(searchClients().length / itemsPerPage);
 
+  //Toggle Select All Clients :
   const toggleSelectAll = () => {
     if (selectedClients.length === paginatedClients().length) {
       setSelectedClients([]);
@@ -110,12 +113,14 @@ const ClientPage = () => {
     }
   };
 
+  //Toggle Select Client :
   const toggleSelectClient = (id: string) => {
     setSelectedClients((prev) =>
       prev.includes(id) ? prev.filter((cid) => cid !== id) : [...prev, id]
     );
   };
 
+  //Delete Client
   const handleDelete = async () => {
     if (selectedClients.length === 0) {
       Swal.fire({
@@ -224,7 +229,7 @@ const ClientPage = () => {
       <button
         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
         disabled={currentPage === 1}
-        className="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
+        className="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50 cursor-pointer"
       >
         Prev
       </button>
@@ -232,7 +237,7 @@ const ClientPage = () => {
         <button
           key={i}
           onClick={() => setCurrentPage(i + 1)}
-          className={`px-3 py-1 border rounded hover:bg-gray-200 ${currentPage === i + 1 ? "bg-gray-800 text-white" : ""}`}
+          className={`px-3 py-1 border rounded cursor-pointer hover:bg-gray-200 ${currentPage === i + 1 ? "bg-gray-800 text-white" : ""}`}
         >
           {i + 1}
         </button>
@@ -240,7 +245,7 @@ const ClientPage = () => {
       <button
         onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
         disabled={currentPage === totalPages}
-        className="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
+        className="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50 cursor-pointer"
       >
         Next
       </button>
@@ -280,9 +285,9 @@ const ClientPage = () => {
           <select
             onChange={(e) => filterLastNDays(Number(e.target.value))}
             value={selectedDays ?? ""}
-            className="border px-4 py-2 rounded-md text-sm cursor-pointer"
+            className="border px-4 py-2 rounded-md text-sm cursor-pointer hover:bg-gray-100"
             >
-            <option value="">Filter by days</option>
+            <option value={365}>Filter by days</option>
             <option value={15}>Last 15 days</option>
             <option value={30}>Last 30 days</option>
             <option value={45}>Last 45 days</option>
@@ -319,7 +324,7 @@ const ClientPage = () => {
               <tr key={client._id}   onClick={() => router.push(`/clients/profile?id=${client._id}`)}
               className="border-t cursor-pointer hover:bg-gray-100">
                 <td className="p-3">
-                  <input type="checkbox" checked={selectedClients.includes(client._id)} onChange={() => toggleSelectClient(client._id)} className="accent-purple-600" />
+                  <input type="checkbox" checked={selectedClients.includes(client._id)} onChange={() => toggleSelectClient(client._id)} className="accent-purple-600 cursor-pointer" />
                 </td>
                 <td className="p-3 font-bold text-black">${client.serviceCharge}</td>
                 <td className="p-3">

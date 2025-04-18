@@ -21,7 +21,7 @@ export async function GET(
   try {
     const decoded: any = jwt.verify(token, JWT_SECRET);
     const userId = decoded.userId;
-    const clientId = params.id;
+    const clientId = params;
 
     const client = await Client.findOne({ _id: clientId, user: userId });
 

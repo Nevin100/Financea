@@ -7,6 +7,7 @@ import { expenseSchema } from "@/utils/validations";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
+// 👇 POST handler for creating expenses
 export async function POST(req: NextRequest) {
   await connectDB();
 
@@ -38,7 +39,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// 👇 GET handler 
+// 👇 GET handler for fetching expenses and stats
 export async function GET(req: NextRequest) {
   await connectDB();
 
@@ -54,6 +55,7 @@ export async function GET(req: NextRequest) {
     const expenses = await Expense.find({ user: decoded.userId }).sort({ createdAt: -1 });
 
     const formatted = expenses.map((exp) => ({
+      _id: exp._id,
       category: exp.category,
       amount: `${exp.currency} ${exp.amount}`,
       date: new Date(exp.date).toLocaleString("en-IN", {
@@ -65,17 +67,32 @@ export async function GET(req: NextRequest) {
         hour12: true,
       }),
       icon: "💸", // Default icon
-      description: exp.description ,
+      description: exp.description,
     }));
 
-    return NextResponse.json(formatted);
+    // Stats aggregation
+    const totalAmount = expenses.reduce((acc, exp) => acc + exp.amount, 0);
+    const categoryCount: { [key: string]: number } = {};
+    expenses.forEach((exp) => {
+      categoryCount[exp.category] = (categoryCount[exp.category] || 0) + 1;
+    });
+
+    const topCategory = Object.entries(categoryCount).sort((a, b) => b[1] - a[1])[0]?.[0] || "N/A";
+
+    const stats = {
+      totalAmount,
+      topCategory,
+      totalExpenses: expenses.length,
+    };
+
+    return NextResponse.json({ expenses: formatted, stats });
   } catch (error) {
     return NextResponse.json({ error: "Server Error: " + error }, { status: 500 });
   }
 }
 
-// 👇 DELETE handler
-export async function DELETE(req: Request) {
+// 👇 DELETE handler for deleting expenses
+export async function DELETE(req: NextRequest) {
   await connectDB();
 
   const authHeader = req.headers.get("authorization");

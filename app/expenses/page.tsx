@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { FaDownload } from "react-icons/fa";
 import Swal from "sweetalert2";
-import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import ExcelJS from "exceljs";
 
 interface ExpenseType {
   _id: string;
@@ -27,11 +27,11 @@ const Expense = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
+  const [filterDays, setFilterDays] = useState<number | null>(null);
   const [metrics, setMetrics] = useState({
-    totalInvoices: 32,
-    totalPayment: 1200,
-    outstandingInvoices: 2,
-    outstandingPayment: 120,
+    totalExpenses: 0,
+    totalAmount: 0,
+    topCategory: "N/A",
   });
 
   useEffect(() => {
@@ -45,7 +45,8 @@ const Expense = () => {
         });
 
         console.log(res);
-        setExpenses(res.data);
+        setExpenses(res.data.expenses);
+        setMetrics(res.data.stats);
       } catch (error) {
         console.error("Failed to fetch expenses:", error);
       }
@@ -56,15 +57,24 @@ const Expense = () => {
 
   const filteredExpenses = expenses.filter((expense) => {
     const q = query.toLowerCase();
-    return (
+    const matchesSearch =
       expense.amount.toLowerCase().includes(q) ||
       expense.category.toLowerCase().includes(q) ||
       expense.date.toLowerCase().includes(q) ||
       expense.description?.toLowerCase().includes(q) ||
       expense.status?.toLowerCase().includes(q) ||
-      expense.icon.toLowerCase().includes(q)
-    );
-  });
+      expense.icon.toLowerCase().includes(q);
+  
+    if (!filterDays) return matchesSearch;
+  
+    const today = new Date();
+    const expenseDate = new Date(expense.date);
+    const diffTime = today.getTime() - expenseDate.getTime();
+    const diffDays = diffTime / (1000 * 3600 * 24);
+  
+    return matchesSearch && diffDays <= filterDays;
+  });  
+  
   // Slice the filtered data based on the current page
   const paginatedExpenses = filteredExpenses.slice(
     (currentPage - 1) * itemsPerPage,
@@ -81,19 +91,27 @@ const Expense = () => {
   };
 
   const renderPagination = () => (
-    <div className="flex justify-center mt-4">
+    <div className="flex justify-center mt-6 gap-2 items-center">
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-4 py-2 border rounded-md mx-1 disabled:bg-gray-300"
+        className="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50 cursor-pointer"
       >
         Prev
       </button>
-      <span className="px-4 py-2">{`${currentPage} / ${totalPages}`}</span>
+      {Array.from({ length: totalPages }, (_, i) => (
+        <button
+          key={i}
+          onClick={() => setCurrentPage(i + 1)}
+          className={`px-3 py-1 border rounded hover:bg-gray-200 cursor-pointer ${currentPage === i + 1 ? "bg-gray-800 text-white" : ""}`}
+        >
+          {i + 1}
+        </button>
+      ))}
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 border rounded-md mx-1 disabled:bg-gray-300"
+        className="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50 cursor-pointer"
       >
         Next
       </button>
@@ -126,11 +144,12 @@ const Expense = () => {
     setSelectAll(allSelected);
   }, [selected, filteredExpenses]);
 
+  //deloete Selected Client
   const deleteSelectedExpenses = async () => {
     if (selected.length === 0) {
       Swal.fire({
-        title: "No clients selected!",
-        text: "Please select at least one client to delete.",
+        title: "No Expenses selected!",
+        text: "Please select at least one expense to delete.",
         icon: "warning",
         confirmButtonText: "OK",
       });
@@ -151,7 +170,10 @@ const Expense = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const expenseIds = selected.map((i) => filteredExpenses[i]._id);
+      const expenseIds = filteredExpenses
+        .filter((_, i) => selected.includes(i))
+        .map((exp) => exp._id);
+
 
       const res = await axios.delete("/api/expenses", {
         headers: {
@@ -184,48 +206,67 @@ const Expense = () => {
 
   };
 
+  //Handle Export : 
   const handleExport = () => {
-    const exportData =
-      selected.length > 0
-        ? selected.map((i) => filteredExpenses[i])
-        : filteredExpenses;
-
-    const sheetData = exportData.map((exp) => ({
-      Amount: exp.amount,
-      Status: exp.status || "Paid",
-      Category: exp.category,
-      Date: exp.date,
-      Description: exp.description || "",
-      Icon: exp.icon,
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(sheetData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
-
-    XLSX.writeFile(workbook, "expenses.xlsx");
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Expenses");
+  
+    // Define worksheet columns
+    worksheet.columns = [
+      { header: "Amount", key: "amount" },
+      { header: "Status", key: "status" },
+      { header: "Category", key: "category" },
+      { header: "Date", key: "date" },
+      { header: "Description", key: "description" },
+      { header: "Icon", key: "icon" },
+    ];
+  
+    // Determine data to export
+    let dataToExport: ExpenseType[] = [];
+  
+    if (selected.length > 0) {
+      dataToExport = selected.map((i) => filteredExpenses[i]);
+    } else {
+      const today = new Date();
+      const last3Months = new Date(today.setMonth(today.getMonth() - 3));
+      dataToExport = expenses.filter((exp) => new Date(exp.date) >= last3Months);
+    }
+  
+    // Add rows
+    dataToExport.forEach((exp) => {
+      worksheet.addRow({
+        amount: exp.amount,
+        status: exp.status || "Paid",
+        category: exp.category,
+        date: new Date(exp.date).toLocaleDateString(),
+        description: exp.description || "",
+        icon: exp.icon,
+      });
+    });
+  
+    // Export as Excel file
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      saveAs(blob, "expenses.xlsx");
+    });
   };
 
   return (
     <div className="w-full p-4 space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 font-['Archivo']">
-        <div className="bg-white border rounded-lg p-4">
-          <p className="text-xl text-gray-500">Total Invoices</p>
-          <h3 className="text-3xl font-bold">{metrics.totalInvoices}</h3>
-          <p className="text-md text-green-600 mt-1">↑ 23% from last month</p>
+        <div className="bg-white border rounded-lg p-4 pb-5">
+          <p className="text-xl text-gray-500 pb-2">Total Expenses</p>
+          <h3 className="text-3xl font-bold">{metrics.totalExpenses}</h3>
         </div>
-        <div className="bg-white border rounded-lg p-4">
-          <p className="text-xl text-gray-500">Total Payment</p>
-          <h3 className="text-3xl font-bold">${metrics.totalPayment}</h3>
-          <p className="text-md text-green-600 mt-1">↑ 23% from last month</p>
+        <div className="bg-white border rounded-lg p-4 pb-5">
+          <p className="text-xl text-gray-500 pb-2">Total Amount</p>
+          <h3 className="text-3xl font-bold">₹{metrics.totalAmount}</h3>
         </div>
-        <div className="bg-white border rounded-lg p-4">
-          <p className="text-xl text-gray-500">Outstanding Invoices</p>
-          <h3 className="text-3xl font-bold">{metrics.outstandingInvoices}</h3>
-        </div>
-        <div className="bg-white border rounded-lg p-4">
-          <p className="text-xl text-gray-500">Outstanding Payment</p>
-          <h3 className="text-3xl font-bold">${metrics.outstandingPayment}</h3>
+        <div className="bg-white border rounded-lg p-4 pb-5">
+          <p className="text-xl text-gray-500 pb-2">Top Category</p>
+          <h3 className="text-3xl font-bold">{metrics.topCategory}</h3>
         </div>
       </div>
 
@@ -234,7 +275,7 @@ const Expense = () => {
         <input
           type="text"
           placeholder="Search expenses..."
-          className="w-full md:w-1/3 px-4 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-400 bg-white"
+          className="w-full sm:w-1/3 border px-4 py-2 rounded-md text-sm bg-white"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -245,9 +286,23 @@ const Expense = () => {
           >
             <FaDownload className="mr-2" /> Export
           </Button>
-          <button className="border px-4 py-2 rounded-md text-sm cursor-pointer hover:bg-gray-800 hover:text-white">
-            Last 15 days
-          </button>
+          <select
+            onChange={(e) => {
+            const val = parseInt(e.target.value);
+            setFilterDays(isNaN(val) ? null : val);
+            }}
+            className="border px-4 py-2 rounded-md text-sm cursor-pointer bg-white"
+          > 
+            <option value="365">All Time</option>
+            <option value="15">Last 15 Days</option>
+            <option value="30">Last 30 Days</option>
+            <option value="45">Last 45 Days</option>
+            <option value="60">Last 60 Days</option>
+            <option value="90">Last 90 Days</option>
+            <option value="180">Last 180 Days</option>
+            <option value="365">Last 365 Days</option>
+          </select>
+
           <button
             onClick={deleteSelectedExpenses}
             className="border px-5 py-2 rounded-md text-red-500 flex items-center text-sm cursor-pointer hover:bg-red-500 hover:text-white"
@@ -258,16 +313,16 @@ const Expense = () => {
       </div>
 
       {/* Table for Desktop */}
-      <div className="hidden md:block mt-4">
+      <div className="hidden md:block mt-4 min-h-[440px]">
         <table className="w-full table-auto text-left border-1 mt-4 bg-white rounded-xl overflow-hidden">
-          <thead className="bg-gray-100/30 text-gray-600 ml-6 text-md">
+          <thead className="bg-gray-100/30 text-gray-600 ml-6 text-sm">
             <tr>
               <th className="p-2 py-3 pl-6">
                 <input
                   type="checkbox"
                   checked={selectAll}
                   onChange={toggleSelectAll}
-                  className="accent-purple-600"
+                  className="accent-purple-600 cursor-pointer"
                 />
               </th>
               <th className="p-2 py-3">Amount</th>
@@ -280,13 +335,13 @@ const Expense = () => {
           </thead>
           <tbody>
             {paginatedExpenses.map((item, idx) => (
-              <tr key={idx} className="border-t text-md">
+              <tr key={idx} className="border-t text-sm hover:bg-gray-100">
                 <td className="p-4 pl-5">
                   <input
                     type="checkbox"
                     checked={selected.includes(idx)}
                     onChange={() => toggleCheckbox(idx)}
-                    className="accent-purple-600"
+                    className="accent-purple-600 cursor-pointer"
                   />
                 </td>
                 <td className="p-6 font-medium">{item.amount}</td>

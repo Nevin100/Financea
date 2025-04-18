@@ -42,9 +42,17 @@ export default function NewClientForm() {
           const errors = Object.entries(data.issues)
             .map(([field, msg]) => `${field}: ${msg}`)
             .join("\n")
-          alert(errors)
+          Swal.fire({
+            title: "Validation Errors",
+            text: errors,
+            icon: "error",
+          })
         } else {
-          alert(data.error || "Something went wrong.")
+          Swal.fire({
+            title: "Error",
+            text: data.message || "Something went wrong.",
+            icon: "error",
+          })
         }
         return
       }
@@ -56,7 +64,11 @@ export default function NewClientForm() {
       })
     } catch (err) {
       console.error(err)
-      alert("Something went wrong.")
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred while creating the client.",
+        icon: "error",
+      })
     } finally {
       setLoading(false)
     }
@@ -70,7 +82,7 @@ export default function NewClientForm() {
             Welcome to the New Client Page
           </h2>
           <Link href="/clients">
-            <button className="text-gray-500 hover:text-black text-xl">✕</button>
+            <button className="text-gray-500 hover:text-black text-xl cursor-pointer">✕</button>
           </Link>
         </div>
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">

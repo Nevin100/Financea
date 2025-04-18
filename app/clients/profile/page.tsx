@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -310,7 +309,7 @@ const ClientPage = () => {
           <select
             onChange={(e) => filterLastNDays(Number(e.target.value))}
             value={selectedDays ?? ""}
-            className="border px-4 py-2 rounded-md text-sm cursor-pointer"
+            className="border px-4 py-2 rounded-md text-sm cursor-pointer hover:bg-purple-500"
             >
             <option value="">Filter by days</option>
             <option value={15}>Last 15 days</option>

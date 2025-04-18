@@ -1,3 +1,4 @@
+// Sidebar.tsx
 "use client";
 
 import Link from "next/link";
@@ -10,7 +11,6 @@ import {
   FaCog,
   FaUsers,
 } from "react-icons/fa";
-// import { GoClockFill } from "react-icons/go";
 
 interface SidebarProps {
   onLinkClick?: () => void;
@@ -24,11 +24,17 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
     { name: "Invoices", icon: <FaFileInvoiceDollar />, path: "/invoices" },
     { name: "Payments", icon: <FaMoneyCheckAlt />, path: "/payments" },
     { name: "Expenses", icon: <FaFileAlt />, path: "/expenses" },
-    // { name: "Time Tracking", icon: <GoClockFill /> , path:"/time-tracking"}, 
     { name: "Clients", icon: <FaUsers />, path: "/clients" },
     { name: "Reports", icon: <FaFileAlt />, path: "/reports" },
     { name: "Settings", icon: <FaCog />, path: "/settings" },
   ];
+
+  const handleLinkClick = () => {
+    window.dispatchEvent(new Event("topbar-start"));
+    if (onLinkClick && window.innerWidth < 768) {
+      onLinkClick();
+    }
+  };
 
   return (
     <div className="h-full w-[250px] bg-white shadow-md p-5 font-['Archivo',sans-serif] flex flex-col justify-between relative">
@@ -39,11 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
             <Link
               key={index}
               href={item.path}
-              onClick={() => {
-                if (onLinkClick && window.innerWidth < 768) {
-                  onLinkClick();
-                }
-              }}
+              onClick={handleLinkClick}
               className={`flex items-center space-x-4 text-gray-700 p-3 rounded-md 
                 ${pathname === item.path ? "bg-gray-100" : "hover:bg-gray-50"}`}
             >
