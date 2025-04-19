@@ -16,7 +16,7 @@ const ProfileCard = ({ name, email, phone }: ProfileCardProps) => {
   return (
     <div className="flex items-center gap-4 bg-transparent p-4 rounded-md w-fit border-0">
       {/* Profile Circle with Initials */}
-      <div className="w-30 h-30 rounded-[100%] bg-gray-300 flex items-center justify-center text-gray-800 font-semibold text-2xl">
+      <div className="w-30 h-30 aspect-square rounded-full bg-gray-300 flex items-center justify-center text-gray-800 font-semibold text-2xl">
         {initials}
       </div>
 

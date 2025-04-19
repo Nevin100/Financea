@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -19,7 +18,7 @@ interface Client {
   mobile: string;
   companyName: string;
   serviceCharge: number;
-  createdAt: string; 
+  createdAt: string;
 }
 
 const ClientPage = () => {
@@ -30,7 +29,7 @@ const ClientPage = () => {
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
   const [selectedDays, setSelectedDays] = useState<number | null>(null);
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -76,16 +75,16 @@ const ClientPage = () => {
     setSelectedDays(days);
     const today = new Date();
     const lastNDays = new Date(today.setDate(today.getDate() - days));
-    
+
     const recentClients = clients.filter(client => {
       const clientDate = new Date(client.createdAt);
       return clientDate >= lastNDays;
     });
-  
+
     setFilteredClients(recentClients);
     setCurrentPage(1);
   };
-  
+
 
   const searchClients = () => {
     const query = searchQuery.toLowerCase();
@@ -168,9 +167,9 @@ const ClientPage = () => {
       Swal.fire({
         title: "Error!",
         text: err?.response?.data?.error,
-        icon: "error", 
+        icon: "error",
       });
-      
+
     }
   };
 
@@ -178,7 +177,7 @@ const ClientPage = () => {
   const handleExport = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Clients");
-  
+
     worksheet.columns = [
       { header: "Client Name", key: "clientName" },
       { header: "Email", key: "email" },
@@ -189,11 +188,11 @@ const ClientPage = () => {
       { header: "Issue Date", key: "createdAt" },
       { header: "Due Date", key: "dueDate" },
     ];
-  
+
     const filteredData = selectedClients.length > 0
       ? clients.filter((client) => selectedClients.includes(client._id))
       : searchClients();
-  
+
     filteredData.forEach((client) => {
       worksheet.addRow({
         clientName: client.clientName,
@@ -206,13 +205,13 @@ const ClientPage = () => {
         dueDate: new Date(client.createdAt).toLocaleDateString(),
       });
     });
-  
+
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], { type: "application/octet-stream" });
       saveAs(blob, "clients.xlsx");
     });
   };
-  
+
 
   //render Pagination : 
   const renderPagination = () => (
@@ -247,25 +246,25 @@ const ClientPage = () => {
   return (
     <div className="font-['Archivo'] p-4 sm:p-6 bg-white">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 font-['Archivo']">
-      {client && (
-        <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-          <ProfileCard
-            name={client.clientName}
-            email={client.email}
-            phone={client.mobile}
-          />
-        </div>
+        {client && (
+          <div className="col-span-1 sm:col-span-2 lg:col-span-1">
+            <ProfileCard
+              name={client.clientName}
+              email={client.email}
+              phone={client.mobile}
+            />
+          </div>
         )}
-      
-      <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
-        <p className="text-xl text-gray-500 pb-2">Total Service Charge</p>
-        <h3 className="md:text-3xl text-xl font-bold">${client?.serviceCharge}</h3>
+
+        <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
+          <p className="text-xl text-gray-500 pb-2">Total Service Charge</p>
+          <h3 className="md:text-3xl text-xl font-bold">${client?.serviceCharge}</h3>
+        </div>
+        <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
+          <p className="text-xl text-gray-500 pb-2">Company Name</p>
+          <h3 className="md:text-3xl text-xl font-bold">{client?.companyName}</h3>
+        </div>
       </div>
-      <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
-        <p className="text-xl text-gray-500 pb-2">Company Name</p>
-        <h3 className="md:text-3xl text-xl font-bold">{client?.companyName}</h3>
-      </div>
-    </div>
       {/* Search + Buttons */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <input
@@ -286,7 +285,7 @@ const ClientPage = () => {
             onChange={(e) => filterLastNDays(Number(e.target.value))}
             value={selectedDays ?? ""}
             className="border px-4 py-2 rounded-md text-sm cursor-pointer hover:bg-purple-500"
-            >
+          >
             <option value="">Filter by days</option>
             <option value={15}>Last 15 days</option>
             <option value={30}>Last 30 days</option>
@@ -322,7 +321,7 @@ const ClientPage = () => {
           <tbody>
             {paginatedClients().map((client) => (
               <tr key={client._id}
-              className="border-t cursor-pointer hover:bg-gray-100" onClick={() => router.push(`/clients/profile?id=${client._id}`)}>
+                className="border-t cursor-pointer hover:bg-gray-100" onClick={() => router.push(`/clients/profile?id=${client._id}`)}>
                 <td className="p-3">
                   <input type="checkbox" checked={selectedClients.includes(client._id)} onChange={() => toggleSelectClient(client._id)} className="accent-purple-600" />
                 </td>
