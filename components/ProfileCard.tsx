@@ -1,5 +1,7 @@
 // app/components/ProfileCard.tsx
 
+import EmailHoverCardDemo from "./profile/profile-hover-card";
+
 interface ProfileCardProps {
   name: string;
   email: string;
@@ -44,6 +46,13 @@ const ProfileCard = ({ name, email, phone }: ProfileCardProps) => {
           </a>
         </div>
       </div>
+
+
+
+
+
+
+
     </div>
   );
 };

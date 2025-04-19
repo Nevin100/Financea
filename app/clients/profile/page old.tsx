@@ -8,11 +8,8 @@ import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import ProfileCard from "@/components/ProfileCard_2"; // Import ProfileCard
+import ProfileCard from "@/components/ProfileCard"; // Import ProfileCard
 import { useRouter } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
-import HeaderInfoCard from "@/components/profile/header-info-card";
-import HeaderStats from "@/components/profile/header-stats";
 
 interface Client {
   _id: string;
@@ -247,75 +244,29 @@ const ClientPage = () => {
 
   //Main block : 
   return (
-    <div className=" font-['Archivo'] p-4 sm:p-6 bg-white">
-
-
-      <section className="flex flex-col items-center min-[1280px]:flex-row min-[1280px]:justify-between mb-6 font-['Archivo'] text-[17px]">
+    <div className="font-['Archivo'] p-4 sm:p-6 bg-white">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 font-['Archivo']">
         {client && (
-          <ProfileCard
-            name={client.clientName}
-            email={client.email}
-            phone={client.mobile}
-          />
+          <div className="col-span-1 sm:col-span-2 lg:col-span-1">
+            <ProfileCard
+              name={client.clientName}
+              email={client.email}
+              phone={client.mobile}
+            />
+          </div>
         )}
 
-
-
-        <div className=" grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-          <Card className="flex justify-center w-[273px] h-[106px] bg-[#FCFDFF]">
-            <CardContent className="flex justify-between">
-
-              <HeaderInfoCard mainText={"Total Invoices"} count={`40`} />
-
-              <HeaderStats
-                percentageChange={23}
-                isIncreased={true}
-                bottomText={"from last month"}
-              />
-
-            </CardContent>
-          </Card>
-
-          <Card className="flex justify-center w-[273px] h-[106px] bg-[#FCFDFF]">
-            <CardContent className="flex justify-between">
-
-              <HeaderInfoCard mainText={"Total Payment"} count={`$1200`} />
-
-              <HeaderStats
-                percentageChange={23}
-                isIncreased={true}
-                bottomText={"from last month"}
-              />
-
-            </CardContent>
-          </Card>
-
-          <Card className="flex justify-center w-[273px] h-[106px] bg-[#FCFDFF]">
-            <CardContent className="flex justify-between">
-
-              <HeaderInfoCard mainText={"Outstanding Invoices"} count={`2`} />
-
-            </CardContent>
-          </Card>
-
-          <Card className="flex justify-center w-[273px] h-[106px] bg-[#FCFDFF]">
-            <CardContent className="flex justify-between">
-
-              <HeaderInfoCard mainText={"Outstanding Payment"} count={`$1200`} />
-
-
-            </CardContent>
-          </Card>
-
+        <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
+          <p className="text-xl text-gray-500 pb-2">Total Service Charge</p>
+          <h3 className="md:text-3xl text-xl font-bold">${client?.serviceCharge}</h3>
         </div>
-
-
-      </section>
-
-
+        <div className="bg-white border rounded-lg p-4 flex flex-col justify-center">
+          <p className="text-xl text-gray-500 pb-2">Company Name</p>
+          <h3 className="md:text-3xl text-xl font-bold">{client?.companyName}</h3>
+        </div>
+      </div>
       {/* Search + Buttons */}
-      <section className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <input
           type="text"
           placeholder="Search clients..."
@@ -349,7 +300,7 @@ const ClientPage = () => {
             Delete Selected
           </button>
         </div>
-      </section>
+      </div>
 
       {/* Desktop Table */}
       <div className="hidden md:block border rounded-lg min-h-[450px]">
