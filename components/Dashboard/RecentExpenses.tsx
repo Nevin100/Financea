@@ -12,6 +12,7 @@ const RecentExpenses = () => {
     const fetchExpenses = async () => {
       try {
         const token = localStorage.getItem("token");
+
         if (!token) throw new Error("Token not found");
 
         const response = await fetch("/api/expenses", {
@@ -20,7 +21,12 @@ const RecentExpenses = () => {
           },
         });
 
-        if (!response.ok) throw new Error("Failed to fetch expenses");
+
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch expenses");
+        }
+
 
         const data = await response.json();
         setExpenses(data.expenses);

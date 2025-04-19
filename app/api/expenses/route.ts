@@ -1,4 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
+//api/expenses/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import connectDB from "@/lib/database/db_connection";
@@ -70,7 +72,6 @@ export async function GET(req: NextRequest) {
       description: exp.description,
     }));
 
-    // Stats aggregation
     const totalAmount = expenses.reduce((acc, exp) => acc + exp.amount, 0);
     const categoryCount: { [key: string]: number } = {};
     expenses.forEach((exp) => {
@@ -86,10 +87,32 @@ export async function GET(req: NextRequest) {
     };
 
     return NextResponse.json({ expenses: formatted, stats });
-  } catch (error) {
-    return NextResponse.json({ error: "Server Error: " + error }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      // Now TypeScript knows the error is of type `Error`
+      console.error("Error fetching expenses:", error.message);
+      return NextResponse.json({ error: "Server Error: " + error.message }, { status: 500 });
+    } else {
+      // Handle cases where the error is not an instance of `Error`
+      console.error("Unexpected error:", error);
+      return NextResponse.json({ error: "Unexpected server error" }, { status: 500 });
+    }
   }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // 👇 DELETE handler for deleting expenses
 export async function DELETE(req: NextRequest) {
