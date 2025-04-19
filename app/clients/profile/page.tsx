@@ -8,7 +8,7 @@ import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import ProfileCard from "@/components/ProfileCard_2"; // Import ProfileCard
+import ProfileCard from "@/components/ProfileCard"; // Import ProfileCard
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import HeaderInfoCard from "@/components/profile/header-info-card";
@@ -250,6 +250,7 @@ const ClientPage = () => {
     <div className=" font-['Archivo'] p-4 sm:p-6 bg-white">
 
 
+      {/* Individual Client Details */}
       <section className="flex flex-col items-center min-[1280px]:flex-row min-[1280px]:justify-between mb-6 font-['Archivo'] text-[17px]">
         {client && (
           <ProfileCard
@@ -352,7 +353,7 @@ const ClientPage = () => {
       </section>
 
       {/* Desktop Table */}
-      <div className="hidden md:block border rounded-lg min-h-[450px]">
+      <div className="hidden min-[1040px]:block border rounded-lg min-h-[450px]">
         <table className="w-full text-sm text-left">
           <thead className="bg-white border-b text-gray-600 font-medium">
             <tr>
@@ -393,7 +394,7 @@ const ClientPage = () => {
       </div>
 
       {/* Mobile View */}
-      <div className="md:hidden flex flex-col gap-4">
+      <div className="min-[1040px]:hidden flex flex-col gap-4">
         {paginatedClients().map((client, i) => (
           <div key={i} className="border rounded-lg p-4 shadow-sm relative cursor-pointer" onClick={() => router.push(`/clients/profile?id=${client._id}`)}>
             <input type="checkbox" checked={selectedClients.includes(client._id)} onChange={() => toggleSelectClient(client._id)} className="absolute bottom-2 right-2 h-4 w-4 accent-purple-600" />

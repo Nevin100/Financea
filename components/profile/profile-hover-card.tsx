@@ -1,10 +1,6 @@
 "use client";
 
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card";
+
 
 import { TbCopy } from "react-icons/tb";
 import { Button } from "../ui/button";
@@ -26,23 +22,16 @@ export default function ProfileHoverCardDemo({ infoName, val }: PropTypes) {
     };
 
     return (
-        <HoverCard openDelay={100}>
-            <HoverCardTrigger asChild>
-                <div className="flex justify-start items-center cursor-default">
-                    <p>{infoName}</p>
-                    <p className="text-[17px] ml-1">{val}</p>
-                    <TbCopy
-                        className="ml-1 cursor-pointer hover:text-blue-500"
-                        onClick={handleCopy}
-                        title={copied ? "Copied!" : "Copy to clipboard"}
-                    />
-                </div>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-80">
-                <div className="flex justify-between space-x-4">
-                    {val}
-                </div>
-            </HoverCardContent>
-        </HoverCard>
+
+        <div className="flex justify-start items-center cursor-default">
+            <p>{infoName}</p>
+            <p className="text-[17px] ml-1" title={val}>{val}</p>
+            <TbCopy
+                className="ml-1 cursor-pointer hover:text-blue-500"
+                onClick={handleCopy}
+                title={copied ? "Copied!" : "Copy to clipboard"}
+            />
+        </div>
+
     );
 }

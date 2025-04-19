@@ -1,6 +1,6 @@
 // app/components/ProfileCard.tsx
 
-import EmailHoverCardDemo from "./profile/profile-hover-card";
+import ProfileHoverCardDemo from "./profile/profile-hover-card";
 
 interface ProfileCardProps {
   name: string;
@@ -18,37 +18,18 @@ const ProfileCard = ({ name, email, phone }: ProfileCardProps) => {
   return (
     <div className="flex items-center gap-4 bg-transparent p-4 rounded-md w-fit border-0">
       {/* Profile Circle with Initials */}
-      <div className="w-30 h-30 aspect-square rounded-full bg-gray-300 flex items-center justify-center text-gray-800 font-semibold text-2xl">
+      <div className="w-[80px] h-[80px] aspect-square rounded-full bg-gray-300 flex items-center justify-center text-gray-800 font-semibold text-2xl">
         {initials}
       </div>
 
-      {/* Text Content */}
-      <div className="text-lg">
-        <div className="font-semibold text-gray-900">{name}</div>
-        <div className="text-gray-600">
-          Email -{" "}
-          <a
-            href={`mailto:${email}`}
-            className="hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {email}
-          </a>
-        </div>
-        <div className="text-gray-600">
-          Phone No -{" "}
-          <a
-            href={`tel:${phone}`}
-            className="hover:underline"
-          >
-            {phone}
-          </a>
-        </div>
-      </div>
 
 
 
+      <section className="text-[17px]">
+        <h1 className="font-semibold text-[24px] text-gray-900">{name}</h1>
+        <ProfileHoverCardDemo infoName="Email:" val={email} />
+        <ProfileHoverCardDemo infoName="Phone:" val={phone} />
+      </section>
 
 
 
