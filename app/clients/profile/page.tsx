@@ -11,8 +11,8 @@ import { useSearchParams } from "next/navigation";
 import ProfileCard from "@/components/ProfileCard"; // Import ProfileCard
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import HeaderInfoCard from "@/components/profile/header-info-card";
-import HeaderStats from "@/components/profile/header-stats";
+import HeaderInfoCard from "@/components/Profile/header-info-card";
+import HeaderStats from "@/components/Profile/header-stats";
 
 interface Client {
   _id: string;

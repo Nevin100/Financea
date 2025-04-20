@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import PaymentRequestsLoading from "../loading_ui/PaymentRequestsLoading";
+import PaymentRequestsLoading from "../Loading_ui/PaymentRequestsLoading";
 
 const statusColors: Record<string, string> = {
   Paid: "bg-green-100 text-green-600",

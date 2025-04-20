@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import RecentExpensesLoading from "../loading_ui/RecentExpensesLoading";
+import RecentExpensesLoading from "../Loading_ui/RecentExpensesLoading";
 
 const RecentExpenses = () => {
   const [expenses, setExpenses] = useState<{ category: string; amount: string; date: string; icon: string }[]>([]);

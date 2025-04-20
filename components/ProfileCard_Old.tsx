@@ -1,6 +1,6 @@
 // app/components/ProfileCard.tsx
 
-import EmailHoverCardDemo from "./profile/profile-hover-card";
+import EmailHoverCardDemo from "./Profile/profile-hover-card";
 
 interface ProfileCardProps {
   name: string;

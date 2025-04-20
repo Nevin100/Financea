@@ -65,17 +65,17 @@ const Expense = () => {
       expense.description?.toLowerCase().includes(q) ||
       expense.status?.toLowerCase().includes(q) ||
       expense.icon.toLowerCase().includes(q);
-  
+
     if (!filterDays) return matchesSearch;
-  
+
     const today = new Date();
     const expenseDate = new Date(expense.date);
     const diffTime = today.getTime() - expenseDate.getTime();
     const diffDays = diffTime / (1000 * 3600 * 24);
-  
+
     return matchesSearch && diffDays <= filterDays;
-  });  
-  
+  });
+
   // Slice the filtered data based on the current page
   const paginatedExpenses = filteredExpenses.slice(
     (currentPage - 1) * itemsPerPage,
@@ -211,7 +211,7 @@ const Expense = () => {
   const handleExport = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Expenses");
-  
+
     // Define worksheet columns
     worksheet.columns = [
       { header: "Amount", key: "amount" },
@@ -221,10 +221,10 @@ const Expense = () => {
       { header: "Description", key: "description" },
       { header: "Icon", key: "icon" },
     ];
-  
+
     // Determine data to export
     let dataToExport: ExpenseType[] = [];
-  
+
     if (selected.length > 0) {
       dataToExport = selected.map((i) => filteredExpenses[i]);
     } else {
@@ -232,7 +232,7 @@ const Expense = () => {
       const last3Months = new Date(today.setMonth(today.getMonth() - 3));
       dataToExport = expenses.filter((exp) => new Date(exp.date) >= last3Months);
     }
-  
+
     // Add rows
     dataToExport.forEach((exp) => {
       worksheet.addRow({
@@ -244,7 +244,7 @@ const Expense = () => {
         icon: exp.icon,
       });
     });
-  
+
     // Export as Excel file
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], {
@@ -289,11 +289,11 @@ const Expense = () => {
           </Button>
           <select
             onChange={(e) => {
-            const val = parseInt(e.target.value);
-            setFilterDays(isNaN(val) ? null : val);
+              const val = parseInt(e.target.value);
+              setFilterDays(isNaN(val) ? null : val);
             }}
             className="border px-4 py-2 rounded-md text-sm cursor-pointer bg-white"
-          > 
+          >
             <option value="365">All Time</option>
             <option value="15">Last 15 Days</option>
             <option value="30">Last 30 Days</option>
@@ -381,6 +381,12 @@ const Expense = () => {
           </div>
         ))}
       </div>
+
+
+
+
+
+
       {renderPagination()} {/* Pagination component call */}
     </div>
   );
