@@ -1,7 +1,6 @@
 // Sidebar.tsx
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   FaFileInvoiceDollar,
@@ -43,19 +42,26 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
   };
 
   return (
-    <div className="h-full w-[250px] bg-white shadow-md p-5 font-['Archivo',sans-serif] flex flex-col justify-between relative">
+    <div className=" h-full w-[250px] bg-white shadow-md py-5  font-['Archivo',sans-serif] flex flex-col justify-between relative">
       <div>
-        <h2 className="text-xl font-bold text-gray-800 mb-8">Instant Paid</h2>
-        <nav className="flex flex-col space-y-6">
+        <h2 className=" text-xl font-bold text-gray-800 ml-5 mb-8">Instant Paid</h2>
+        <nav className=" flex flex-col ">
           {menuItems.map((item, index) => (
             <div
               key={index}
               onClick={() => handleLinkClick(item.path)}
-              className={`cursor-pointer flex items-center space-x-4 text-gray-700 p-3 rounded-md 
-                ${pathname === item.path ? "bg-gray-100" : "hover:bg-gray-50"}`}
+              className={` cursor-pointer pl-5 flex justify-between text-gray-700 h-[50px]
+                ${pathname === item.path ? "bg-[#7a9dfe2c]" : "hover:bg-gray-50"}`}
             >
-              <span className="text-xl">{item.icon}</span>
-              <span className="text-base font-medium">{item.name}</span>
+
+              <div className="flex items-center space-x-4">
+                <span className="text-xl">{item.icon}</span>
+                <span className="text-base font-medium">{item.name}</span>
+              </div>
+
+              <div className={`w-[3px]  ${pathname === item.path ? "bg-[#5E84EC]" : ""} `}>
+                {/* To show the current tab */}
+              </div>
             </div>
           ))}
         </nav>
