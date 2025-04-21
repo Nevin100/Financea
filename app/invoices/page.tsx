@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 
-import Link from "next/link";
 import React, { useState, useEffect, Suspense, lazy } from "react";
 import { FaSearch, FaDownload } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
@@ -119,26 +118,26 @@ const InvoicePage = () => {
   }, []);
 
   // 🛠 Add these states and handlers in your InvoicePage component
-const [selectedInvoices, setSelectedInvoices] = useState<string[]>([]);
-const [selectAll, setSelectAll] = useState(false);
+  const [selectedInvoices, setSelectedInvoices] = useState<string[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
 
-const handleSelectAll = () => {
-  setSelectAll(!selectAll);
-  if (!selectAll) {
-    const allInvoiceIds = invoices.map((inv) => inv.invoiceNo);
-    setSelectedInvoices(allInvoiceIds);
-  } else {
-    setSelectedInvoices([]);
-  }
-};
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    if (!selectAll) {
+      const allInvoiceIds = invoices.map((inv) => inv.invoiceNo);
+      setSelectedInvoices(allInvoiceIds);
+    } else {
+      setSelectedInvoices([]);
+    }
+  };
 
-const handleCheckboxChange = (invoiceNo: string) => {
-  if (selectedInvoices.includes(invoiceNo)) {
-    setSelectedInvoices(selectedInvoices.filter((id) => id !== invoiceNo));
-  } else {
-    setSelectedInvoices([...selectedInvoices, invoiceNo]);
-  }
-};
+  const handleCheckboxChange = (invoiceNo: string) => {
+    if (selectedInvoices.includes(invoiceNo)) {
+      setSelectedInvoices(selectedInvoices.filter((id) => id !== invoiceNo));
+    } else {
+      setSelectedInvoices([...selectedInvoices, invoiceNo]);
+    }
+  };
 
 
   return (
