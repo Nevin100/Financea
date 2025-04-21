@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type InvoiceItem = {
     name: string;
     qty: number;

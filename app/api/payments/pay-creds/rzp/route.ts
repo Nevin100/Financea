@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/database/db_connection";
 import RzpModel from "@/lib/models/Razorpay.model";
 import { encrypt } from "@/lib/helpers/encryption";
 import { verifyUser } from "@/lib/helpers/verifyAuthUser";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
         await connectDB();
 
@@ -31,12 +31,30 @@ export async function POST(req: Request) {
             { upsert: true, new: true }
         );
 
-        console.log(result);
+        // console.log(result);
 
 
         return NextResponse.json({ message: "Credentials saved successfully." }, { status: 201 });
     } catch (error: any) {
-        console.error("Razorpay Creds Error:", error.message);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        console.error("Error Saving Razorpay Creds:", error.message);
+        return NextResponse.json({ error: "Error Saving Razorpay Creds" }, { status: 500 });
     }
+}
+
+
+export async function GET(req: NextRequest) {
+    try {
+        await connectDB();
+
+        let userId: string;
+        try {
+            userId = verifyUser(req);
+        } catch (err: any) {
+            return NextResponse.json({ message: err.message }, { status: 403 });
+        }
+    } catch (error: any) {
+        console.error("Error Checking Razorpay Creds:", error.message);
+        return NextResponse.json({ error: "Error Checking Razorpay Creds" }, { status: 500 });
+    }
+
 }
