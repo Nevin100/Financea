@@ -10,9 +10,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { save_rpz_creds_route } from "@/lib/helpers/api-endpoints";
+import { rpz_creds_route } from "@/lib/helpers/api-endpoints";
 import Swal from "sweetalert2";
 
 export default function RazorpayDialog({
@@ -22,11 +22,57 @@ export default function RazorpayDialog({
     open: boolean;
     setOpen: (value: boolean) => void;
 }) {
+    const [disableBtn, setDisableBtn] = useState(true);
     const [keyId, setKeyId] = useState("");
     const [keySecret, setKeySecret] = useState("");
+    const [credentialsExist, setCredentialsExist] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        const fetchCredentials = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) return;
+
+                const response = await axios.get(rpz_creds_route, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                const data = response.data as { keyId?: string };
+
+                if (response.status === 200 && data.keyId) {
+                    setCredentialsExist(true);
+                    setKeyId(data.keyId);
+                    setKeySecret("");
+                }
+                else if (response.status === 204) {
+                    setCredentialsExist(false);
+                }
+            } catch (error: any) {
+                if (error.response?.status === 204) {
+                    setCredentialsExist(false);
+                } else {
+                    console.error("Error checking Razorpay credentials", error);
+                }
+            }
+        };
+
+        if (open) fetchCredentials();
+    }, [open]);
+
+
+    useEffect(() => {
+        setDisableBtn(keyId.trim() === "" || keySecret.trim() === "");
+    }, [keyId, keySecret]);
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (keyId === "" || keySecret === "") {
+            setDisableBtn(true);
+        }
 
         try {
             const token = localStorage.getItem("token");
@@ -36,7 +82,7 @@ export default function RazorpayDialog({
             }
 
             const response = await axios.post(
-                save_rpz_creds_route,
+                rpz_creds_route,
                 { keyId, keySecret },
                 {
                     headers: {
@@ -52,7 +98,12 @@ export default function RazorpayDialog({
                     icon: "success",
                     confirmButtonText: "OK",
                 });
+
+                setKeyId("");
+                setKeySecret("");
+
                 setOpen(false);
+
             } else {
                 alert("Error saving credentials.");
             }
@@ -66,7 +117,11 @@ export default function RazorpayDialog({
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Enter Razorpay Credentials</DialogTitle>
+                    <DialogTitle>
+                        {credentialsExist === false
+                            ? "Enter Razorpay Credentials"
+                            : "Update Razorpay Credentials"}
+                    </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 py-4">
@@ -99,7 +154,14 @@ export default function RazorpayDialog({
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Save</Button>
+                        <Button disabled={disableBtn} type="submit">
+
+                            {credentialsExist === false
+                                ? "Save Credentials"
+                                : "Update Credentials"}
+
+
+                        </Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

@@ -52,9 +52,22 @@ export async function GET(req: NextRequest) {
         } catch (err: any) {
             return NextResponse.json({ message: err.message }, { status: 403 });
         }
+
+        const creds = await RzpModel.findOne({ userId });
+
+        if (!creds) {
+            return NextResponse.json({ message: "No Razorpay credentials found." }, { status: 204 });
+        }
+
+        return NextResponse.json(
+            {
+                keyId: creds.keyId,
+
+            },
+            { status: 200 }
+        );
     } catch (error: any) {
         console.error("Error Checking Razorpay Creds:", error.message);
         return NextResponse.json({ error: "Error Checking Razorpay Creds" }, { status: 500 });
     }
-
 }
