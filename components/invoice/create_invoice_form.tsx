@@ -1,6 +1,7 @@
 "use client";
 
-
+import { IoAddCircle } from "react-icons/io5";
+import { GoX } from "react-icons/go";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createInvoiceZodSchema, createInvoiceFormType } from "@/lib/zod/create_invoice_zod_schema";
@@ -16,13 +17,13 @@ import {
 } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Check, ChevronsUpDown } from "lucide-react";
-// import {
-//     Select,
-//     SelectContent,
-//     SelectItem,
-//     SelectTrigger,
-//     SelectValue,
-// } from "@/components/ui/select"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,7 +31,9 @@ import { useEffect, useState } from "react";
 import { fetchClients } from "@/lib/helpers/create_invoice/fetchClients";
 import BilledToClientDetails from "./billed_to_client_details";
 import { Checkbox } from "../ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useFieldArray } from "react-hook-form";
+import { Trash2 } from "lucide-react";
+
 
 
 export enum RecurringFrequency {
@@ -72,13 +75,15 @@ const CreateInvoiceForm = () => {
             invoiceNumber: "",
             issueDate: new Date(),
             dueDate: undefined,
-            clientId: "",
+            clientId: "1234",
             isRecurring: false,
             recurringFrequency: RecurringFrequency.Monthly,
             recurringIssueDate: new Date(),
             recurringDueDate: undefined,
             items: [
                 {
+                    ishourly: false,
+
                     name: "",
                     quantity: 1,
                     rate: 0,
@@ -86,8 +91,8 @@ const CreateInvoiceForm = () => {
             ],
             discountPercent: 0,
             taxPercent: 0,
-            note: "",
-            terms: "",
+            note: "adf",
+            terms: "asdf",
             subTotal: 0,
             discountAmount: 0,
             taxAmount: 0,
@@ -102,10 +107,32 @@ const CreateInvoiceForm = () => {
 
     }, []);
 
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "items",
+    });
+
+    useEffect(() => {
+        const items = form.getValues("items");
+        const discountPercent = form.getValues("discountPercent");
+        const taxPercent = form.getValues("taxPercent");
+
+        const subTotal = items.reduce((acc, item) => acc + item.quantity * item.rate, 0);
+        const discountAmount = (subTotal * discountPercent) / 100;
+        const taxAmount = ((subTotal - discountAmount) * taxPercent) / 100;
+        const totalAmount = subTotal - discountAmount + taxAmount;
+
+        form.setValue("subTotal", subTotal);
+        form.setValue("discountAmount", discountAmount);
+        form.setValue("taxAmount", taxAmount);
+        form.setValue("totalAmount", totalAmount);
+    }, [form.watch("items"), form.watch("discountPercent"), form.watch("taxPercent")]);
+
+
     useEffect(() => {
         console.log(clients);
     }, [clients]);
-    // console.log(form.formState.errors);
+    console.log(form.formState.errors);
 
     async function onSubmit(values: createInvoiceFormType) {
         // handle submit
@@ -442,6 +469,107 @@ const CreateInvoiceForm = () => {
                     />
                 </section>
 
+                {/* Add items section */}
+                <section className="mt-[33px] space-y-4">
+                    <h2 className="text-lg font-medium">Invoice Items</h2>
+                    {fields.map((item, index) => {
+                        const isHourly = form.watch(`items.${index}.ishourly`);
+
+                        return (
+                            <div key={item.id} className="flex flex-wrap gap-4 items-end">
+                                {/* isHourly Checkbox */}
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.ishourly`}
+                                    render={({ field }) => (
+                                        <FormItem className="h-[55px] flex flex-col items-center justify-center ">
+                                            <FormLabel className="!mt-0">
+                                                Hourly Charges?
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Checkbox
+                                                    className="cursor-pointer"
+                                                    checked={field.value}
+                                                    onCheckedChange={(checked) => field.onChange(!!checked)}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Item Name */}
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.name`}
+                                    render={({ field }) => (
+                                        <FormItem className="flex-1 min-w-[200px]">
+                                            <FormLabel>Item Name</FormLabel>
+                                            <FormControl>
+                                                <Input {...field} placeholder="e.g., Logo Design" />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Quantity or Hours */}
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.quantity`}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>{isHourly ? "Hours" : "Qty"}</FormLabel>
+                                            <FormControl>
+                                                <Input className="w-[140px]" type="number" {...field} min={1} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Rate */}
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.rate`}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Rate</FormLabel>
+                                            <FormControl>
+                                                <Input className="w-[140px]" type="number" {...field} min={0} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Remove Item */}
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => remove(index)}
+                                >
+                                    <GoX />
+                                </Button>
+
+                            </div>
+                        );
+                    })}
+
+                    {/* Add Item Button */}
+                    <div className="w-full flex justify-center ">
+
+                        <button
+                            className="w-[118px] flex justify-center items-center border rounded-[7px] px-[9px] py-[8px] cursor-pointer hover:bg-slate-50"
+                            // variant="outline"
+                            onClick={() => append({ ishourly: false, name: "", quantity: 1, rate: 0 })}
+                        >
+                            <IoAddCircle size={24} className="text-[#532B88] " />
+                            <p className="text-[14px]">
+                                Add item
+                            </p>
+                        </button>
+                    </div>
+                </section>
 
 
 
@@ -449,7 +577,9 @@ const CreateInvoiceForm = () => {
 
 
                 <footer>
-
+                    <Button type="submit">
+                        submit
+                    </Button>
                 </footer>
             </form>
         </Form>

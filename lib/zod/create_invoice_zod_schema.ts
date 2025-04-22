@@ -34,6 +34,8 @@ export const createInvoiceZodSchema = z.object({
     items: z
         .array(
             z.object({
+                ishourly: z.boolean({ required_error: "Please specify if Hourly Rate" }),
+
                 name: z
                     .string({ required_error: "Item name is required" })
                     .min(1, "Item name is required"),
