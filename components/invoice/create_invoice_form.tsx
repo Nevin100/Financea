@@ -24,6 +24,7 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { fetchClients } from "@/lib/helpers/create_invoice/fetchClients";
+import BilledToClientDetails from "./billed_to_client_details";
 
 export interface Client {
     _id: string;
@@ -188,7 +189,7 @@ const CreateInvoiceForm = () => {
                         name="dueDate"
                         render={({ field }) => (
                             <FormItem className="flex flex-col">
-                                <FormLabel>Issue On</FormLabel>
+                                <FormLabel>Due On</FormLabel>
                                 <Popover open={dueDatePopoverOpen} onOpenChange={setDueDatePopoverOpen}>
                                     <PopoverTrigger asChild>
                                         <FormControl>
@@ -227,9 +228,15 @@ const CreateInvoiceForm = () => {
                             </FormItem>
                         )}
                     />
-
-
                 </section>
+
+
+
+                {/* Billed to client details */}
+                <section className="mt-[33px]">
+                    <BilledToClientDetails />
+                </section>
+
 
                 <div>
                     <Button type="submit">Submit</Button>

@@ -1,6 +1,6 @@
 //lib/helpers/create_invoice/fetchClients.ts
 
-import { Client } from "@/components/invoice/create-invoice-form";
+import { Client } from "@/components/invoice/create_invoice_form";
 import { Dispatch, SetStateAction } from "react";
 
 
