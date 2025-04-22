@@ -38,10 +38,25 @@ const InvoiceCreatorPage = () => {
       <Card className="w-full lg:w-2/3 bg-white p-6 rounded-none  ">
 
 
-        <CardHeader className="flex items-center gap-3">
-          <GoX className="cursor-pointer" onClick={() => router.back()} size={24} />
-          <div className="w-px h-6 bg-[#B5B5B5]" />
-          <CardTitle className="text-[17px]">Create Invoice</CardTitle>
+        <CardHeader className="flex justify-between" >
+
+          <div className="flex items-center gap-3">
+            <GoX className="cursor-pointer" onClick={() => router.back()} size={24} />
+            <div className="w-px h-6 bg-[#B5B5B5]" />
+            <CardTitle className="text-[17px]">Create Invoice</CardTitle>
+          </div>
+
+          <div className="space-x-[10px]">
+            <Button variant="outline">
+              Save as draft
+            </Button>
+
+            <Button className="bg-[#532B88]">
+              Send now
+            </Button>
+          </div>
+
+
         </CardHeader>
 
         <Separator />

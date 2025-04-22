@@ -1,4 +1,6 @@
 "use client";
+
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createInvoiceZodSchema, createInvoiceFormType } from "@/lib/zod/create_invoice_zod_schema";
@@ -12,26 +14,46 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Check, ChevronsUpDown } from "lucide-react";
+// import {
+//     Select,
+//     SelectContent,
+//     SelectItem,
+//     SelectTrigger,
+//     SelectValue,
+// } from "@/components/ui/select"
 
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { fetchClients } from "@/lib/helpers/create_invoice/fetchClients";
 import BilledToClientDetails from "./billed_to_client_details";
+import { Checkbox } from "../ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
+
+export enum RecurringFrequency {
+    Monthly = "Monthly",
+    Weekly = "Weekly",
+    Quarterly = "Quarterly",
+    Yearly = "Yearly",
+}
 export interface Client {
     _id: string;
     clientName: string;
     companyName: string;
     email: string;
     mobile: string;
+    address: string;
+    postal: string;
+    state: string;
+    country: string;
+    website: string;
+    serviceCharge: number;
+    user: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 
@@ -39,18 +61,21 @@ export interface Client {
 const CreateInvoiceForm = () => {
     const [issueDatePopoverOpen, setIssueDatePopoverOpen] = useState(false);
     const [dueDatePopoverOpen, setDueDatePopoverOpen] = useState(false);
+    const [recurringDueDatePopoverOpen, setRecurringDueDatePopoverOpen] = useState(false);
+    const [recurringIssueDatePopoverOpen, setRecurringIssueDatePopoverOpen] = useState(false);
     const [clients, setClients] = useState<Client[]>([]);
+    const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
     const form = useForm<createInvoiceFormType>({
         resolver: zodResolver(createInvoiceZodSchema),
         defaultValues: {
             invoiceNumber: "",
-            issueDate: undefined,
+            issueDate: new Date(),
             dueDate: undefined,
             clientId: "",
             isRecurring: false,
-            recurringFrequency: "Monthly",
-            recurringIssueDate: undefined,
+            recurringFrequency: RecurringFrequency.Monthly,
+            recurringIssueDate: new Date(),
             recurringDueDate: undefined,
             items: [
                 {
@@ -100,7 +125,7 @@ const CreateInvoiceForm = () => {
                             <FormItem>
                                 <FormLabel>Invoice Number</FormLabel>
                                 <FormControl>
-                                    <Input className="w-[148px]" placeholder="Eg. 1234" {...field} />
+                                    <Input className="w-[240px]" placeholder="Eg. 1234" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -140,9 +165,7 @@ const CreateInvoiceForm = () => {
                                                 field.onChange(date);
                                                 setIssueDatePopoverOpen(false); // Close popover on selection
                                             }}
-                                            disabled={(date) =>
-                                                date > new Date() || date < new Date("1900-01-01")
-                                            }
+
                                             initialFocus
                                         />
                                     </PopoverContent>
@@ -155,35 +178,69 @@ const CreateInvoiceForm = () => {
 
                 {/* Bill to & Due date section */}
                 <section className="mt-[33px] flex justify-between">
+
+                    {/* Select Client */}
                     <FormField
                         control={form.control}
                         name="clientId"
-                        render={({ field }) => (
-                            <FormItem >
-                                <FormLabel>Bill To</FormLabel>
-                                <Select
+                        render={({ field }) => {
+                            const [open, setOpen] = useState(false);
 
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                >
-                                    <FormControl>
-                                        <SelectTrigger className="w-[187px] cursor-pointer  ">
-                                            <SelectValue placeholder="Select a client" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {clients.map((client) => (
-                                            <SelectItem key={client._id} value={client._id}>
-                                                {client.clientName} ({client.companyName})
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                            return (
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Bill To</FormLabel>
+                                    <Popover open={open} onOpenChange={setOpen}>
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    className="w-[240px] justify-between"
+                                                >
+                                                    {field.value
+                                                        ? clients.find((client) => client._id === field.value)?.clientName
+                                                        : "Select a client"}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[240px] p-0">
+                                            <Command>
+                                                <CommandInput placeholder="Search client..." />
+                                                <CommandEmpty>No client found.</CommandEmpty>
+                                                <CommandList className="h-[250px]">
+                                                    <CommandGroup>
+                                                        {clients.map((client) => (
+                                                            <CommandItem
+                                                                key={client._id}
+                                                                value={client.clientName}
+                                                                onSelect={() => {
+                                                                    field.onChange(client._id);
+                                                                    setSelectedClient(client); // 👈 send client details
+                                                                    setOpen(false);
+                                                                }}
+                                                            >
+                                                                <Check
+                                                                    className={cn(
+                                                                        "mr-2 h-4 w-4",
+                                                                        field.value === client._id ? "opacity-100" : "opacity-0"
+                                                                    )}
+                                                                />
+                                                                {client.clientName} ({client.email})
+                                                            </CommandItem>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormMessage />
+                                </FormItem>
+                            );
+                        }}
                     />
 
+                    {/* Due Date */}
                     <FormField
                         control={form.control}
                         name="dueDate"
@@ -217,9 +274,7 @@ const CreateInvoiceForm = () => {
                                                 field.onChange(date);
                                                 setDueDatePopoverOpen(false); // Close popover on selection
                                             }}
-                                            disabled={(date) =>
-                                                date < new Date()
-                                            }
+
                                             initialFocus
                                         />
                                     </PopoverContent>
@@ -234,13 +289,168 @@ const CreateInvoiceForm = () => {
 
                 {/* Billed to client details */}
                 <section className="mt-[33px]">
-                    <BilledToClientDetails />
+                    <BilledToClientDetails selectedClientDetails={selectedClient} />
+                </section>
+
+                {/* Recurring Checkbox Section */}
+                <section className="mt-[33px] flex items-center space-x-2">
+
+                    {/* is Recurring CheckBox */}
+                    <FormField
+                        control={form.control}
+                        name="isRecurring"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={(checked) => field.onChange(checked)}
+                                        className="cursor-pointer"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+
+                    {/* Simple Text */}
+                    <p className="text-[16px]">
+                        This is a recurring invoice
+                    </p>
+
+
+
+                    {/* Select Recurring Frequency */}
+                    <FormField
+                        control={form.control}
+                        name="recurringFrequency"
+                        render={({ field }) => (
+                            <FormItem>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className="w-[163px] cursor-pointer">
+                                            <SelectValue placeholder="Select Frequency" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {Object.values(RecurringFrequency).map((frequency) => (
+                                            <SelectItem key={frequency} value={frequency}>
+                                                {frequency}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+
                 </section>
 
 
-                <div>
-                    <Button type="submit">Submit</Button>
-                </div>
+
+                {/* Recurring Frequency Dates */}
+                <section className="mt-[21px] flex items-center space-x-14">
+                    <FormField
+                        control={form.control}
+                        name="recurringIssueDate"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>Issue On</FormLabel>
+                                <Popover open={recurringIssueDatePopoverOpen} onOpenChange={setRecurringIssueDatePopoverOpen}>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant={"outline"}
+                                                className={cn(
+                                                    "w-[163px] pl-3 text-left font-normal",
+                                                    !field.value && "text-muted-foreground"
+                                                )}
+                                            >
+                                                {field.value ? (
+                                                    format(field.value, "PPP")
+                                                ) : (
+                                                    <span>Pick a date</span>
+                                                )}
+                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="start">
+                                        <Calendar
+                                            mode="single"
+                                            selected={field.value}
+                                            onSelect={(date) => {
+                                                field.onChange(date);
+                                                setIssueDatePopoverOpen(false); // Close popover on selection
+                                            }}
+
+                                            initialFocus
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+
+
+                    <FormField
+                        control={form.control}
+                        name="recurringDueDate"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>Due On</FormLabel>
+                                <Popover open={recurringDueDatePopoverOpen} onOpenChange={setRecurringDueDatePopoverOpen}>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant={"outline"}
+                                                className={cn(
+                                                    "w-[163px] pl-3 text-left font-normal",
+                                                    !field.value && "text-muted-foreground"
+                                                )}
+                                            >
+                                                {field.value ? (
+                                                    format(field.value, "PPP")
+                                                ) : (
+                                                    <span>Pick a date</span>
+                                                )}
+                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="start">
+                                        <Calendar
+                                            mode="single"
+                                            selected={field.value}
+                                            onSelect={(date) => {
+                                                field.onChange(date);
+                                                setIssueDatePopoverOpen(false); // Close popover on selection
+                                            }}
+
+                                            initialFocus
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </section>
+
+
+
+
+
+
+
+                <footer>
+
+                </footer>
             </form>
         </Form>
     );

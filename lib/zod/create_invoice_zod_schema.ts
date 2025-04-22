@@ -1,3 +1,4 @@
+import { RecurringFrequency } from "@/components/invoice/create_invoice_form";
 import { z } from "zod";
 
 export const createInvoiceZodSchema = z.object({
@@ -19,7 +20,7 @@ export const createInvoiceZodSchema = z.object({
     isRecurring: z.boolean({ required_error: "Please specify if this is a recurring invoice" }),
 
     recurringFrequency: z
-        .enum(["Monthly", "Weekly", "Quarterly", "Yearly"])
+        .nativeEnum(RecurringFrequency)
         .optional(),
 
     recurringIssueDate: z
