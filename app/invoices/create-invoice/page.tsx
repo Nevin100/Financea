@@ -39,7 +39,7 @@ const InvoiceCreatorPage = () => {
 
 
         <CardHeader className="flex items-center gap-3">
-          <GoX size={24} />
+          <GoX className="cursor-pointer" onClick={() => router.back()} size={24} />
           <div className="w-px h-6 bg-[#B5B5B5]" />
           <CardTitle className="text-[17px]">Create Invoice</CardTitle>
         </CardHeader>

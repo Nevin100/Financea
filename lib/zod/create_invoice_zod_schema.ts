@@ -1,4 +1,3 @@
-// /lib/zod/create_invoice_zod_schema.ts
 import { z } from "zod";
 
 export const createInvoiceZodSchema = z.object({
@@ -7,11 +6,10 @@ export const createInvoiceZodSchema = z.object({
         .min(1, "Invoice number is required"),
 
     issueDate: z
-        .string({ required_error: "Issue date is required" })
-        .min(1, "Issue date is required"),
+        .date({ required_error: "Issue date is required" }),
 
     dueDate: z
-        .string()
+        .date()
         .optional(),
 
     clientId: z
@@ -25,11 +23,11 @@ export const createInvoiceZodSchema = z.object({
         .optional(),
 
     recurringIssueDate: z
-        .string()
+        .date()
         .optional(),
 
     recurringDueDate: z
-        .string()
+        .date()
         .optional(),
 
     items: z
