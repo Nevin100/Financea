@@ -20,7 +20,7 @@ const ExpensesChart = () => {
         <div className="w-1/2 gap-4 h-40">
           <ResponsiveContainer width="100%" height="100%">
             <RadialBarChart innerRadius="50%" outerRadius="100%" data={data} startAngle={180} endAngle={0}>
-              <Tooltip/>
+              <Tooltip />
               <RadialBar background dataKey="value" />
             </RadialBarChart>
           </ResponsiveContainer>

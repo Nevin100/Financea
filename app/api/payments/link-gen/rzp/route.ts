@@ -1,11 +1,20 @@
+//api/payments/link-gen/rzp/route.ts
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+
+
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";  // <-- ADD THIS
+import axios from "axios";
+import { getRzpCreds } from "./getRzpCreds";
+import { verifyUser } from "@/lib/helpers/verifyAuthUser";
 
 interface ApiReqType {
-    amount: number,
-    currency: "INR" | "USD",
+    amount: number;
+    currency: "INR" | "USD";
+    customerName: string;
+    customerEmail: string;
+    customerContact: string;
 }
 
 // Check and throw if env vars are missing (at startup itself)
@@ -15,57 +24,74 @@ if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
     throw new Error("Missing Razorpay environment variables");
 }
 
-
-// POST API handler
 export async function POST(req: NextRequest) {
     try {
+
+        let userId: string;
+        try {
+            userId = verifyUser(req);
+        } catch (err: any) {
+            return NextResponse.json({ message: err.message }, { status: 403 });
+        }
+
+        //razorpay Credentials
+        const rzpCreds = await getRzpCreds(userId);
+
+
+
         const body: ApiReqType = await req.json();
 
         // Validate required fields
-        if (!body.amount) {
-            return NextResponse.json({ error: "Amount is required" }, { status: 400 });
+        const { amount, currency, customerName, customerEmail, customerContact } = body;
+
+        if (!amount || !currency || !customerName || !customerEmail || !customerContact) {
+            return NextResponse.json({ error: "All fields are required" }, { status: 400 });
         }
 
-        const notesObj = { message: "This is a note" };
+        const expireBy = Math.floor(Date.now() / 1000) + 3 * 24 * 60 * 60; // Now + 3 days in seconds
 
         const paymentLinkPayload = {
-            amount: body.amount,
-            currency: body.currency,
+            amount,
+            currency,
             description: "Payment for your order",
             customer: {
-                name: "Customer Name",
-                email: "customer@example.com",
-                contact: "9876543210",
+                name: customerName,
+                email: customerEmail,
+                contact: customerContact,
             },
             notify: {
                 sms: true,
-                email: true,
+                email: true, // Razorpay will send its default email here
             },
             reminder_enable: true,
-            notes: notesObj,
+            notes: {
+                source: "From Financea app",
+            },
+            expire_by: expireBy
         };
 
-        const authHeader = Buffer.from(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`).toString("base64");
+        const authHeader = Buffer.from(`${rzpCreds.keyId || RAZORPAY_KEY_ID}:${rzpCreds.keySecret || RAZORPAY_KEY_SECRET}`).toString("base64");
 
-        // Axios call instead of fetch
         const razorpayRes = await axios.post(
             "https://api.razorpay.com/v1/payment_links",
             paymentLinkPayload,
             {
                 headers: {
-                    "Authorization": `Basic ${authHeader}`,
+                    Authorization: `Basic ${authHeader}`,
                     "Content-Type": "application/json",
                 },
             }
         );
 
-        // Send back the payment link data
         return NextResponse.json(razorpayRes.data, { status: 200 });
 
     } catch (error: any) {
         console.error("Error CREATING Razorpay Payment Link:", error.response?.data || error.message);
         return NextResponse.json(
-            { error: "Failed to create payment link", details: error.response?.data || error.message },
+            {
+                error: "Failed to create payment link",
+                details: error.response?.data || error.message,
+            },
             { status: 500 }
         );
     }

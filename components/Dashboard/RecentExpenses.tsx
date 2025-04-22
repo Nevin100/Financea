@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import RecentExpensesLoading from "../Loading_ui/RecentExpensesLoading";
+import RecentExpensesLoading from "../loading_ui/RecentExpensesLoading";
 
 const RecentExpenses = () => {
   const [expenses, setExpenses] = useState<{ category: string; amount: string; date: string; icon: string }[]>([]);
@@ -44,7 +44,7 @@ const RecentExpenses = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="bg-white p-5 rounded-xl shadow-md mt-6">
+    <div className=" h-full bg-white p-5 rounded-xl shadow-md mt-6">
       {/* Header */}
       <h2 className="text-lg font-semibold text-black mb-4">Recent Expenses</h2>
 

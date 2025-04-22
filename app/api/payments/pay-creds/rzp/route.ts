@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/database/db_connection";
 import RzpModel from "@/lib/models/Razorpay.model";
-import { encrypt } from "@/lib/helpers/encryption";
+import { encrypt } from "@/lib/helpers/rpzCredsEncryption";
 import { verifyUser } from "@/lib/helpers/verifyAuthUser";
 
 export async function POST(req: NextRequest) {
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
             { upsert: true, new: true }
         );
 
-        // console.log(result);
+        console.log(result);
 
 
         return NextResponse.json({ message: "Credentials saved successfully." }, { status: 201 });
