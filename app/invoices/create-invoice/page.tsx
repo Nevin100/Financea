@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { Archivo } from "next/font/google";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import CreateInvoiceForm from "@/components/invoice/create-invoice-form";
 
 
 interface Client {
@@ -46,7 +47,7 @@ const InvoiceCreatorPage = () => {
         <Separator />
 
         <CardContent>
-
+          <CreateInvoiceForm />
         </CardContent>
 
 
