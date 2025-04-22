@@ -49,6 +49,8 @@ const CreateInvoiceForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
+
+
                 <FormField
                     control={form.control}
                     name="invoiceNumber"
@@ -56,7 +58,7 @@ const CreateInvoiceForm = () => {
                         <FormItem>
                             <FormLabel>Invoice Number</FormLabel>
                             <FormControl>
-                                <Input placeholder="1234" {...field} />
+                                <Input className="w-[148px]" placeholder="1234" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
