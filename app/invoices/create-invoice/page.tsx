@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { GoX } from "react-icons/go";
@@ -31,13 +30,11 @@ const InvoiceCreatorPage = () => {
       <Card className="w-full lg:w-2/3 bg-white p-6 rounded-none  ">
 
 
-        <CardHeader className="flex justify-between" >
+        <CardHeader className="flex items-center gap-3" >
 
-          <div className="flex items-center gap-3">
-            <GoX className="cursor-pointer" onClick={() => router.back()} size={24} />
-            <div className="w-px h-6 bg-[#B5B5B5]" />
-            <CardTitle className="text-[17px]">Create Invoice</CardTitle>
-          </div>
+          <GoX className="cursor-pointer" onClick={() => router.back()} size={24} />
+          <div className="w-px h-6 bg-[#B5B5B5]" />
+          <CardTitle className="text-[17px]">Create Invoice</CardTitle>
 
 
 

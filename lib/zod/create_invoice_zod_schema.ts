@@ -1,4 +1,3 @@
-// import { RecurringFrequency } from "@/components/invoice/create_invoice_form";
 import { z } from "zod";
 
 export const createInvoiceZodSchema = z.object({
@@ -16,6 +15,18 @@ export const createInvoiceZodSchema = z.object({
     clientId: z
         .string({ required_error: "Client selection is required" })
         .min(1, "Client selection is required"),
+    clientEmail: z
+        .string({ required_error: "Client Email is required.", })
+        .email("Please enter a valid email address."),
+    clientName: z
+        .string({ required_error: "Client Name is required" }),
+
+    clientMobile: z
+        .coerce
+        .number({ required_error: "Mobile Number is required" })
+        .refine((val) => val.toString().length === 10, {
+            message: "Mobile number must be exactly 10 digits",
+        }),
 
     isRecurring: z.boolean({ required_error: "Please specify if this is a recurring invoice" }),
 

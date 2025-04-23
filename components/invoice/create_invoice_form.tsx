@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { IoAddCircle } from "react-icons/io5";
 import { GoX } from "react-icons/go";
 import { useForm } from "react-hook-form";
@@ -36,6 +37,7 @@ import { Separator } from "../ui/separator";
 import { uptoTwoDecimalPlaces } from "@/lib/helpers/create_invoice/uptoTwoDecimalPlaces";
 import { useWatch } from "react-hook-form";
 import Swal from "sweetalert2";
+import { create_new_invoice_route } from "@/lib/helpers/api-endpoints";
 
 
 //RecurringFrequency Should Match With Zod
@@ -79,6 +81,7 @@ const CreateInvoiceForm = () => {
             issueDate: new Date(),
             dueDate: undefined,
             clientId: "",
+            clientEmail: "",
             isRecurring: false,
             recurringFrequency: RecurringFrequency.Monthly,
             recurringIssueDate: new Date(),
@@ -144,21 +147,28 @@ const CreateInvoiceForm = () => {
 
 
 
-    async function onSubmit(values: createInvoiceFormType) {
-        // Check if values are undefined or missing
-        if (!values) {
+    async function onSubmit(formValues: createInvoiceFormType) {
+        // Check if formValues are undefined or missing
+        if (!formValues) {
             console.error("Items are missing or not an array!");
+
+
+
+            Swal.fire({
+                title: "Error!",
+                text: "Items are missing or not an array!",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
         }
 
 
-        Swal.fire({
-            title: "Deleted!",
-            text: "Selected clients have been deleted.",
-            icon: "success",
-            confirmButtonText: "OK",
-        });
+
+        const result = await axios.post(create_new_invoice_route, formValues)
+
+
         // Continue with form submission logic
-        console.log(values);
+        console.log(result.data);
     }
 
     return (
@@ -265,7 +275,10 @@ const CreateInvoiceForm = () => {
                                                                 value={client.clientName}
                                                                 onSelect={() => {
                                                                     field.onChange(client._id);
-                                                                    setSelectedClient(client); // 👈 send client details
+                                                                    setSelectedClient(client);
+                                                                    form.setValue("clientName", client.clientName);
+                                                                    form.setValue("clientEmail", client.email);
+                                                                    form.setValue("clientMobile", parseInt(client.mobile));
                                                                     setOpen(false);
                                                                 }}
                                                             >

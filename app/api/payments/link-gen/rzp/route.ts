@@ -9,12 +9,12 @@ import axios from "axios";
 import { getRzpCreds } from "./getRzpCreds";
 import { verifyUser } from "@/lib/helpers/verifyAuthUser";
 
-interface ApiReqType {
+export interface PaymentPayloadType {
     amount: number;
     currency: "INR" | "USD";
     customerName: string;
     customerEmail: string;
-    customerContact: string;
+    customerContact: number;
 }
 
 // Check and throw if env vars are missing (at startup itself)
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
 
 
-        const body: ApiReqType = await req.json();
+        const body: PaymentPayloadType = await req.json();
 
         // Validate required fields
         const { amount, currency, customerName, customerEmail, customerContact } = body;
@@ -50,6 +50,8 @@ export async function POST(req: NextRequest) {
 
         const expireBy = Math.floor(Date.now() / 1000) + 3 * 24 * 60 * 60; // Now + 3 days in seconds
 
+        const contactString = customerContact.toString();
+
         const paymentLinkPayload = {
             amount,
             currency,
@@ -57,11 +59,11 @@ export async function POST(req: NextRequest) {
             customer: {
                 name: customerName,
                 email: customerEmail,
-                contact: customerContact,
+                contact: contactString, // Ensure contact is a string of exactly 10 digits
             },
             notify: {
                 sms: true,
-                email: true, // Razorpay will send its default email here
+                email: true,
             },
             reminder_enable: true,
             notes: {
@@ -69,6 +71,7 @@ export async function POST(req: NextRequest) {
             },
             expire_by: expireBy
         };
+
 
         const authHeader = Buffer.from(`${rzpCreds.keyId || RAZORPAY_KEY_ID}:${rzpCreds.keySecret || RAZORPAY_KEY_SECRET}`).toString("base64");
 
