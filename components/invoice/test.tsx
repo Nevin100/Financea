@@ -136,10 +136,10 @@ const CreateInvoiceForm = () => {
     }, [watchedItems, discountPercent, taxPercent]);
 
 
-    const subTotal = form.watch("subTotal");
-    const discountAmount = form.watch("discountAmount");
-    const taxAmount = form.watch("taxAmount");
-    const totalAmount = form.watch("totalAmount");
+    const subTotal = form.getValues("subTotal");
+    const discountAmount = form.getValues("discountAmount");
+    const taxAmount = form.getValues("taxAmount");
+    const totalAmount = form.getValues("totalAmount");
 
 
 
