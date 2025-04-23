@@ -36,7 +36,7 @@ import { Separator } from "../ui/separator";
 import { uptoTwoDecimalPlaces } from "@/lib/helpers/create_invoice/uptoTwoDecimalPlaces";
 
 
-//RecurringFrequency Should Match With Zod
+
 export enum RecurringFrequency {
     Monthly = "Monthly",
     Weekly = "Weekly",
@@ -73,26 +73,26 @@ const CreateInvoiceForm = () => {
     const form = useForm<createInvoiceFormType>({
         resolver: zodResolver(createInvoiceZodSchema),
         defaultValues: {
-            invoiceNumber: "",
+            invoiceNumber: "0001",
             issueDate: new Date(),
-            dueDate: undefined,
+            dueDate: new Date(),
             clientId: "",
             isRecurring: true,
             recurringFrequency: RecurringFrequency.Monthly,
             recurringIssueDate: new Date(),
-            recurringDueDate: undefined,
+            recurringDueDate: new Date(),
             items: [
                 {
                     ishourly: false,
-                    name: "",
-                    quantity: 0,
-                    rate: 0,
+                    name: "adf",
+                    quantity: 1,
+                    rate: 30,
                 },
             ],
             discountPercent: 0,
             taxPercent: 0,
-            note: "",
-            terms: "",
+            note: "adf",
+            terms: "asdf",
             subTotal: 0,
             discountAmount: 0,
             taxAmount: 0,
@@ -106,9 +106,13 @@ const CreateInvoiceForm = () => {
     });
 
 
+
+
     //For fetching clients
     useEffect(() => {
+
         fetchClients(setClients);
+
     }, []);
 
 
@@ -131,6 +135,9 @@ const CreateInvoiceForm = () => {
     }, [form.watch("items"), form.watch("discountPercent"), form.watch("taxPercent")]);
 
 
+    useEffect(() => {
+        console.log(form.getValues()); // Log the entire form state to debug
+    }, [form.watch("items"), form.watch("discountPercent"), form.watch("taxPercent")]);
 
     const subTotal = form.getValues("subTotal");
     const discountAmount = form.getValues("discountAmount");
@@ -138,11 +145,18 @@ const CreateInvoiceForm = () => {
     const totalAmount = form.getValues("totalAmount");
 
 
+    useEffect(() => {
+        console.log(clients);
+    }, [clients]);
+
+
+    console.log(form.formState.errors);
 
     async function onSubmit(values: createInvoiceFormType) {
         // Check if values are undefined or missing
-        if (!values) {
+        if (!values || !values.items || !Array.isArray(values.items)) {
             console.error("Items are missing or not an array!");
+            return;
         }
 
         // Continue with form submission logic
