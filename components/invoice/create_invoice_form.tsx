@@ -35,6 +35,7 @@ import { useFieldArray } from "react-hook-form";
 import { Separator } from "../ui/separator";
 import { uptoTwoDecimalPlaces } from "@/lib/helpers/create_invoice/uptoTwoDecimalPlaces";
 import { useWatch } from "react-hook-form";
+import Swal from "sweetalert2";
 
 
 //RecurringFrequency Should Match With Zod
@@ -149,6 +150,13 @@ const CreateInvoiceForm = () => {
             console.error("Items are missing or not an array!");
         }
 
+
+        Swal.fire({
+            title: "Deleted!",
+            text: "Selected clients have been deleted.",
+            icon: "success",
+            confirmButtonText: "OK",
+        });
         // Continue with form submission logic
         console.log(values);
     }
@@ -425,7 +433,7 @@ const CreateInvoiceForm = () => {
                                             selected={field.value}
                                             onSelect={(date) => {
                                                 field.onChange(date);
-                                                setIssueDatePopoverOpen(false); // Close popover on selection
+                                                setRecurringIssueDatePopoverOpen(false); // Close popover on selection
                                             }}
 
                                             initialFocus
@@ -470,7 +478,7 @@ const CreateInvoiceForm = () => {
                                             selected={field.value}
                                             onSelect={(date) => {
                                                 field.onChange(date);
-                                                setIssueDatePopoverOpen(false); // Close popover on selection
+                                                setRecurringDueDatePopoverOpen(false); // Close popover on selection
                                             }}
 
                                             initialFocus
@@ -689,12 +697,20 @@ const CreateInvoiceForm = () => {
                     </div>
                 </section>
 
+                <Separator className="my-[33px]" />
 
 
-                <footer>
-                    <Button type="submit">
-                        submit
-                    </Button>
+                <footer className="flex justify-end">
+                    <div className="space-x-[10px]">
+                        <Button type="button" variant="outline">
+                            Save as draft
+                        </Button>
+
+                        <Button type="submit" className="bg-[#532B88]">
+                            Send now
+                        </Button>
+                    </div>
+
                 </footer>
             </form>
         </Form>

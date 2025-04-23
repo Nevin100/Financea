@@ -39,15 +39,6 @@ const InvoiceCreatorPage = () => {
             <CardTitle className="text-[17px]">Create Invoice</CardTitle>
           </div>
 
-          <div className="space-x-[10px]">
-            <Button variant="outline">
-              Save as draft
-            </Button>
-
-            <Button className="bg-[#532B88]">
-              Send now
-            </Button>
-          </div>
 
 
         </CardHeader>
