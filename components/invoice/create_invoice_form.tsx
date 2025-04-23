@@ -34,6 +34,7 @@ import { Checkbox } from "../ui/checkbox";
 import { useFieldArray } from "react-hook-form";
 import { Separator } from "../ui/separator";
 import { uptoTwoDecimalPlaces } from "@/lib/helpers/create_invoice/uptoTwoDecimalPlaces";
+import { useWatch } from "react-hook-form";
 
 
 //RecurringFrequency Should Match With Zod
@@ -77,7 +78,7 @@ const CreateInvoiceForm = () => {
             issueDate: new Date(),
             dueDate: undefined,
             clientId: "",
-            isRecurring: true,
+            isRecurring: false,
             recurringFrequency: RecurringFrequency.Monthly,
             recurringIssueDate: new Date(),
             recurringDueDate: undefined,
@@ -112,24 +113,27 @@ const CreateInvoiceForm = () => {
     }, []);
 
 
+    const watchedItems = useWatch({ control: form.control, name: "items" });
+    const discountPercent = useWatch({ control: form.control, name: "discountPercent" });
+    const taxPercent = useWatch({ control: form.control, name: "taxPercent" });
+
+
     useEffect(() => {
-        const items = form.getValues("items") ?? [];
-        const discountPercent = form.getValues("discountPercent") ?? 0;
-        const taxPercent = form.getValues("taxPercent") ?? 0;
+        if (!Array.isArray(watchedItems)) return;
 
-        if (!Array.isArray(items)) return;
-
-        const subTotal = uptoTwoDecimalPlaces(items.reduce((acc, item) => acc + item.quantity * item.rate, 0));
+        const subTotal = uptoTwoDecimalPlaces(
+            watchedItems.reduce((acc, item) => acc + item.quantity * item.rate, 0)
+        );
         const discountAmount = uptoTwoDecimalPlaces((subTotal * discountPercent) / 100);
         const taxAmount = uptoTwoDecimalPlaces(((subTotal - discountAmount) * taxPercent) / 100);
         const totalAmount = uptoTwoDecimalPlaces(subTotal - discountAmount + taxAmount);
 
-        form.setValue("subTotal", subTotal);
-        form.setValue("discountAmount", discountAmount);
-        form.setValue("taxAmount", taxAmount);
-        form.setValue("totalAmount", totalAmount);
-    }, [form.watch("items"), form.watch("discountPercent"), form.watch("taxPercent")]);
+        form.setValue("subTotal", subTotal, { shouldValidate: false });
+        form.setValue("discountAmount", discountAmount, { shouldValidate: false });
+        form.setValue("taxAmount", taxAmount, { shouldValidate: false });
+        form.setValue("totalAmount", totalAmount, { shouldValidate: false });
 
+    }, [watchedItems, discountPercent, taxPercent]);
 
 
     const subTotal = form.getValues("subTotal");
