@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/database/db_connection";
 import Invoice from "@/lib/models/Invoice.model";
-import { invoiceSchema } from "@/utils/validations";
+import { invoiceSchema } from "@/lib/helpers/validations";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;

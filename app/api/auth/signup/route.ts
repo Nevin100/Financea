@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import User from "@/lib/models/User.model";
-import { signupSchema } from "@/utils/validations";
+import { signupSchema } from "@/lib/helpers/validations";
 import jwt from "jsonwebtoken";
 import connectDB from "@/lib/database/db_connection";
 

@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/database/db_connection";
 import { Client } from "@/lib/models/Clients.model";
-import { clientSchema } from "@/utils/validations";
+import { clientSchema } from "@/lib/helpers/validations";
 import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
@@ -70,7 +70,7 @@ export async function GET(req: Request) {
     const userId = decoded.userId;
 
     // Fetch all clients belonging to the logged-in user
-    const clients = await Client.find({ user: userId }).sort({ createdAt:-1 });
+    const clients = await Client.find({ user: userId }).sort({ createdAt: -1 });
 
     return NextResponse.json(clients, { status: 200 });
   } catch (error) {
