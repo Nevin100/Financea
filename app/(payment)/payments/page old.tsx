@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios"; // You can use axios or fetch here
-import { save_rpz_creds_route } from "@/lib/helpers/api-endpoints";
+import { rpz_creds_route } from "@/lib/helpers/api-endpoints";
 
 export default function PaymentPage() {
   const [keyId, setKeyId] = useState("");
@@ -32,7 +32,7 @@ export default function PaymentPage() {
 
       // Send the Razorpay credentials to the backend with the token in headers
       const response = await axios.post(
-        save_rpz_creds_route,
+        rpz_creds_route,
         {
           keyId,
           keySecret,
